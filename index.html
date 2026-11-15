@@ -298,6 +298,43 @@ svg.bsvg { width: 34px; height: 26px; color: var(--h); }
 .ci-row .when { font-weight: 600; }
 .ci-row .what { color: var(--muted); font-size: 15px; overflow-wrap: anywhere; }
 
+/* Move */
+#view-move, #view-trends { display: flex; flex-direction: column; gap: 20px; }
+.move-sum, .log-form, .quick { display: flex; flex-direction: column; gap: 14px; }
+.big { font-family: var(--font-display); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; margin: 0; }
+.big b { font-size: 46px; font-weight: 800; letter-spacing: -.02em; margin-right: 6px; }
+.meter { height: 14px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.meter > i { display: block; height: 100%; width: 0; background: var(--mint); border-radius: 99px; transition: width .5s ease; }
+.week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.week span { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); font-weight: 600; }
+.week i { width: 26px; height: 26px; border-radius: 50%; border: 2.5px solid var(--line); display: block; }
+.week i.some { background: var(--mint-soft); border-color: var(--mint); }
+.week i.goal { background: var(--mint); border-color: var(--mint); }
+.quick { background: var(--mint-soft); box-shadow: none; }
+.quick .next-text { font-size: 24px; }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grp-move { --h: var(--peach); --hs: var(--peach-soft); }
+.grp-dur, .grp-feel { --h: var(--mint); --hs: var(--mint-soft); }
+
+/* Trends */
+.chart-card { display: flex; flex-direction: column; gap: 10px; }
+.chart-card h3 { margin: 0; font-family: var(--font-display); font-size: 21px; font-weight: 600; letter-spacing: -.01em; }
+.chart { width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; -webkit-user-select: none; user-select: none; }
+.chart text { fill: var(--muted); font-family: var(--font-body); font-size: 12px; }
+.chart text.today { fill: var(--ink); font-weight: 600; }
+.readout { margin: 0; min-height: 1.5em; font-size: 15px; color: var(--muted); }
+.readout b { color: var(--ink); font-weight: 600; }
+.hbars { display: flex; flex-direction: column; gap: 12px; }
+.hbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: center; font-size: 15px; }
+.hbar .v { font-variant-numeric: tabular-nums; color: var(--muted); }
+.hbar .track { grid-column: 1 / -1; height: 10px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.hbar .track i { display: block; height: 100%; background: var(--h); border-radius: 99px; }
+.locked { display: flex; flex-direction: column; gap: 16px; }
+.unlock { display: flex; flex-direction: column; gap: 6px; }
+.unlock p { margin: 0; }
+.unlock .meter { height: 10px; }
+
 /* Toast */
 .toast {
   position: fixed; left: 50%; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 16px);
@@ -316,12 +353,12 @@ svg.bsvg { width: 34px; height: 26px; color: var(--h); }
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
-.tabs-in { max-width: 540px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; height: var(--nav-h); padding-block: 8px; }
+.tabs-in { max-width: 540px; margin: 0 auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; height: var(--nav-h); padding-block: 8px; }
 .tab {
   border: 0; border-radius: 16px; background: none; color: var(--muted);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 14px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12.5px; font-weight: 600; padding: 0 2px; white-space: nowrap;
 }
-.tab svg { width: 28px; height: 28px; }
+.tab svg { width: 26px; height: 26px; }
 .tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
 .tab .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; margin-left: 4px; vertical-align: middle; }
 
@@ -369,6 +406,8 @@ svg.bsvg { width: 34px; height: 26px; color: var(--h); }
     </section>
   </main>
   <main id="view-checkin" hidden></main>
+  <main id="view-move" hidden></main>
+  <main id="view-trends" hidden></main>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -386,6 +425,14 @@ svg.bsvg { width: 34px; height: 26px; color: var(--h); }
     <button class="tab" role="tab" id="tab-checkin" aria-selected="false" aria-controls="view-checkin">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="17" height="10" rx="2.5"/><path d="M22 10.5v3"/><path d="M11.5 9l-2 3.2h3L10.5 15"/></svg>
       Check-in
+    </button>
+    <button class="tab" role="tab" id="tab-move" aria-selected="false" aria-controls="view-move">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2.5-6 4.5 12 2.5-6H21"/></svg>
+      Move
+    </button>
+    <button class="tab" role="tab" id="tab-trends" aria-selected="false" aria-controls="view-trends">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-6M10 20V8M15 20v-9M20 20V5"/></svg>
+      Trends
     </button>
   </div>
 </nav>
@@ -1115,25 +1162,308 @@ svg.bsvg { width: 34px; height: 26px; color: var(--h); }
     var y = window.scrollY; renderCheckin(); window.scrollTo(0, y);
   });
 
+  /* ---------- move ---------- */
+  var vMove = document.getElementById("view-move");
+  state.moves = state.moves || [];
+  state.custom.move = state.custom.move || [];
+  var MOVES = ["Walk", "Run", "Bike", "Sports practice", "Basketball", "Soccer", "Gym or weights", "Swim", "Skateboard", "Dance", "Stretch or yoga", "Played outside"];
+  var DURS = [5, 10, 15, 20, 30, 45, 60, 90];
+  var FEELS = ["Easy", "Just right", "Tough"];
+  var QUICK = [
+    "20 jumping jacks", "10 wall push-ups", "15 squats", "Walk around the house and back",
+    "Hold a plank for 30 seconds", "Reach up high and stretch for 30 seconds", "March in place for 1 minute",
+    "10 lunges on each leg", "Shake out your arms and legs for 30 seconds", "Go up and down the stairs twice"
+  ];
+  var GOAL = 60;
+  var mDraft = { what: "", min: 0, feel: "" }, quickIdx = -1;
+  var RUN = '<path d="M3 12h4l2.5-6 4.5 12 2.5-6H21"/>';
+
+  function movesOn(key) { return state.moves.filter(function (m) { return dayKey(new Date(m.at)) === key; }); }
+  function minsOn(key) { return movesOn(key).reduce(function (a, m) { return a + m.min; }, 0); }
+  function lastDays(n) {
+    var out = [], d = new Date(); d.setHours(12, 0, 0, 0);
+    for (var i = n - 1; i >= 0; i--) { var x = new Date(d); x.setDate(d.getDate() - i); out.push(x); }
+    return out;
+  }
+  function shortDay(d) { return d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }); }
+  function pickChips(kind, opts, cur, fmt) {
+    return opts.map(function (o) {
+      return '<button type="button" class="chip" data-' + kind + '="' + esc(o) + '" aria-pressed="' + (String(cur) === String(o)) + '">' + esc(fmt ? fmt(o) : o) + '</button>';
+    }).join("");
+  }
+
+  function renderMove() {
+    var today = minsOn(dayKey()), pct = Math.min(100, Math.round(today / GOAL * 100));
+    var msg = today === 0 ? "Teens do best with about 60 minutes of movement a day. Every bit counts."
+      : today < GOAL ? "Nice start. " + (GOAL - today) + " more minutes to reach 60."
+      : "You hit 60 minutes today. Your brain thanks you.";
+    var week = lastDays(7).map(function (d) {
+      var m = minsOn(dayKey(d));
+      return '<span><i class="' + (m >= GOAL ? "goal" : m > 0 ? "some" : "") + '" title="' + m + ' min"></i>' +
+        d.toLocaleDateString([], { weekday: "narrow" }) + '</span>';
+    }).join("");
+    var opts = MOVES.concat(state.custom.move);
+    if (mDraft.what && opts.indexOf(mDraft.what) < 0) opts.push(mDraft.what);
+
+    var html = '<section class="card move-sum">' +
+        '<div class="label">Moved today</div>' +
+        '<p class="big"><b>' + today + '</b>of ' + GOAL + ' min</p>' +
+        '<div class="meter" role="progressbar" aria-label="Minutes moved today" aria-valuemin="0" aria-valuemax="' + GOAL + '" aria-valuenow="' + today + '"><i style="width:' + pct + '%"></i></div>' +
+        '<p class="muted">' + msg + '</p>' +
+        '<div class="label">Last 7 days</div><div class="week">' + week + '</div>' +
+      '</section>';
+
+    html += '<section class="card quick">' +
+      '<div class="label">Need a reset?</div>' +
+      (quickIdx >= 0
+        ? '<p class="next-text">' + esc(QUICK[quickIdx]) + '</p>' +
+          '<div class="btn-row"><button class="btn btn-primary" id="q-done">I did it</button><button class="btn btn-soft" id="q-next">Another</button></div>'
+        : '<p class="muted">A quick move can wake up your brain before a task.</p>' +
+          '<button class="btn btn-primary btn-block" id="q-next">Give me a quick move</button>') +
+    '</section>';
+
+    html += '<section class="card log-form">' +
+      '<h2>Log activity</h2>' +
+      '<div class="ci-q grp-move"><div class="label" id="mv-l">What did you do?</div>' +
+        '<div class="chips" role="group" aria-labelledby="mv-l">' + pickChips("what", opts, mDraft.what) + '</div>' +
+        '<form class="add-row" data-addto="move" autocomplete="off"><label class="label" for="move-add" hidden>Something else</label>' +
+        '<input class="field" id="move-add" placeholder="Something else?" maxlength="40" enterkeyhint="done">' +
+        '<button class="btn btn-quiet" type="submit">Add</button></form></div>' +
+      '<div class="ci-q grp-dur"><div class="label" id="dur-l">How long?</div>' +
+        '<div class="chips" role="group" aria-labelledby="dur-l">' + pickChips("min", DURS, mDraft.min, function (m) { return m + " min"; }) + '</div></div>' +
+      '<div class="ci-q grp-feel"><div class="label" id="feel-l">How did it feel? (optional)</div>' +
+        '<div class="chips" role="group" aria-labelledby="feel-l">' + pickChips("feel", FEELS, mDraft.feel) + '</div></div>' +
+      '<button class="btn btn-primary btn-block" id="mv-save">Save activity</button>' +
+    '</section>';
+
+    var recent = state.moves.slice(-8).reverse();
+    if (recent.length) {
+      html += '<section class="steps-sec"><div class="label">Recent activity</div>' +
+        recent.map(function (m) {
+          var idx = state.moves.indexOf(m);
+          return '<div class="ci-row" style="--h:var(--peach);--hs:var(--peach-soft)"><span class="bub">' + svg(RUN, 2.2) + '</span>' +
+            '<div style="flex:1"><div class="when">' + esc(m.what) + ' · ' + m.min + ' min</div>' +
+            '<div class="what">' + shortDay(new Date(m.at)) + (m.feel ? ' · ' + esc(m.feel) : '') + '</div></div>' +
+            '<button class="step-del" data-mdel="' + idx + '" aria-label="Remove ' + esc(m.what) + '">' + svg(P.x, 2.4) + '</button></div>';
+        }).join("") + '</section>';
+    }
+    vMove.innerHTML = html;
+  }
+
+  vMove.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b || b.closest("form")) return;
+    var y = window.scrollY;
+    if (b.dataset.what != null) { mDraft.what = mDraft.what === b.dataset.what ? "" : b.dataset.what; renderMove(); window.scrollTo(0, y); return; }
+    if (b.dataset.min != null) { mDraft.min = mDraft.min === +b.dataset.min ? 0 : +b.dataset.min; renderMove(); window.scrollTo(0, y); return; }
+    if (b.dataset.feel != null) { mDraft.feel = mDraft.feel === b.dataset.feel ? "" : b.dataset.feel; renderMove(); window.scrollTo(0, y); return; }
+    if (b.id === "q-next") {
+      var n; do { n = Math.floor(Math.random() * QUICK.length); } while (n === quickIdx);
+      quickIdx = n; renderMove(); window.scrollTo(0, y); return;
+    }
+    if (b.id === "q-done") {
+      state.moves.push({ at: Date.now(), what: "Quick move", min: 2, feel: "" });
+      quickIdx = -1; save(); renderMove(); window.scrollTo(0, y);
+      toast("Nice! A little movement goes a long way."); return;
+    }
+    if (b.id === "mv-save") {
+      if (!mDraft.what) { toast("First, tap what you did."); return; }
+      if (!mDraft.min) { toast("Now tap how long you did it."); return; }
+      state.moves.push({ at: Date.now(), what: mDraft.what, min: mDraft.min, feel: mDraft.feel });
+      if (state.moves.length > 400) state.moves = state.moves.slice(-400);
+      mDraft = { what: "", min: 0, feel: "" };
+      save(); renderMove(); window.scrollTo(0, 0);
+      toast(minsOn(dayKey()) >= GOAL ? "60 minutes today. Awesome!" : "Logged! Moving helps your brain focus too.");
+      return;
+    }
+    if (b.dataset.mdel != null) { state.moves.splice(+b.dataset.mdel, 1); save(); renderMove(); window.scrollTo(0, y); }
+  });
+  vMove.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var inp = e.target.querySelector("input"), v = cap(inp.value.trim().replace(/\s+/g, " "));
+    if (!v) { inp.focus(); return; }
+    if (MOVES.indexOf(v) < 0 && state.custom.move.indexOf(v) < 0) { state.custom.move.push(v); state.custom.move = state.custom.move.slice(-12); save(); }
+    mDraft.what = v;
+    var y = window.scrollY; renderMove(); window.scrollTo(0, y);
+  });
+
+  /* ---------- trends ---------- */
+  var vTrends = document.getElementById("view-trends");
+  var NEED = 3, eSel = null, aSel = null;
+  var EASE = ["", "Empty", "Low", "Okay", "Good", "Full"];
+
+  function energyByDay() {
+    var map = {};
+    state.checkins.forEach(function (c) { var k = dayKey(new Date(c.at)); (map[k] = map[k] || []).push(c.level); });
+    Object.keys(map).forEach(function (k) { map[k] = map[k].reduce(function (a, b) { return a + b; }, 0) / map[k].length; });
+    return map;
+  }
+  function moveDayCount() {
+    var s = {}; state.moves.forEach(function (m) { s[dayKey(new Date(m.at))] = 1; }); return Object.keys(s).length;
+  }
+  function levelName(v) { return EASE[Math.max(1, Math.min(5, Math.round(v)))]; }
+
+  function frame(W, H) { return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '"'; }
+
+  function energyChart(el) {
+    var days = lastDays(14), eb = energyByDay();
+    var vals = days.map(function (d) { var v = eb[dayKey(d)]; return v == null ? null : v; });
+    var W = Math.max(280, Math.round(el.clientWidth)), H = 200, pl = 50, pr = 6, pt = 10, pb = 26;
+    var iw = W - pl - pr, ih = H - pt - pb, cw = iw / days.length;
+    function x(i) { return pl + cw * (i + .5); }
+    function y(v) { return pt + ih - (v - 1) / 4 * ih; }
+    var s = frame(W, H) + ' role="img" aria-label="Energy each day for the last 14 days">';
+    if (eSel != null) s += '<rect x="' + (pl + cw * eSel + 1) + '" y="' + pt + '" width="' + (cw - 2) + '" height="' + ih + '" rx="6" style="fill:var(--sky-soft)"/>';
+    for (var v = 1; v <= 5; v++) {
+      s += '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + y(v) + '" y2="' + y(v) + '" style="stroke:var(--line)"/>';
+      s += '<text x="' + (pl - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end">' + EASE[v] + '</text>';
+    }
+    days.forEach(function (d, i) {
+      s += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle"' + (i === 13 ? ' class="today"' : '') + '>' + d.toLocaleDateString([], { weekday: "narrow" }) + '</text>';
+    });
+    var path = "", pen = false;
+    vals.forEach(function (v, i) { if (v == null) { pen = false; return; } path += (pen ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); pen = true; });
+    if (path) s += '<path d="' + path + '" fill="none" style="stroke:var(--sky)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+    vals.forEach(function (v, i) {
+      if (v == null) return;
+      s += '<circle cx="' + x(i) + '" cy="' + y(v) + '" r="' + (i === eSel ? 6 : 4.5) + '" style="fill:var(--sky);stroke:var(--surface)" stroke-width="2"/>';
+    });
+    days.forEach(function (d, i) { s += '<rect data-ei="' + i + '" x="' + (pl + cw * i) + '" y="0" width="' + cw + '" height="' + H + '" fill="transparent" style="cursor:pointer"/>'; });
+    el.innerHTML = s + '</svg>';
+    var r = document.getElementById("e-read");
+    if (eSel == null) r.innerHTML = "Tap a day to see details.";
+    else {
+      var k = dayKey(days[eSel]), cs = state.checkins.filter(function (c) { return dayKey(new Date(c.at)) === k; });
+      if (!cs.length) r.innerHTML = '<b>' + shortDay(days[eSel]) + '</b>: no check-in';
+      else {
+        var g = [], dr = [];
+        cs.forEach(function (c) { g = g.concat(c.gave); dr = dr.concat(c.drained); });
+        r.innerHTML = '<b>' + shortDay(days[eSel]) + ': ' + levelName(vals[eSel]) + '</b>' +
+          (g.length ? ' · + ' + esc(g.filter(function (a, j) { return g.indexOf(a) === j; }).join(", ")) : '') +
+          (dr.length ? ' · − ' + esc(dr.filter(function (a, j) { return dr.indexOf(a) === j; }).join(", ")) : '');
+      }
+    }
+  }
+
+  function activityChart(el) {
+    var days = lastDays(14), mins = days.map(function (d) { return minsOn(dayKey(d)); });
+    var max = Math.max(90, Math.ceil(Math.max.apply(null, mins) / 30) * 30);
+    var W = Math.max(280, Math.round(el.clientWidth)), H = 200, pl = 40, pr = 6, pt = 14, pb = 26;
+    var iw = W - pl - pr, ih = H - pt - pb, cw = iw / days.length, base = pt + ih;
+    function x(i) { return pl + cw * (i + .5); }
+    function y(v) { return pt + ih - v / max * ih; }
+    var s = frame(W, H) + ' role="img" aria-label="Minutes of activity each day for the last 14 days">';
+    if (aSel != null) s += '<rect x="' + (pl + cw * aSel + 1) + '" y="' + pt + '" width="' + (cw - 2) + '" height="' + ih + '" rx="6" style="fill:var(--mint-soft)"/>';
+    for (var t = 0; t <= max; t += 30) {
+      s += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + y(t) + '" y2="' + y(t) + '" style="stroke:var(--line)"/>';
+      s += '<text x="' + (pl - 8) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + t + 'm</text>';
+    }
+    var bw = Math.min(18, cw * .62);
+    mins.forEach(function (m, i) {
+      if (!m) return;
+      var h = base - y(m), bx = x(i) - bw / 2, top = y(m), r = Math.min(4, h, bw / 2);
+      s += '<path d="M' + bx + ',' + base + 'V' + (top + r) + 'Q' + bx + ',' + top + ' ' + (bx + r) + ',' + top + 'H' + (bx + bw - r) + 'Q' + (bx + bw) + ',' + top + ' ' + (bx + bw) + ',' + (top + r) + 'V' + base + 'Z" style="fill:var(--mint)"/>';
+    });
+    s += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + y(GOAL) + '" y2="' + y(GOAL) + '" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="5 4" opacity=".55"/>';
+    s += '<text x="' + (W - pr) + '" y="' + (y(GOAL) - 6) + '" text-anchor="end" class="today">60 min goal</text>';
+    days.forEach(function (d, i) {
+      s += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="middle"' + (i === 13 ? ' class="today"' : '') + '>' + d.toLocaleDateString([], { weekday: "narrow" }) + '</text>';
+      s += '<rect data-ai="' + i + '" x="' + (pl + cw * i) + '" y="0" width="' + cw + '" height="' + H + '" fill="transparent" style="cursor:pointer"/>';
+    });
+    el.innerHTML = s + '</svg>';
+    var r = document.getElementById("a-read");
+    if (aSel == null) r.innerHTML = "Tap a day to see details.";
+    else {
+      var ms = movesOn(dayKey(days[aSel]));
+      r.innerHTML = '<b>' + shortDay(days[aSel]) + ': ' + mins[aSel] + ' min</b>' +
+        (ms.length ? ' · ' + esc(ms.map(function (m) { return m.what; }).join(", ")) : ' · nothing logged');
+    }
+  }
+
+  function hbars(items, max, hue) {
+    return '<div class="hbars" style="--h:var(--' + hue + ')">' + items.map(function (it) {
+      return '<div class="hbar"><span>' + esc(it[0]) + '</span><span class="v">' + it[2] + '</span>' +
+        '<div class="track"><i style="width:' + Math.round(it[1] / max * 100) + '%"></i></div></div>';
+    }).join("") + '</div>';
+  }
+  function counts(kind) {
+    var c = {};
+    state.checkins.forEach(function (x) { x[kind].forEach(function (k) { c[k] = (c[k] || 0) + 1; }); });
+    return Object.keys(c).sort(function (a, b) { return c[b] - c[a]; }).slice(0, 5).map(function (k) { return [k, c[k], c[k] + (c[k] === 1 ? " time" : " times")]; });
+  }
+
+  function renderTrends() {
+    var eb = energyByDay(), eDays = Object.keys(eb).length, mDays = moveDayCount();
+    var html = '<section class="task-head"><div class="label">Trends</div><h2>How you’ve been doing</h2></section>';
+    var locks = [];
+    if (eDays < NEED) locks.push(["Energy chart", "Check in on " + NEED + " different days", eDays]);
+    if (mDays < NEED) locks.push(["Activity chart", "Log activity on " + NEED + " different days", mDays]);
+    if (locks.length) {
+      html += '<section class="card locked"><div><h3 style="margin:0;font-family:var(--font-display);font-size:21px">Charts unlock as you go</h3>' +
+        '<p class="muted">Keep checking in and logging activity. Your charts appear here once there’s enough to show.</p></div>' +
+        locks.map(function (l) {
+          return '<div class="unlock"><p><b>' + l[0] + '</b> · ' + l[1] + '</p>' +
+            '<div class="meter"><i style="width:' + Math.round(l[2] / NEED * 100) + '%"></i></div>' +
+            '<p class="muted" style="font-size:14px">' + l[2] + ' of ' + NEED + ' days</p></div>';
+        }).join("") + '</section>';
+    }
+    if (eDays >= NEED) html += '<section class="card chart-card"><div class="label">Last 14 days</div><h3>Energy</h3><div class="chart" id="e-chart"></div><p class="readout" id="e-read"></p></section>';
+    if (mDays >= NEED) html += '<section class="card chart-card"><div class="label">Last 14 days</div><h3>Minutes of activity</h3><div class="chart" id="a-chart"></div><p class="readout" id="a-read"></p></section>';
+
+    // energy on active vs. less active days
+    if (state.moves.length) {
+      var act = [], rest = [];
+      Object.keys(eb).forEach(function (k) { (minsOn(k) >= 30 ? act : rest).push(eb[k]); });
+      if (act.length >= 2 && rest.length >= 2) {
+        var avg = function (a) { return a.reduce(function (x, y) { return x + y; }, 0) / a.length; };
+        var A = avg(act), R = avg(rest), note;
+        if (A - R >= .5) note = "Your energy is higher on days you move. That's worth remembering on low days.";
+        else if (R - A >= .5) note = "Your energy has been lower on active days. Make sure you're resting, drinking water and eating enough.";
+        else note = "So far your energy is about the same either way. Keep logging and see if that changes.";
+        html += '<section class="card chart-card"><div class="label">Energy and movement</div><h3>Do active days feel different?</h3>' +
+          hbars([["Days with 30+ min of activity", A, levelName(A) + " (" + act.length + " days)"], ["Other days", R, levelName(R) + " (" + rest.length + " days)"]], 5, "sky") +
+          '<p class="muted">' + note + '</p></section>';
+      }
+    }
+    if (state.checkins.length >= NEED) {
+      var g = counts("gave"), d = counts("drained");
+      if (g.length) html += '<section class="card chart-card"><div class="label">From your check-ins</div><h3>What gives you energy</h3>' + hbars(g, g[0][1], "mint") + '</section>';
+      if (d.length) html += '<section class="card chart-card"><div class="label">From your check-ins</div><h3>What drains you</h3>' + hbars(d, d[0][1], "lilac") + '</section>';
+    }
+    vTrends.innerHTML = html;
+    var ec = document.getElementById("e-chart"), ac = document.getElementById("a-chart");
+    if (ec) energyChart(ec);
+    if (ac) activityChart(ac);
+  }
+
+  vTrends.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-ei],[data-ai]"); if (!t) return;
+    if (t.dataset.ei != null) { var i = +t.dataset.ei; eSel = eSel === i ? null : i; energyChart(document.getElementById("e-chart")); }
+    else { var j = +t.dataset.ai; aSel = aSel === j ? null : j; activityChart(document.getElementById("a-chart")); }
+  });
+  var rsz;
+  window.addEventListener("resize", function () { clearTimeout(rsz); rsz = setTimeout(function () { if (state.tab === "trends") renderTrends(); }, 150); });
+
   /* ---------- tabs ---------- */
   function showTab(name) {
     state.tab = name; save();
     toastEl.classList.remove("show");
-    ["tasks", "timer", "checkin"].forEach(function (n) {
+    ["tasks", "timer", "checkin", "move", "trends"].forEach(function (n) {
       document.getElementById("view-" + n).hidden = n !== name;
       document.getElementById("tab-" + n).setAttribute("aria-selected", String(n === name));
     });
-    if (name === "timer") drawTimer(); else if (name === "checkin") renderCheckin(); else renderTasks();
+    if (name === "timer") drawTimer(); else if (name === "checkin") renderCheckin(); else if (name === "move") renderMove(); else if (name === "trends") { eSel = aSel = null; renderTrends(); } else renderTasks();
     window.scrollTo(0, 0);
   }
   document.getElementById("tab-tasks").addEventListener("click", function () { showTab("tasks"); });
   document.getElementById("tab-timer").addEventListener("click", function () { showTab("timer"); });
-  document.getElementById("tab-checkin").addEventListener("click", function () { showTab("checkin"); });
+  ["checkin", "move", "trends"].forEach(function (n) {
+    document.getElementById("tab-" + n).addEventListener("click", function () { showTab(n); });
+  });
 
   /* ---------- boot ---------- */
   document.getElementById("today").textContent = new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
   if (T().endAt && Date.now() >= T().endAt) { var t0 = T(); t0.endAt = null; t0.finished = true; }
-  showTab(["timer", "checkin"].indexOf(state.tab) >= 0 ? state.tab : "tasks");
+  showTab(["timer", "checkin", "move", "trends"].indexOf(state.tab) >= 0 ? state.tab : "tasks");
   drawTimer(); loop();
 })();
 </script>
