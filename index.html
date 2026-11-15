@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Next Step">
+<meta name="theme-color" content="#F4F8FB">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<!--APP-START-->
+<title>Next Step</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Lexend:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow column. A colored timeline of the steps, one big tinted "next step" card, then the full list.
+   Each step gets a hue + icon from what it is about (clothes, kitchen, school...). Fixed two-tab bar at the bottom. */
+:root {
+  --bg: #F4F8FB;
+  --surface: #FFFFFF;
+  --ink: #14202B;
+  --muted: #5A6A79;
+  --line: #DCE5EC;
+  --accent: #0B9465;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E2F5EC;
+  --sun: #FFC93C;
+  --sun-soft: #FFF4D2;
+  --sun-ink: #3D2C00;
+  /* step hues: strong / soft */
+  --mint: #0B9465;  --mint-soft: #DDF4EA;
+  --sky: #1F7FD1;   --sky-soft: #DDEEFB;
+  --peach: #D9701F; --peach-soft: #FDEBDC;
+  --lemon: #B98C00; --lemon-soft: #FFF3C7;
+  --rose: #D24A76;  --rose-soft: #FCE4EC;
+  --lilac: #6A57D2; --lilac-soft: #ECE8FC;
+  --shadow: 0 1px 2px rgba(20, 40, 60, .06), 0 6px 20px rgba(20, 40, 60, .07);
+  --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-body: "Lexend", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --radius: 22px;
+  --nav-h: 76px;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E161E; --surface: #172330; --ink: #EAF1F7; --muted: #9DB0C1; --line: #283746;
+    --accent: #34D399; --accent-ink: #052A1B; --accent-soft: #10342A;
+    --sun: #FFD25E; --sun-soft: #3A3014; --sun-ink: #2E2200;
+    --mint: #34D399; --mint-soft: #123A2D; --sky: #5AB3F5; --sky-soft: #14304A;
+    --peach: #F5A266; --peach-soft: #432B19; --lemon: #F5CF4E; --lemon-soft: #3D3412;
+    --rose: #F2849F; --rose-soft: #45202D; --lilac: #A99BF5; --lilac-soft: #2A2650;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E161E; --surface: #172330; --ink: #EAF1F7; --muted: #9DB0C1; --line: #283746;
+  --accent: #34D399; --accent-ink: #052A1B; --accent-soft: #10342A;
+  --sun: #FFD25E; --sun-soft: #3A3014; --sun-ink: #2E2200;
+  --mint: #34D399; --mint-soft: #123A2D; --sky: #5AB3F5; --sky-soft: #14304A;
+  --peach: #F5A266; --peach-soft: #432B19; --lemon: #F5CF4E; --lemon-soft: #3D3412;
+  --rose: #F2849F; --rose-soft: #45202D; --lilac: #A99BF5; --lilac-soft: #2A2650;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.wrap {
+  max-width: 540px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 18px calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.brand {
+  font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -.01em;
+  display: flex; align-items: center; gap: 8px; margin: 0;
+}
+.brand-mark { width: 26px; height: 26px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; }
+.brand-mark svg { width: 16px; height: 16px; stroke: var(--accent-ink); }
+.today { color: var(--muted); font-size: 14px; }
+
+h2 {
+  font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.1;
+  letter-spacing: -.02em; margin: 0; text-wrap: balance;
+}
+.label { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+
+/* Buttons */
+.btn {
+  border: 0; border-radius: 18px; min-height: 60px; padding: 14px 22px;
+  font-weight: 600; font-size: 19px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  transition: transform .12s ease, background-color .2s ease;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-quiet { background: transparent; color: var(--muted); border: 2px solid var(--line); }
+.btn-block { width: 100%; }
+.btn svg { width: 22px; height: 22px; flex: none; }
+
+/* Task entry */
+#view-tasks { display: flex; flex-direction: column; gap: 20px; }
+.entry { display: flex; flex-direction: column; gap: 14px; }
+.field {
+  width: 100%; min-height: 62px; border-radius: 18px; border: 2px solid var(--line);
+  background: var(--bg); padding: 14px 18px; font-size: 19px;
+}
+.field:focus { border-color: var(--accent); outline: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  border: 2px solid var(--line); background: var(--surface); border-radius: 999px;
+  padding: 10px 16px; font-size: 16px; min-height: 46px;
+}
+.chip:active { background: var(--accent-soft); }
+
+/* Step-size control */
+.size { display: flex; flex-direction: column; gap: 8px; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border: 2px solid var(--line); border-radius: 18px; padding: 4px; gap: 4px; }
+.seg button {
+  border: 0; background: none; border-radius: 14px; min-height: 54px; padding: 6px 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;
+  font-weight: 600; font-size: 17px; color: var(--muted);
+}
+.seg button small { font-weight: 400; font-size: 13px; }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.size-dots { display: inline-flex; gap: 3px; margin-bottom: 2px; }
+.size-dots i { display: block; border-radius: 3px; background: currentColor; height: 6px; }
+
+/* Task head + timeline */
+.task-head { display: flex; flex-direction: column; gap: 10px; }
+.meta { color: var(--muted); font-size: 15px; margin: 0; font-variant-numeric: tabular-nums; }
+.meta b { color: var(--ink); font-weight: 600; }
+.timeline { display: flex; gap: 4px; height: 18px; }
+.seg-t {
+  flex: 1 1 0; min-width: 14px; border-radius: 6px; background: var(--hs);
+  transition: background-color .35s ease;
+}
+.seg-t.done { background: var(--h); }
+.seg-t.current { box-shadow: inset 0 0 0 2.5px var(--h); }
+
+/* Icon bubbles */
+.bub {
+  flex: none; width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center;
+  background: var(--hs); color: var(--h); transition: background-color .25s ease, color .25s ease;
+}
+.bub svg { width: 22px; height: 22px; }
+.bub-lg { width: 56px; height: 56px; border-radius: 18px; background: var(--surface); }
+.bub-lg svg { width: 30px; height: 30px; }
+
+/* Next-up card */
+.next {
+  display: flex; flex-direction: column; gap: 16px; padding: 22px 20px 20px;
+  background: var(--hs); box-shadow: none; border: 2px solid var(--h);
+}
+.next-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.mins {
+  font-variant-numeric: tabular-nums; font-weight: 600; font-size: 15px; color: var(--ink);
+  background: var(--surface); border-radius: 99px; padding: 6px 12px; white-space: nowrap;
+}
+.next-text { font-family: var(--font-display); font-weight: 600; font-size: 27px; line-height: 1.2; letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.next-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-done { grid-column: 1 / -1; min-height: 72px; font-size: 21px; }
+.btn-soft { background: var(--surface); color: var(--ink); min-height: 56px; font-size: 16px; padding: 10px 12px; }
+.btn-soft svg { color: var(--h); }
+
+/* Step list */
+.steps-sec { display: flex; flex-direction: column; gap: 10px; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.step {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--surface); border-radius: 16px; padding: 4px;
+  border: 2px solid transparent;
+}
+.step.current { border-color: var(--h); }
+.step.sub { margin-left: 18px; }
+.step-toggle {
+  flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px;
+  background: none; border: 0; text-align: left; padding: 8px 6px; min-height: 56px; font-size: 17px;
+}
+.bub .ic-check { display: none; }
+.step.done .bub { background: var(--h); color: var(--surface); }
+.step.done .bub .ic-cat { display: none; }
+.step.done .bub .ic-check { display: block; animation: pop .4s cubic-bezier(.3,1.6,.5,1); }
+.step.done .step-text { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
+.step-text { overflow-wrap: anywhere; flex: 1; min-width: 0; }
+.step-min { flex: none; color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.step-del {
+  flex: none; width: 44px; height: 44px; border: 0; border-radius: 12px; background: none; color: var(--muted);
+  display: grid; place-items: center; opacity: .6;
+}
+.step-del svg { width: 18px; height: 18px; }
+.add-row { display: flex; gap: 8px; }
+.add-row .field { min-height: 54px; font-size: 17px; flex: 1; min-width: 0; }
+.add-row .btn { min-height: 54px; padding: 0 18px; font-size: 17px; }
+
+/* Finished */
+.finished { background: var(--sun-soft); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 30px 22px; box-shadow: none; }
+.finished .trophy { width: 72px; height: 72px; border-radius: 50%; background: var(--sun); display: grid; place-items: center; }
+.finished .trophy svg { width: 38px; height: 38px; stroke: var(--sun-ink); }
+.finished p { margin: 0; color: var(--muted); }
+
+.row-end { display: flex; justify-content: center; }
+.link-btn { background: none; border: 0; color: var(--muted); font-size: 16px; padding: 12px 16px; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Timer */
+.timer { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.ring-wrap { position: relative; width: min(78vw, 310px); aspect-ratio: 1; max-width: 100%; }
+.ring-wrap svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: var(--hs, var(--line)); stroke-width: 18; }
+.ring-fill { fill: none; stroke: var(--h, var(--accent)); stroke-width: 18; stroke-linecap: round; transition: stroke .4s; }
+.ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; text-align: center; padding: 18%; }
+.time { font-family: var(--font-display); font-weight: 800; font-size: clamp(48px, 16vw, 72px); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+.time-sub { color: var(--muted); font-size: 15px; }
+.ring-wrap.finished-ring .ring-fill { stroke: var(--sun); }
+.ring-wrap.finished-ring { animation: glow 1.6s ease-in-out 3; border-radius: 50%; }
+@keyframes glow { 50% { box-shadow: 0 0 0 14px var(--sun-soft); } }
+.presets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
+.preset {
+  min-height: 68px; border-radius: 18px; border: 2.5px solid var(--line); background: var(--surface);
+  font-weight: 600; font-size: 22px; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.05;
+}
+.preset small { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .04em; }
+.preset[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.timer-actions { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; width: 100%; }
+.timer-for {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  background: var(--surface); border-radius: 18px; padding: 10px 14px 10px 10px; margin: 0;
+  font-size: 15px; color: var(--muted); min-height: 60px;
+}
+.timer-for b { display: block; color: var(--ink); font-weight: 600; font-size: 17px; line-height: 1.25; }
+.timer-for > span { min-width: 0; }
+
+/* Check-in */
+#view-checkin { display: flex; flex-direction: column; gap: 20px; }
+.muted { color: var(--muted); margin: 0; }
+.quote { background: var(--sun-soft); box-shadow: none; display: flex; flex-direction: column; gap: 10px; }
+.quote blockquote { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1.25; letter-spacing: -.01em; text-wrap: balance; }
+.quote-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; }
+.quote cite { font-style: normal; color: var(--muted); font-size: 15px; }
+.quote .link-btn { padding: 10px 0 10px 12px; margin-left: auto; }
+.ci-form, .ci-result { display: flex; flex-direction: column; gap: 22px; }
+.ci-q { display: flex; flex-direction: column; gap: 10px; }
+.ci-head { display: flex; flex-direction: column; gap: 6px; }
+.batts { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.batt {
+  border: 2.5px solid var(--line); background: var(--surface); border-radius: 16px; min-height: 80px; padding: 6px 2px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+}
+.batt[aria-pressed="true"] { border-color: var(--h); background: var(--hs); color: var(--ink); }
+svg.bsvg { width: 34px; height: 26px; color: var(--h); }
+.bub svg.bsvg { width: 28px; height: 22px; }
+.bub-lg svg.bsvg { width: 38px; height: 30px; }
+.grp-gave { --h: var(--mint); --hs: var(--mint-soft); }
+.grp-drained { --h: var(--lilac); --hs: var(--lilac-soft); }
+.chip[aria-pressed="true"] { background: var(--hs); border-color: var(--h); font-weight: 600; }
+.chip[aria-pressed="true"]::before { content: "\2713\00a0"; color: var(--h); }
+.ci-result { background: var(--hs); box-shadow: none; border: 2px solid var(--h); }
+.ci-top { display: flex; align-items: center; gap: 14px; }
+.ci-top b { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1.15; }
+.ci-msg { font-size: 19px; line-height: 1.4; margin: 0; font-weight: 500; }
+.ci-list { display: flex; flex-direction: column; gap: 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { background: var(--surface); border-radius: 99px; padding: 6px 12px; font-size: 15px; font-weight: 500; }
+.ci-pattern { display: flex; flex-direction: column; gap: 10px; }
+.ci-pattern p { margin: 0; }
+.ci-row { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: 16px; padding: 10px 12px; }
+.ci-row > div { min-width: 0; }
+.ci-row .when { font-weight: 600; }
+.ci-row .what { color: var(--muted); font-size: 15px; overflow-wrap: anywhere; }
+
+/* Toast */
+.toast {
+  position: fixed; left: 50%; bottom: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px) + 16px);
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--ink); color: var(--bg); border-radius: 18px; padding: 14px 20px;
+  font-weight: 600; font-size: 17px; text-align: center; width: max-content; max-width: calc(100% - 32px);
+  transition: opacity .25s ease, transform .35s cubic-bezier(.3,1.5,.5,1); z-index: 30;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* Bottom tabs */
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.tabs-in { max-width: 540px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; height: var(--nav-h); padding-block: 8px; }
+.tab {
+  border: 0; border-radius: 16px; background: none; color: var(--muted);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 14px; font-weight: 600;
+}
+.tab svg { width: 28px; height: 28px; }
+.tab[aria-selected="true"] { background: var(--accent-soft); color: var(--accent); }
+.tab .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; margin-left: 4px; vertical-align: middle; }
+
+.fade-in { animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } }
+.pop { animation: pop .45s cubic-bezier(.3,1.6,.5,1); }
+@keyframes pop { 0% { transform: scale(.94); } 60% { transform: scale(1.03); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="brand"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Next Step</h1>
+    <span class="today" id="today"></span>
+  </header>
+
+  <main id="view-tasks"></main>
+  <main id="view-timer" hidden>
+    <section class="timer" id="timer-sec">
+      <p class="timer-for" id="timer-for"></p>
+      <div class="ring-wrap" id="ring-wrap">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring-track" cx="100" cy="100" r="88"/>
+          <circle class="ring-fill" id="ring-fill" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ring-center">
+          <div class="time" id="time" role="timer" aria-live="off">10:00</div>
+          <div class="time-sub" id="time-sub">Ready</div>
+        </div>
+      </div>
+      <div class="presets" role="group" aria-label="Timer length">
+        <button class="preset" data-min="5" id="p5">5<small>MIN</small></button>
+        <button class="preset" data-min="10" id="p10">10<small>MIN</small></button>
+        <button class="preset" data-min="15" id="p15">15<small>MIN</small></button>
+        <button class="preset" data-min="25" id="p25">25<small>MIN</small></button>
+      </div>
+      <div class="timer-actions">
+        <button class="btn btn-primary" id="t-start">Start</button>
+        <button class="btn btn-quiet" id="t-reset">Reset</button>
+      </div>
+    </section>
+  </main>
+  <main id="view-checkin" hidden></main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="tabs-in" role="tablist">
+    <button class="tab" role="tab" id="tab-tasks" aria-selected="true" aria-controls="view-tasks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="5" rx="1.5"/><path d="M11.5 6.5h9"/><rect x="3.5" y="14.5" width="5" height="5" rx="1.5"/><path d="M11.5 17h9"/></svg>
+      Steps
+    </button>
+    <button class="tab" role="tab" id="tab-timer" aria-selected="false" aria-controls="view-timer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2"/><path d="M9.5 2.5h5"/></svg>
+      <span>Timer<span class="dot" id="timer-dot" hidden></span></span>
+    </button>
+    <button class="tab" role="tab" id="tab-checkin" aria-selected="false" aria-controls="view-checkin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="17" height="10" rx="2.5"/><path d="M22 10.5v3"/><path d="M11.5 9l-2 3.2h3L10.5 15"/></svg>
+      Check-in
+    </button>
+  </div>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- storage (never required) ---------- */
+  var KEY = "nextstep.v1";
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { return null; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  var state = load() || {};
+  state.tab = state.tab || "tasks";
+  state.size = state.size || "regular";
+  state.task = state.task || null; // { title, steps: [{ text, done, min, sub }] }
+  state.timer = state.timer || { minutes: 10, endAt: null, remaining: null, finished: false };
+
+  /* ---------- icons ---------- */
+  function svg(d, w) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (w || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; }
+  var P = {
+    shirt: '<path d="M8.5 4L4 6.8l1.8 3.4 2.2-1V20h8V9.2l2.2 1L20 6.8 15.5 4c-.6 1.5-1.9 2.4-3.5 2.4S9.1 5.5 8.5 4z"/>',
+    trash: '<path d="M4.5 7h15M9.5 7V4.5h5V7M6.5 7l1 13h9l1-13M10 11v5M14 11v5"/>',
+    cup: '<path d="M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z"/><path d="M16 10h1.5a2.5 2.5 0 0 1 0 5H16M8 3.5c0 1 1 1 1 2M12 3.5c0 1 1 1 1 2"/>',
+    book: '<path d="M3.5 5.5c2.5-1 5.5-1 8.5.8 3-1.8 6-1.8 8.5-.8v13c-2.5-1-5.5-1-8.5.8-3-1.8-6-1.8-8.5-.8z"/><path d="M12 6.3v13"/>',
+    pencil: '<path d="M4 20l1.2-4.4L16 4.8a2.1 2.1 0 0 1 3 3L8.2 18.6z"/><path d="M14 7l3 3"/>',
+    bed: '<path d="M3 19V6M3 15h18v4M21 15v-2.5a3 3 0 0 0-3-3h-7V15"/><circle cx="7" cy="12" r="1.8"/>',
+    drop: '<path d="M12 3.5c3.2 4 6 7 6 10.5a6 6 0 0 1-12 0c0-3.5 2.8-6.5 6-10.5z"/>',
+    pause: '<circle cx="12" cy="12" r="8.5"/><path d="M10 9v6M14 9v6"/>',
+    bag: '<path d="M6 8h12a1 1 0 0 1 1 1v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a1 1 0 0 1 1-1z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8M9 13h6"/>',
+    phone: '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18h2"/>',
+    note: '<path d="M9 18V5.5l10-2V16"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+    spark: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/>',
+    check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+    clock: '<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/>',
+    split: '<path d="M4 6h7M4 12h11M4 18h7M17 4v6M14 7h6"/>',
+    x: '<path d="M6 6l12 12M18 6L6 18"/>',
+    star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>'
+  };
+
+  /* What a step is about decides its color and icon. Order matters. */
+  var CATS = [
+    { re: /\bbreak\b|stretch|\brest\b/i, hue: "lemon", icon: "pause" },
+    { re: /\bphone\b/i, hue: "lilac", icon: "phone" },
+    { re: /cloth|laundry|shirt|hoodie|sock|pajama|dressed|fold|\bhang\b|washer|dryer|darks|pants|drawer/i, hue: "sky", icon: "shirt" },
+    { re: /trash|throw away|garbage|wrapper/i, hue: "lilac", icon: "trash" },
+    { re: /kitchen|dish|cup|plate|snack|food|breakfast|counter|table|\bpots?\b|scrape|\beat\b|silverware|bowl/i, hue: "peach", icon: "cup" },
+    { re: /shower|teeth|toothbrush|deodorant|\bwater\b|toilet|sink|mirror|towel|toiletr|bathroom|\bflush/i, hue: "sky", icon: "drop" },
+    { re: /\bbed\b|pillow|sheet|blanket/i, hue: "mint", icon: "bed" },
+    { re: /write|essay|paragraph|sentence|ideas|\bpoint\b|draft|planner|\blist\b|highlight|ending/i, hue: "rose", icon: "pencil" },
+    { re: /read|notes|study|review|quiz|flashcard|topic|textbook|assignment|homework|test|instructions|directions|question|school app/i, hue: "lilac", icon: "book" },
+    { re: /backpack|\bbag\b|charger|laptop|gear|shoes|keys|supplies|headphones|zip|basket/i, hue: "peach", icon: "bag" },
+    { re: /practice|warm up|piano|guitar|play|full speed|enjoy/i, hue: "rose", icon: "note" }
+  ];
+  function catOf(text) {
+    for (var i = 0; i < CATS.length; i++) if (CATS[i].re.test(text)) return CATS[i];
+    return { hue: "mint", icon: "spark" };
+  }
+  function hueVars(text) { var h = catOf(text).hue; return "--h:var(--" + h + ");--hs:var(--" + h + "-soft)"; }
+
+  /* ---------- step library: "text|minutes|tiny;steps;for;it" ---------- */
+  var LIB = [
+    { re: /\b(room|bedroom|closet|mess|tidy|declutter)\b/i, steps: [
+      "Grab a laundry basket and a trash bag|2",
+      "Pick up every piece of clothing and put it in the basket|5|Pick up the clothes on the floor;Grab clothes off the chair and desk;Check the closet floor;Clean clothes go away, dirty ones in the basket",
+      "Throw away any trash, wrappers and old papers|4|Walk around the room with the trash bag;Check the desk and nightstand for trash;Check under the bed for trash;Tie up the trash bag",
+      "Take cups, plates and snacks back to the kitchen|3|Stack every cup and plate you can find;Carry the stack to the kitchen;Put them in the sink or dishwasher",
+      "Clear off your desk or dresser top|5|Take everything off and make one pile;Put back only what lives there;Put the rest of the pile where it belongs;Wipe the top",
+      "Put shoes, chargers and gear where they belong|4",
+      "Make your bed (just pull the covers up)|2|Toss the pillows to the side;Pull the sheet and blanket up;Put the pillows back",
+      "Quick check under the bed and in the corners|2",
+      "Take the trash bag out and the basket to the laundry|3"
+    ]},
+    { re: /\b(homework|assignments?|worksheet|math|science|history|english|spanish|french|chem|bio|physics)\b/i, steps: [
+      "Get your backpack, laptop and charger in one spot|2",
+      "Write down every assignment that is due|4|Open your school app or planner;Write each class name down;Next to each class, write what is due;Star the one due soonest",
+      "Put your phone in another room or face down|1",
+      "Start with the easiest assignment|15|Read the directions for the easiest one;Do the first question or part;Keep going until it's half done;Finish the rest of it",
+      "Take a 5-minute break|5",
+      "Start the next assignment|15|Read the directions for the next one;Do the first question or part;Keep going until it's half done;Finish the rest of it",
+      "Check off everything you finished|2",
+      "Pack everything back in your backpack for tomorrow|3"
+    ]},
+    { re: /\b(essay|paper|report|write|writing|story|paragraph)\b/i, steps: [
+      "Read the prompt or rubric one time, slowly|5|Read the prompt once;Highlight what it asks you to do;Note the length and due date",
+      "Write down 3 ideas you could write about|5",
+      "Pick one idea and list 3 points to back it up|8|Circle your best idea;Write point 1;Write point 2;Write point 3",
+      "Write a rough first sentence (it can be bad)|3",
+      "Write one paragraph for each point|25|Write the paragraph for point 1;Write the paragraph for point 2;Write the paragraph for point 3",
+      "Write a short ending that sums it up|8",
+      "Read it out loud and fix anything that sounds off|8",
+      "Save it and turn it in|2"
+    ]},
+    { re: /\b(study|studying|test|exam|quiz|final|midterm|review)\b/i, steps: [
+      "Gather your notes, textbook and old quizzes|3",
+      "List the topics the test covers|5",
+      "Pick the topic you know least and review it|15|Read your notes on that topic once;Cover the notes and say what you remember;Look back at what you missed",
+      "Make 5 flashcards or practice questions on it|8",
+      "Take a 5-minute break|5",
+      "Review the next topic|15|Read your notes on the next topic;Cover the notes and say what you remember;Look back at what you missed",
+      "Quiz yourself without looking at notes|10",
+      "Go back over anything you missed|10"
+    ]},
+    { re: /\b(dish|dishes|kitchen|dishwasher)\b/i, steps: [
+      "Clear everything off the table and counters|4",
+      "Scrape food into the trash|3",
+      "Empty the dishwasher if it is clean|5|Put away the plates and bowls;Put away the cups;Put away the silverware",
+      "Load dirty dishes into the dishwasher|6",
+      "Wash the pots and pans by hand|8",
+      "Wipe down the counters and table|4",
+      "Take out the trash if it is full|2"
+    ]},
+    { re: /\b(laundry|clothes|wash|fold)\b/i, steps: [
+      "Gather all your dirty clothes into one basket|4",
+      "Sort into darks and lights|3",
+      "Start the washer|3|Put one pile in the washer;Add detergent;Pick the setting and press start",
+      "Move clothes to the dryer when the washer is done|3",
+      "Fold or hang everything while it is still warm|12|Hang shirts and hoodies;Fold pants and shorts;Pair up the socks;Make a pile for each drawer",
+      "Put it all away in drawers or the closet|5"
+    ]},
+    { re: /\b(shower|ready|morning|get dressed)\b/i, steps: [
+      "Get out of bed and drink some water|2",
+      "Take a shower|10",
+      "Brush your teeth|3",
+      "Get dressed|5",
+      "Eat something for breakfast|10",
+      "Check your backpack has what you need|3",
+      "Shoes on, phone and keys in pocket|2"
+    ]},
+    { re: /\b(bathroom|toilet|sink|mirror)\b/i, steps: [
+      "Put away everything on the counter|3",
+      "Spray and wipe the sink and counter|4",
+      "Wipe the mirror|2",
+      "Clean the toilet|5|Squirt cleaner inside the toilet bowl;Scrub with the brush;Wipe the seat and lid;Flush",
+      "Hang up towels|1",
+      "Empty the trash can|2"
+    ]},
+    { re: /\b(pack|packing|trip|bag|sleepover|camp)\b/i, steps: [
+      "Write a quick list of what you need|4",
+      "Lay out clothes for each day|6",
+      "Add pajamas, socks and underwear|3",
+      "Pack toothbrush, deodorant and toiletries|3",
+      "Grab chargers and headphones|2",
+      "Zip it up and check the list one more time|2"
+    ]},
+    { re: /\b(practice|piano|guitar|drums|violin|instrument|drill|workout|exercise|gym)\b/i, steps: [
+      "Set up your space and gear|3",
+      "Warm up|3",
+      "Work on the hardest part first|10|Play or do the hard part slowly once;Repeat it 3 times;Try it at full speed",
+      "Take a short water break|2",
+      "Work on the next part|10",
+      "Finish with something you enjoy|5",
+      "Put your gear away|2"
+    ]},
+    { re: /\b(project|poster|presentation|slides|science fair|build)\b/i, steps: [
+      "Read the instructions and due date|5",
+      "Write down what the finished project needs|5",
+      "Gather supplies or open a blank file|3",
+      "Do the first small part|15",
+      "Take a short break|5",
+      "Do the next part|15",
+      "Look it over against the instructions|5",
+      "Clean up your workspace|3"
+    ]}
+  ];
+
+  // text -> tiny steps, for "Make it smaller"
+  var TINY = {};
+  function parse(line) {
+    var p = line.split("|");
+    var s = { text: p[0], min: +p[1] || 5 };
+    if (p[2]) TINY[p[0]] = p[2].split(";");
+    return s;
+  }
+  LIB.forEach(function (t) { t.steps = t.steps.map(parse); });
+
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function breakDown(raw, size) {
+    var title = raw.trim().replace(/\s+/g, " ");
+    var parts = title.split(/\s*(?:,|;|\bthen\b|\band then\b|\band\b(?=\s+(?:my|the|clean|do|finish|study|write|wash|take|pack|practice)\b))\s*/i)
+      .map(function (p) { return p.trim(); }).filter(Boolean);
+    var steps = [];
+    parts.forEach(function (p) { steps = steps.concat(stepsFor(p, parts.length > 1)); });
+    var out = [];
+    steps.forEach(function (s) {
+      if (size === "tiny" && TINY[s.text]) out = out.concat(tinyOf(s));
+      else out.push({ text: s.text, min: s.min, done: false });
+    });
+    return out;
+  }
+
+  function stepsFor(part, short) {
+    for (var i = 0; i < LIB.length; i++) {
+      if (LIB[i].re.test(part)) return short ? LIB[i].steps.slice(0, 6) : LIB[i].steps.slice();
+    }
+    var name = part.replace(/^(i (need|have) to|i should|need to|have to|gotta)\s+/i, "");
+    if (short) return [{ text: cap(name), min: 10 }];
+    return [
+      { text: "Put away your phone or set it face down", min: 1 },
+      { text: "Get everything you need for “" + name + "” in one spot", min: 3 },
+      { text: "Decide what “done” will look like", min: 2 },
+      { text: "Do the very first small piece", min: 5 },
+      { text: "Keep going with the next piece", min: 10 },
+      { text: "Take a 2-minute stretch break", min: 2 },
+      { text: "Finish the last piece", min: 10 },
+      { text: "Put your stuff away", min: 3 }
+    ];
+  }
+
+  function tinyOf(step) {
+    var list = TINY[step.text] || [
+      "Get ready for: " + step.text.charAt(0).toLowerCase() + step.text.slice(1),
+      "Do just the first bit (2 minutes is fine)",
+      "Keep going until this step is done"
+    ];
+    var each = Math.max(1, Math.round((step.min || 5) / list.length));
+    return list.map(function (t) { return { text: t, min: each, done: false, sub: true }; });
+  }
+
+  var CHEERS = [
+    "Nice! One down.", "That's progress.", "Look at you go.", "Boom. Done.",
+    "Keep that momentum.", "Small steps add up.", "You're on a roll.", "Crushed it.",
+    "Way to stick with it.", "Another one checked.", "Solid work.", "Easy. Next one.",
+    "That's how it's done.", "You're getting there."
+  ];
+  var lastCheer = -1;
+  function cheer() {
+    var i; do { i = Math.floor(Math.random() * CHEERS.length); } while (i === lastCheer);
+    lastCheer = i; return CHEERS[i];
+  }
+
+  /* ---------- render: tasks ---------- */
+  var vTasks = document.getElementById("view-tasks");
+
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function minOf(s) { return s.min || 5; }
+  function bubble(text, lg) {
+    var c = catOf(text);
+    return '<span class="bub' + (lg ? ' bub-lg' : '') + '" style="' + hueVars(text) + '">' +
+      '<span class="ic-cat">' + svg(P[c.icon], lg ? 2 : 2.1) + '</span>' +
+      '<span class="ic-check">' + svg(P.check, 3.2) + '</span></span>';
+  }
+  function clockAfter(min) {
+    var d = new Date(Date.now() + min * 60000);
+    return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  }
+
+  function currentIndex() {
+    if (!state.task) return -1;
+    for (var i = 0; i < state.task.steps.length; i++) if (!state.task.steps[i].done) return i;
+    return -1;
+  }
+
+  function renderEntry() {
+    var dots = function (n, w) { var s = ""; for (var i = 0; i < n; i++) s += '<i style="width:' + w + 'px"></i>'; return '<span class="size-dots" aria-hidden="true">' + s + '</span>'; };
+    vTasks.innerHTML =
+      '<section class="card entry fade-in">' +
+        '<h2>What do you need to get done?</h2>' +
+        '<form id="task-form" class="entry" autocomplete="off">' +
+          '<label class="label" for="task-input">Type a big task</label>' +
+          '<input class="field" id="task-input" enterkeyhint="go" placeholder="e.g. clean my room" maxlength="80">' +
+          '<div class="size"><span class="label" id="size-label">How small should the steps be?</span>' +
+            '<div class="seg" role="group" aria-labelledby="size-label">' +
+              '<button type="button" id="size-regular" data-size="regular" aria-pressed="' + (state.size === "regular") + '">' + dots(3, 14) + 'Regular<small>fewer steps</small></button>' +
+              '<button type="button" id="size-tiny" data-size="tiny" aria-pressed="' + (state.size === "tiny") + '">' + dots(6, 6) + 'Tiny<small>extra small steps</small></button>' +
+            '</div></div>' +
+          '<button class="btn btn-primary btn-block" type="submit">Break it into steps</button>' +
+        '</form>' +
+        '<div class="label">Or pick one</div>' +
+        '<div class="chips">' +
+          ["Clean my room", "Homework", "Study for a test", "Write an essay", "Do laundry", "Get ready for school"]
+            .map(function (c) { return '<button class="chip" data-chip="' + esc(c) + '">' + esc(c) + '</button>'; }).join("") +
+        '</div>' +
+      '</section>';
+  }
+
+  function renderTasks(opts) {
+    opts = opts || {};
+    var t = state.task;
+    if (!t) { renderEntry(); return; }
+
+    var total = t.steps.length;
+    var left = t.steps.filter(function (s) { return !s.done; });
+    var minsLeft = left.reduce(function (a, s) { return a + minOf(s); }, 0);
+    var cur = currentIndex();
+
+    var html = '<section class="task-head">' +
+        '<div class="label">Your task</div>' +
+        '<h2>' + esc(t.title) + '</h2>' +
+        '<div class="timeline" role="img" aria-label="' + (total - left.length) + ' of ' + total + ' steps done">' +
+          t.steps.map(function (s, i) {
+            return '<span class="seg-t' + (s.done ? ' done' : '') + (i === cur ? ' current' : '') + '" style="' + hueVars(s.text) + ';flex-grow:' + minOf(s) + '"></span>';
+          }).join("") +
+        '</div>' +
+        (cur >= 0
+          ? '<p class="meta"><b>' + left.length + ' step' + (left.length === 1 ? '' : 's') + ' left</b> · about ' + minsLeft + ' min · <span style="white-space:nowrap">done around ' + clockAfter(minsLeft) + '</span></p>'
+          : '<p class="meta"><b>All ' + total + ' steps done</b></p>') +
+      '</section>';
+
+    if (cur === -1 && total > 0) {
+      html += '<section class="card finished pop">' +
+        '<div class="trophy">' + svg(P.star, 2.2) + '</div>' +
+        '<h2>You did it!</h2>' +
+        '<p>Every step of “' + esc(t.title) + '” is done. That took focus.</p>' +
+        '<button class="btn btn-primary btn-block" id="new-task">Start a new task</button>' +
+      '</section>';
+    } else if (cur >= 0) {
+      var s = t.steps[cur];
+      html += '<section class="card next' + (opts.popNext ? ' pop' : '') + '" style="' + hueVars(s.text) + '" aria-labelledby="next-text">' +
+        '<div class="next-top">' + bubble(s.text, true) + '<span class="mins">about ' + minOf(s) + ' min</span></div>' +
+        '<div class="label">Next step · ' + (cur + 1) + ' of ' + total + '</div>' +
+        '<p class="next-text" id="next-text">' + esc(s.text) + '</p>' +
+        '<div class="next-actions">' +
+          '<button class="btn btn-primary btn-done" id="done-step">' + svg(P.check, 3.2) + 'Done</button>' +
+          '<button class="btn btn-soft" id="time-step">' + svg(P.clock, 2.2) + 'Start timer</button>' +
+          (s.sub
+            ? '<button class="btn btn-soft" id="skip-step">' + svg(P.x, 2.2) + 'Skip this</button>'
+            : '<button class="btn btn-soft" id="split-step">' + svg(P.split, 2.2) + 'Make it smaller</button>') +
+        '</div>' +
+      '</section>';
+    }
+
+    html += '<section class="steps-sec">' +
+      '<div class="label">All steps</div><ul class="steps">' +
+      t.steps.map(function (s, i) {
+        return '<li class="step' + (s.done ? ' done' : '') + (i === cur ? ' current' : '') + (s.sub ? ' sub' : '') + '" style="' + hueVars(s.text) + '">' +
+          '<button class="step-toggle" data-toggle="' + i + '" aria-pressed="' + !!s.done + '">' +
+            bubble(s.text) + '<span class="step-text">' + esc(s.text) + '</span><span class="step-min">' + minOf(s) + 'm</span></button>' +
+          '<button class="step-del" data-del="' + i + '" aria-label="Remove step: ' + esc(s.text) + '">' + svg(P.x, 2.4) + '</button>' +
+        '</li>';
+      }).join("") +
+      '</ul>' +
+      '<form class="add-row" id="add-form" autocomplete="off">' +
+        '<label class="label" for="add-input" hidden>Add your own step</label>' +
+        '<input class="field" id="add-input" placeholder="Add your own step" maxlength="80" enterkeyhint="done">' +
+        '<button class="btn btn-quiet" type="submit">Add</button>' +
+      '</form>' +
+      '</section>' +
+      '<div class="row-end"><button class="link-btn" id="new-task-link">Start a different task</button></div>';
+
+    vTasks.innerHTML = html;
+  }
+
+  function startTask(text) {
+    text = (text || "").trim();
+    if (!text) { var i = document.getElementById("task-input"); if (i) i.focus(); return; }
+    state.task = { title: cap(text), steps: breakDown(text, state.size) };
+    save(); renderTasks(); window.scrollTo(0, 0);
+  }
+
+  function setDone(i, val) {
+    state.task.steps[i].done = val;
+    save();
+    renderTasks({ popNext: val });
+    if (val) {
+      if (currentIndex() === -1) { toast("All done. Be proud of that!"); chime(true); }
+      else toast(cheer());
+    }
+  }
+
+  function splitCurrent() {
+    var c = currentIndex(); if (c < 0) return;
+    var s = state.task.steps[c];
+    var parts = tinyOf(s);
+    state.task.steps.splice.apply(state.task.steps, [c, 1].concat(parts));
+    save(); renderTasks({ popNext: true });
+    toast("Smaller steps. Just do the first one.");
+  }
+
+  function timeCurrent() {
+    var c = currentIndex(), m = c >= 0 ? minOf(state.task.steps[c]) : 10;
+    var pick = [5, 10, 15, 25].filter(function (p) { return p >= m; })[0] || 25;
+    var t = T(); t.minutes = pick; t.finished = false; t.remaining = null;
+    t.endAt = Date.now() + pick * 60000; requestWake(); save();
+    showTab("timer"); loop();
+  }
+
+  vTasks.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (e.target.id === "task-form") startTask(document.getElementById("task-input").value);
+    if (e.target.id === "add-form") {
+      var inp = document.getElementById("add-input");
+      var v = inp.value.trim(); if (!v) { inp.focus(); return; }
+      state.task.steps.push({ text: cap(v), min: 5, done: false });
+      save(); renderTasks();
+      var again = document.getElementById("add-input"); if (again) again.focus();
+    }
+  });
+
+  vTasks.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.size) {
+      state.size = b.dataset.size; save();
+      vTasks.querySelectorAll("[data-size]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      return;
+    }
+    if (b.dataset.chip) { startTask(b.dataset.chip); return; }
+    if (b.id === "done-step") { unlockAudio(); var c = currentIndex(); if (c >= 0) setDone(c, true); return; }
+    if (b.id === "time-step") { unlockAudio(); timeCurrent(); return; }
+    if (b.id === "split-step") { splitCurrent(); return; }
+    if (b.id === "skip-step") { var k = currentIndex(); if (k >= 0) { state.task.steps.splice(k, 1); if (!state.task.steps.length) state.task = null; save(); renderTasks({ popNext: true }); } return; }
+    if (b.id === "new-task" || b.id === "new-task-link") { state.task = null; save(); renderTasks(); var ti = document.getElementById("task-input"); if (ti && b.id === "new-task") ti.focus(); return; }
+    if (b.dataset.toggle != null) { unlockAudio(); var i = +b.dataset.toggle; setDone(i, !state.task.steps[i].done); return; }
+    if (b.dataset.del != null) {
+      state.task.steps.splice(+b.dataset.del, 1);
+      if (!state.task.steps.length) state.task = null;
+      save(); renderTasks();
+    }
+  });
+
+  /* ---------- toast ---------- */
+  var toastEl = document.getElementById("toast"), toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.remove("show"); void toastEl.offsetWidth; toastEl.classList.add("show");
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2400);
+  }
+
+  /* ---------- gentle chime (Web Audio, started from a tap) ---------- */
+  var actx = null;
+  function unlockAudio() {
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      if (!actx) actx = new AC();
+      if (actx.state === "suspended") actx.resume();
+      var b = actx.createBuffer(1, 1, 22050), s = actx.createBufferSource(); s.buffer = b; s.connect(actx.destination); s.start(0);
+    } catch (e) {}
+  }
+  function note(freq, at, dur, vol) {
+    var o = actx.createOscillator(), g = actx.createGain();
+    o.type = "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, at);
+    g.gain.exponentialRampToValueAtTime(vol, at + 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    o.connect(g); g.connect(actx.destination); o.start(at); o.stop(at + dur + 0.05);
+  }
+  function chime(short) {
+    try {
+      if (!actx) return;
+      if (actx.state === "suspended") actx.resume();
+      var t = actx.currentTime + 0.05;
+      var seq = short ? [[784, 0], [1047, 0.14]] : [[659, 0], [784, 0.35], [988, 0.7], [659, 2.0], [784, 2.35], [988, 2.7]];
+      seq.forEach(function (n) { note(n[0], t + n[1], 1.4, short ? 0.12 : 0.18); });
+    } catch (e) {}
+    try { if (!short && navigator.vibrate) navigator.vibrate([200, 120, 200]); } catch (e) {}
+  }
+
+  /* ---------- timer ---------- */
+  var C = 2 * Math.PI * 88;
+  var ring = document.getElementById("ring-fill"), ringWrap = document.getElementById("ring-wrap");
+  var timeEl = document.getElementById("time"), subEl = document.getElementById("time-sub");
+  var startBtn = document.getElementById("t-start"), dot = document.getElementById("timer-dot");
+  var forEl = document.getElementById("timer-for"), timerSec = document.getElementById("timer-sec");
+  ring.style.strokeDasharray = C;
+  var tick = null, wakeLock = null;
+
+  function T() { return state.timer; }
+  function totalMs() { return T().minutes * 60000; }
+  function remainingMs() {
+    var t = T();
+    if (t.finished) return 0;
+    if (t.endAt) return Math.max(0, t.endAt - Date.now());
+    if (t.remaining != null) return t.remaining;
+    return totalMs();
+  }
+  function fmt(ms) {
+    var s = Math.ceil(ms / 1000), m = Math.floor(s / 60); s = s % 60;
+    return m + ":" + (s < 10 ? "0" : "") + s;
+  }
+  var lastFor = "";
+  function drawTimer() {
+    var t = T(), rem = remainingMs(), frac = t.finished ? 1 : rem / totalMs();
+    timeEl.textContent = t.finished ? "0:00" : fmt(rem);
+    ring.style.strokeDashoffset = t.finished ? 0 : C * (1 - frac);
+    ringWrap.classList.toggle("finished-ring", !!t.finished);
+    subEl.textContent = t.finished ? "Time's up!" : t.endAt ? "Focus time" : (t.remaining != null ? "Paused" : "Ready");
+    startBtn.textContent = t.finished ? "Again" : t.endAt ? "Pause" : (t.remaining != null ? "Resume" : "Start");
+    document.querySelectorAll(".preset").forEach(function (b) { b.setAttribute("aria-pressed", String(+b.dataset.min === t.minutes)); });
+    dot.hidden = !t.endAt;
+    var cur = currentIndex();
+    var html, style = "";
+    if (state.task && cur >= 0) {
+      var s = state.task.steps[cur];
+      style = hueVars(s.text);
+      html = bubble(s.text) + '<span>Working on<b>' + esc(s.text) + '</b></span>';
+    } else {
+      html = '<span class="bub" style="--h:var(--mint);--hs:var(--mint-soft)">' + svg(P.clock, 2.1) + '</span><span>Pick a time, then press Start.</span>';
+    }
+    if (html !== lastFor) { forEl.innerHTML = html; lastFor = html; timerSec.setAttribute("style", style); }
+  }
+  function loop() {
+    clearInterval(tick);
+    if (!T().endAt) return;
+    tick = setInterval(function () {
+      if (T().endAt && Date.now() >= T().endAt) finish();
+      else drawTimer();
+    }, 250);
+  }
+  function finish() {
+    var t = T(); t.endAt = null; t.remaining = null; t.finished = true; save();
+    clearInterval(tick); releaseWake(); drawTimer(); chime(false);
+    toast("Time's up. Nice focus!");
+  }
+  function requestWake() {
+    try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then(function (l) { wakeLock = l; }).catch(function () {}); } catch (e) {}
+  }
+  function releaseWake() { try { if (wakeLock) wakeLock.release(); } catch (e) {} wakeLock = null; }
+
+  startBtn.addEventListener("click", function () {
+    unlockAudio();
+    var t = T();
+    if (t.endAt) { t.remaining = Math.max(0, t.endAt - Date.now()); t.endAt = null; releaseWake(); }
+    else {
+      if (t.finished) { t.finished = false; t.remaining = null; }
+      t.endAt = Date.now() + (t.remaining != null ? t.remaining : totalMs()); t.remaining = null; requestWake();
+    }
+    save(); drawTimer(); loop();
+  });
+  document.getElementById("t-reset").addEventListener("click", function () {
+    var t = T(); t.endAt = null; t.remaining = null; t.finished = false; releaseWake(); save(); drawTimer(); loop();
+  });
+  document.querySelectorAll(".preset").forEach(function (b) {
+    b.addEventListener("click", function () {
+      unlockAudio();
+      var t = T(); t.minutes = +b.dataset.min; t.endAt = null; t.remaining = null; t.finished = false;
+      releaseWake(); save(); drawTimer(); loop();
+    });
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+      if (T().endAt && Date.now() >= T().endAt) finish(); else { drawTimer(); if (T().endAt) requestWake(); }
+      if (state.tab === "tasks" && state.task) renderTasks(); // refresh "done around" time
+    }
+  });
+
+  /* ---------- check-in ---------- */
+  var vCheck = document.getElementById("view-checkin");
+  state.checkins = state.checkins || [];
+  state.custom = state.custom || { gave: [], drained: [] };
+  var GAVE = ["Music", "Friends", "Being outside", "Good sleep", "A good meal", "Moving or sports", "Gaming", "Finishing something", "Alone time", "Family", "Pets", "A shower"];
+  var DRAINED = ["Not enough sleep", "Too much scrolling", "Homework", "Being rushed", "Arguments", "Noise", "Being hungry", "Sitting too long", "Boredom", "Too many people", "Waiting around", "Feeling stuck"];
+  var LEVELS = [null,
+    { name: "Empty", hue: "rose" }, { name: "Low", hue: "peach" }, { name: "Okay", hue: "lemon" },
+    { name: "Good", hue: "sky" }, { name: "Full", hue: "mint" }];
+  var QUOTES = [
+    ["A journey of a thousand miles begins with a single step.", "Lao Tzu"],
+    ["Fall seven times, stand up eight.", "Japanese proverb"],
+    ["The best time to plant a tree was 20 years ago. The second best time is now.", "Proverb"],
+    ["Slow progress is still progress.", ""],
+    ["Done is better than perfect.", ""],
+    ["You don't have to feel ready to start. Starting is what gets you ready.", ""],
+    ["Small steps every day add up to big things.", ""],
+    ["Rest is part of the work, not a break from it.", ""],
+    ["You've made it through every hard day so far.", ""],
+    ["Your brain works differently, not worse.", ""],
+    ["Asking for help is a strong move.", ""],
+    ["One good choice can turn the whole day around.", ""],
+    ["A bad day doesn't cancel out your effort.", ""],
+    ["Be proud of how hard you're trying.", ""],
+    ["Energy comes back. Be patient with yourself.", ""],
+    ["You can do hard things. You've done them before.", ""],
+    ["Mistakes mean you're trying.", ""],
+    ["Focus on the next step, not the whole staircase.", ""]
+  ];
+  var quoteShift = 0, ciEditing = false;
+  var draft = { level: 0, gave: [], drained: [] };
+
+  function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+  function dayNum() { var d = new Date(); return Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 864e5); }
+  function lc(s) { return s.charAt(0).toLowerCase() + s.slice(1); }
+  function joinList(a) { return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+  function lvlVars(n) { var h = LEVELS[n].hue; return "--h:var(--" + h + ");--hs:var(--" + h + "-soft)"; }
+  function batt(n) {
+    var bars = "";
+    for (var i = 0; i < 5; i++) bars += '<rect x="' + (5 + i * 4.2) + '" y="8.5" width="3" height="7" rx=".8" fill="currentColor" stroke="none" opacity="' + (i < n ? 1 : .18) + '"/>';
+    return '<svg class="bsvg" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2.5" y="5.5" width="24" height="13" rx="3.5"/><path d="M29.5 10v4"/>' + bars + '</svg>';
+  }
+
+  function encourage(c) {
+    var msg = {
+      1: "Running on empty is hard. Go easy on yourself today: one tiny step, then rest.",
+      2: "Low battery today, and that's okay. Pick the smallest step you can do.",
+      3: "Steady energy. That's enough to make real progress.",
+      4: "Good energy! It's a great time to knock out something hard.",
+      5: "Full battery! Use it on the thing you've been putting off."
+    }[c.level];
+    var tip;
+    if (c.gave.length) tip = "You noticed " + joinList(c.gave.map(lc)) + " gave you energy. Try to get more of that this week.";
+    else if (c.drained.length) tip = "Spotting what drains you is the first step to changing it. Nice work noticing.";
+    else tip = "Thanks for checking in. Paying attention to how you feel is a real skill.";
+    return { msg: msg, tip: tip };
+  }
+
+  function quoteCard() {
+    var q = QUOTES[(dayNum() + quoteShift) % QUOTES.length];
+    return '<section class="card quote">' +
+      '<div class="label">Thought for today</div>' +
+      '<blockquote>' + esc(q[0]) + '</blockquote>' +
+      '<div class="quote-foot">' + (q[1] ? '<cite>' + esc(q[1]) + '</cite>' : '') +
+      '<button class="link-btn" id="ci-quote">Show another</button></div>' +
+    '</section>';
+  }
+
+  function chipGroup(kind, defaults, label) {
+    var opts = defaults.concat(state.custom[kind]).concat(draft[kind]);
+    opts = opts.filter(function (o, i) { return opts.indexOf(o) === i; });
+    return '<div class="ci-q grp-' + kind + '"><div class="label" id="' + kind + '-l">' + label + '</div>' +
+      '<div class="chips" role="group" aria-labelledby="' + kind + '-l">' +
+      opts.map(function (o) {
+        return '<button type="button" class="chip" data-' + kind + '="' + esc(o) + '" aria-pressed="' + (draft[kind].indexOf(o) >= 0) + '">' + esc(o) + '</button>';
+      }).join("") + '</div>' +
+      '<form class="add-row" data-addto="' + kind + '" autocomplete="off">' +
+        '<label class="label" for="' + kind + '-add" hidden>Add your own</label>' +
+        '<input class="field" id="' + kind + '-add" placeholder="Something else?" maxlength="40" enterkeyhint="done">' +
+        '<button class="btn btn-quiet" type="submit">Add</button></form></div>';
+  }
+
+  function formCard() {
+    var hasToday = state.checkins.some(function (c) { return c.day === dayKey(); });
+    var levels = "";
+    for (var n = 1; n <= 5; n++) {
+      levels += '<button type="button" class="batt" data-level="' + n + '" style="' + lvlVars(n) + '" aria-pressed="' + (draft.level === n) + '">' + batt(n) + LEVELS[n].name + '</button>';
+    }
+    return '<section class="card ci-form fade-in">' +
+      '<div class="ci-head"><h2>Check in</h2><p class="muted">Takes 30 seconds. There are no wrong answers.</p></div>' +
+      '<div class="ci-q"><div class="label" id="lvl-l">How is your energy right now?</div>' +
+        '<div class="batts" role="group" aria-labelledby="lvl-l">' + levels + '</div></div>' +
+      chipGroup("gave", GAVE, "What gave you energy today?") +
+      chipGroup("drained", DRAINED, "What drained your energy?") +
+      '<button class="btn btn-primary btn-block" id="ci-save">Save check-in</button>' +
+      (hasToday ? '<div class="row-end"><button class="link-btn" id="ci-cancel">Cancel</button></div>' : '') +
+    '</section>';
+  }
+
+  function resultCard(c) {
+    var e = encourage(c);
+    return '<section class="card ci-result pop" style="' + lvlVars(c.level) + '">' +
+      '<div class="ci-top"><span class="bub bub-lg">' + batt(c.level) + '</span>' +
+        '<div><div class="label">Today’s check-in</div><b>Energy: ' + LEVELS[c.level].name + '</b></div></div>' +
+      '<p class="ci-msg">' + esc(e.msg) + '</p>' +
+      (c.gave.length ? '<div class="ci-list"><span class="label">More of this</span><div class="tags">' + c.gave.map(function (g) { return '<span class="tag">' + esc(g) + '</span>'; }).join("") + '</div></div>' : '') +
+      (c.drained.length ? '<div class="ci-list"><span class="label">Less of this</span><div class="tags">' + c.drained.map(function (g) { return '<span class="tag">' + esc(g) + '</span>'; }).join("") + '</div></div>' : '') +
+      '<p class="muted">' + esc(e.tip) + '</p>' +
+      '<button class="btn btn-soft btn-block" id="ci-again">Check in again</button>' +
+    '</section>';
+  }
+
+  function topOf(list, kind) {
+    var count = {};
+    list.forEach(function (c) { c[kind].forEach(function (x) { count[x] = (count[x] || 0) + 1; }); });
+    return Object.keys(count).sort(function (a, b) { return count[b] - count[a]; }).slice(0, 3)
+      .map(function (k) { return esc(k) + ' (' + count[k] + ')'; });
+  }
+
+  function latelyCard() {
+    var all = state.checkins;
+    if (!all.length) return "";
+    var cutoff = Date.now() - 14 * 864e5;
+    var recent = all.filter(function (c) { return c.at >= cutoff; });
+    var html = '<section class="steps-sec"><div class="label">Lately</div>';
+    if (recent.length >= 2) {
+      var boosts = topOf(recent, "gave"), drains = topOf(recent, "drained");
+      var avg = Math.round(recent.reduce(function (a, c) { return a + c.level; }, 0) / recent.length);
+      html += '<div class="card ci-pattern">' +
+        '<p><b>Average energy:</b> ' + LEVELS[avg].name + ' (' + recent.length + ' check-ins in 2 weeks)</p>' +
+        (boosts.length ? '<p><b>Best energy boosts:</b> ' + boosts.join(", ") + '</p>' : '') +
+        (drains.length ? '<p><b>Biggest drains:</b> ' + drains.join(", ") + '</p>' : '') +
+      '</div>';
+    }
+    html += all.slice(-7).reverse().map(function (c) {
+      var d = new Date(c.at);
+      var what = [];
+      if (c.gave.length) what.push("+ " + c.gave.join(", "));
+      if (c.drained.length) what.push("− " + c.drained.join(", "));
+      return '<div class="ci-row" style="' + lvlVars(c.level) + '"><span class="bub">' + batt(c.level) + '</span><div>' +
+        '<div class="when">' + d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" }) + ' · ' + LEVELS[c.level].name + '</div>' +
+        (what.length ? '<div class="what">' + esc(what.join("  ·  ")) + '</div>' : '') +
+      '</div></div>';
+    }).join("");
+    return html + '</section>';
+  }
+
+  function renderCheckin() {
+    var last = state.checkins[state.checkins.length - 1];
+    var showResult = last && last.day === dayKey() && !ciEditing;
+    vCheck.innerHTML = quoteCard() + (showResult ? resultCard(last) : formCard()) + latelyCard();
+  }
+
+  vCheck.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b || b.closest("form")) return;
+    if (b.id === "ci-quote") { quoteShift++; renderCheckin(); return; }
+    if (b.dataset.level) {
+      draft.level = +b.dataset.level;
+      vCheck.querySelectorAll("[data-level]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      return;
+    }
+    ["gave", "drained"].forEach(function (kind) {
+      var v = b.dataset[kind]; if (v == null) return;
+      var i = draft[kind].indexOf(v);
+      if (i >= 0) draft[kind].splice(i, 1); else draft[kind].push(v);
+      b.setAttribute("aria-pressed", String(i < 0));
+    });
+    if (b.id === "ci-save") {
+      if (!draft.level) { toast("First, tap how your energy feels."); return; }
+      state.checkins.push({ day: dayKey(), at: Date.now(), level: draft.level, gave: draft.gave.slice(), drained: draft.drained.slice() });
+      if (state.checkins.length > 120) state.checkins = state.checkins.slice(-120);
+      draft = { level: 0, gave: [], drained: [] }; ciEditing = false;
+      save(); renderCheckin(); window.scrollTo(0, 0);
+      toast("Checked in. Nice work.");
+      return;
+    }
+    if (b.id === "ci-again") { ciEditing = true; renderCheckin(); window.scrollTo(0, 0); return; }
+    if (b.id === "ci-cancel") { ciEditing = false; draft = { level: 0, gave: [], drained: [] }; renderCheckin(); window.scrollTo(0, 0); }
+  });
+
+  vCheck.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var kind = e.target.dataset.addto; if (!kind) return;
+    var inp = e.target.querySelector("input"), v = cap(inp.value.trim().replace(/\s+/g, " "));
+    if (!v) { inp.focus(); return; }
+    if (state.custom[kind].indexOf(v) < 0 && (kind === "gave" ? GAVE : DRAINED).indexOf(v) < 0) {
+      state.custom[kind].push(v); state.custom[kind] = state.custom[kind].slice(-12); save();
+    }
+    if (draft[kind].indexOf(v) < 0) draft[kind].push(v);
+    var y = window.scrollY; renderCheckin(); window.scrollTo(0, y);
+  });
+
+  /* ---------- tabs ---------- */
+  function showTab(name) {
+    state.tab = name; save();
+    toastEl.classList.remove("show");
+    ["tasks", "timer", "checkin"].forEach(function (n) {
+      document.getElementById("view-" + n).hidden = n !== name;
+      document.getElementById("tab-" + n).setAttribute("aria-selected", String(n === name));
+    });
+    if (name === "timer") drawTimer(); else if (name === "checkin") renderCheckin(); else renderTasks();
+    window.scrollTo(0, 0);
+  }
+  document.getElementById("tab-tasks").addEventListener("click", function () { showTab("tasks"); });
+  document.getElementById("tab-timer").addEventListener("click", function () { showTab("timer"); });
+  document.getElementById("tab-checkin").addEventListener("click", function () { showTab("checkin"); });
+
+  /* ---------- boot ---------- */
+  document.getElementById("today").textContent = new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+  if (T().endAt && Date.now() >= T().endAt) { var t0 = T(); t0.endAt = null; t0.finished = true; }
+  showTab(["timer", "checkin"].indexOf(state.tab) >= 0 ? state.tab : "tasks");
+  drawTimer(); loop();
+})();
+</script>
+<!--APP-END-->
+</body>
+</html>
