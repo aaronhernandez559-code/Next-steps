@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSM-5-TR Clinician Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#ffffff; --ink:#1f2a2e; --muted:#66727a; --line:#e2ded5;
+  --accent:#2f6f6a; --accent-soft:#e3efed; --warn:#9a5b16; --warn-soft:#fbf1e3; --star:#c98a1b;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#141a1c; --panel:#1c2427; --ink:#e7ecee; --muted:#9aa7ad; --line:#2c373b;
+    --accent:#6fb8b0; --accent-soft:#1f3433; --warn:#e0a35c; --warn-soft:#2e2619; --star:#e3ae4a; }
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:650;margin:0}
+.app{max-width:980px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.brand h1{font-size:20px}
+.sync{font-size:12px;color:var(--muted);white-space:nowrap}
+.sync b{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin-right:5px;vertical-align:1px}
+.sync.on b{background:#3aa676}
+.search{margin-top:10px;position:relative}
+.search input{width:100%;padding:10px 12px 10px 36px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);font:inherit}
+.search svg{position:absolute;left:11px;top:11px;opacity:.5}
+.seg{display:flex;gap:4px;margin-top:10px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{flex:1;border:0;background:transparent;padding:8px 4px;border-radius:7px;font-weight:500;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){.seg button.on{color:#0f1a19}}
+main{flex:1;padding:14px 16px 90px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.chap{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:13px 14px;border:0;background:transparent;text-align:left}
+.chap h3{font-size:16px}
+.chap .n{font-size:12px;color:var(--muted)}
+.chap .chev{transition:transform .15s;opacity:.5}
+.chap[aria-expanded=true] .chev{transform:rotate(90deg)}
+.rows{border-top:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--accent-soft)}
+.row .nm{flex:1}
+.row.flash{animation:fl 1.6s}
+@keyframes fl{0%,40%{background:var(--accent-soft)}100%{background:transparent}}
+.code{font:500 12.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:6px;white-space:nowrap}
+.marks{display:flex;gap:4px;font-size:13px;color:var(--star)}
+.marks .nt{color:var(--accent)}
+.empty{text-align:center;color:var(--muted);padding:40px 16px}
+.empty h3{color:var(--ink);margin-bottom:6px}
+.detail h2{font-size:24px;line-height:1.2}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 4px;color:var(--muted);font-size:13px}
+.link{border:0;background:none;color:var(--accent);padding:0;font-weight:500;text-decoration:underline;text-underline-offset:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.btn{border:1px solid var(--line);background:var(--panel);padding:8px 12px;border-radius:9px;font-size:14px;font-weight:500;display:inline-flex;gap:6px;align-items:center}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme: dark){.btn.primary{color:#0f1a19}}
+.btn.bm-on{border-color:var(--star);color:var(--star)}
+section.blk{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px}
+section.blk h3{font-size:15px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hint{font-size:12.5px;color:var(--muted)}
+.ov{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:5px 11px;font-size:13px}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+textarea,input.f{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:9px;padding:10px;font:inherit;resize:vertical}
+textarea{min-height:120px}
+.crit-text{white-space:pre-wrap}
+.saved{font-size:12px;color:var(--muted);font-weight:400;font-family:Inter,sans-serif}
+.notice{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media (max-width:640px){.cmp{grid-template-columns:1fr}}
+.cmp .col{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:14px}
+.cmp .col h4{margin:0 0 4px;font-family:"Source Serif 4",serif;font-size:15px}
+select.f{width:100%;padding:9px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+.list-item{display:block;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);background:transparent;padding:12px 14px}
+.list-item:last-child{border-bottom:0}
+.list-item .t{display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.list-item .s{color:var(--muted);font-size:13.5px;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tabbar{position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+.tabbar .inner{display:flex;max-width:980px;width:100%}
+.tabbar button{flex:1;border:0;background:none;padding:9px 4px 10px;font-size:11.5px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px}
+.tabbar button.on{color:var(--accent);font-weight:600}
+.tabbar svg{width:21px;height:21px}
+.foot{font-size:12px;color:var(--muted);margin-top:22px;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:13px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><h1>DSM-5-TR Companion</h1><span class="sync" id="sync"><b></b>Saved on this device</span></div>
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search disorder name or ICD-10-CM code (e.g. F43.10)" autocomplete="off">
+    </div>
+    <div class="seg" role="tablist">
+      <button id="segClass" class="on">Classification</button>
+      <button id="segCrit">Diagnostic Criteria</button>
+    </div>
+  </header>
+  <main id="main"></main>
+</div>
+<nav class="tabbar"><div class="inner">
+  <button data-tab="classification" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Classification</button>
+  <button data-tab="criteria"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></svg>Criteria</button>
+  <button data-tab="bookmarks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Read Later</button>
+  <button data-tab="notes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>Notes</button>
+</div></nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Classification data ----------
+   Disorder names and ICD-10-CM codes are as listed in the DSM-5-TR classification (with 2022–2023 coding updates).
+   "Overview" text is an original plain-language summary written for this app — it is NOT DSM text.
+   Format: [name, code, overview, [related/differential names]] */
+const CHAPTERS = [
+["Neurodevelopmental Disorders",[
+ ["Intellectual Developmental Disorder","F70 / F71 / F72 / F73","Deficits in intellectual and adaptive functioning beginning in the developmental period; coded by severity (mild, moderate, severe, profound).",["Global Developmental Delay","Autism Spectrum Disorder","Specific Learning Disorder"]],
+ ["Global Developmental Delay","F88","Used for children under 5 who miss multiple developmental milestones and cannot yet be reliably assessed.",["Intellectual Developmental Disorder"]],
+ ["Language Disorder","F80.2","Persistent difficulty acquiring and using language (spoken, written, or signed) below age expectations.",["Social (Pragmatic) Communication Disorder","Autism Spectrum Disorder"]],
+ ["Speech Sound Disorder","F80.0","Persistent difficulty producing speech sounds that interferes with intelligibility.",["Language Disorder"]],
+ ["Childhood-Onset Fluency Disorder (Stuttering)","F80.81","Disturbance in normal fluency and timing of speech, such as repetitions, prolongations, or blocks.",[]],
+ ["Social (Pragmatic) Communication Disorder","F80.82","Difficulty with the social use of verbal and nonverbal communication without restricted/repetitive behaviors.",["Autism Spectrum Disorder","Language Disorder"]],
+ ["Autism Spectrum Disorder","F84.0","Persistent differences in social communication and interaction plus restricted, repetitive patterns of behavior, interests, or activities.",["Social (Pragmatic) Communication Disorder","Intellectual Developmental Disorder","Attention-Deficit/Hyperactivity Disorder","Social Anxiety Disorder"]],
+ ["Attention-Deficit/Hyperactivity Disorder","F90.0 / F90.1 / F90.2","Persistent pattern of inattention and/or hyperactivity-impulsivity across settings; coded by presentation (inattentive, hyperactive-impulsive, combined).",["Oppositional Defiant Disorder","Specific Learning Disorder","Generalized Anxiety Disorder","Disruptive Mood Dysregulation Disorder","Bipolar I Disorder"]],
+ ["Specific Learning Disorder","F81.0 / F81.81 / F81.2","Persistent difficulty learning academic skills; coded by impairment in reading, written expression, or mathematics.",["Intellectual Developmental Disorder","Attention-Deficit/Hyperactivity Disorder"]],
+ ["Developmental Coordination Disorder","F82","Motor coordination substantially below age expectations, interfering with daily activities.",[]],
+ ["Stereotypic Movement Disorder","F98.4","Repetitive, seemingly driven, purposeless motor behavior (e.g., rocking, hand flapping).",["Tourette's Disorder","Trichotillomania (Hair-Pulling Disorder)"]],
+ ["Tourette's Disorder","F95.2","Multiple motor tics and at least one vocal tic present for more than a year, with onset before 18.",["Persistent (Chronic) Motor or Vocal Tic Disorder","Obsessive-Compulsive Disorder"]],
+ ["Persistent (Chronic) Motor or Vocal Tic Disorder","F95.1","Motor or vocal tics (not both) present for more than a year.",["Tourette's Disorder","Provisional Tic Disorder"]],
+ ["Provisional Tic Disorder","F95.0","Motor and/or vocal tics present for less than a year.",["Persistent (Chronic) Motor or Vocal Tic Disorder"]]
+]],
+["Schizophrenia Spectrum and Other Psychotic Disorders",[
+ ["Schizotypal Personality Disorder","F21","Pervasive social and interpersonal deficits with cognitive or perceptual distortions and eccentric behavior (also listed with Personality Disorders).",["Schizophrenia","Delusional Disorder","Schizoid Personality Disorder"]],
+ ["Delusional Disorder","F22","One or more delusions lasting at least a month without otherwise meeting criteria for schizophrenia.",["Schizophrenia","Obsessive-Compulsive Disorder","Body Dysmorphic Disorder"]],
+ ["Brief Psychotic Disorder","F23","Sudden onset of psychotic symptoms lasting at least a day but less than a month, with full return to prior functioning.",["Schizophreniform Disorder","Schizophrenia"]],
+ ["Schizophreniform Disorder","F20.81","Schizophrenia-like presentation lasting at least one month but less than six months.",["Brief Psychotic Disorder","Schizophrenia"]],
+ ["Schizophrenia","F20.9","Psychotic symptoms (e.g., delusions, hallucinations, disorganized speech) with functional decline and continuous signs lasting at least six months.",["Schizoaffective Disorder","Schizophreniform Disorder","Bipolar I Disorder","Major Depressive Disorder, Recurrent Episode"]],
+ ["Schizoaffective Disorder","F25.0 / F25.1","Uninterrupted illness with a major mood episode concurrent with schizophrenia symptoms, plus psychotic symptoms without mood symptoms for 2+ weeks; bipolar or depressive type.",["Schizophrenia","Bipolar I Disorder","Major Depressive Disorder, Recurrent Episode"]],
+ ["Catatonia Associated With Another Mental Disorder","F06.1","Catatonic features occurring in the context of another mental disorder.",[]],
+ ["Psychotic Disorder Due to Another Medical Condition","F06.0 / F06.2","Prominent hallucinations or delusions that are the direct physiological consequence of a medical condition.",[]]
+]],
+["Bipolar and Related Disorders",[
+ ["Bipolar I Disorder","F31.x (by current episode & severity)","At least one manic episode, often with hypomanic or major depressive episodes.",["Bipolar II Disorder","Schizoaffective Disorder","Attention-Deficit/Hyperactivity Disorder","Borderline Personality Disorder","Disruptive Mood Dysregulation Disorder"]],
+ ["Bipolar II Disorder","F31.81","At least one hypomanic episode and at least one major depressive episode, with no history of mania.",["Bipolar I Disorder","Cyclothymic Disorder","Major Depressive Disorder, Recurrent Episode","Borderline Personality Disorder"]],
+ ["Cyclothymic Disorder","F34.0","Two or more years (one in youth) of numerous hypomanic and depressive symptom periods that never meet full episode criteria.",["Bipolar II Disorder","Borderline Personality Disorder"]],
+ ["Other Specified Bipolar and Related Disorder","F31.89","Bipolar-type symptoms causing distress or impairment that don't meet full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Bipolar and Related Disorder","F31.9","Bipolar-type symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Depressive Disorders",[
+ ["Disruptive Mood Dysregulation Disorder","F34.81","Severe recurrent temper outbursts with persistently irritable or angry mood between outbursts; onset before 10, diagnosed ages 6–18.",["Oppositional Defiant Disorder","Bipolar I Disorder","Intermittent Explosive Disorder","Attention-Deficit/Hyperactivity Disorder"]],
+ ["Major Depressive Disorder, Single Episode","F32.0–F32.5 / F32.9","A single major depressive episode; coded by severity, psychotic features, and remission status.",["Persistent Depressive Disorder","Bipolar II Disorder","Adjustment Disorder With Depressed Mood","Prolonged Grief Disorder","Uncomplicated Bereavement"]],
+ ["Major Depressive Disorder, Recurrent Episode","F33.0–F33.42 / F33.9","Two or more major depressive episodes; coded by current severity, psychotic features, and remission status.",["Persistent Depressive Disorder","Bipolar II Disorder","Schizoaffective Disorder"]],
+ ["Persistent Depressive Disorder","F34.1","Depressed mood most of the day, more days than not, for at least two years (one year in youth).",["Major Depressive Disorder, Single Episode","Cyclothymic Disorder"]],
+ ["Premenstrual Dysphoric Disorder","N94.3","Mood, irritability, and anxiety symptoms in the final week before menses that improve after onset and become minimal post-menses.",["Major Depressive Disorder, Recurrent Episode","Bipolar II Disorder"]],
+ ["Depressive Disorder Due to Another Medical Condition","F06.31 / F06.32 / F06.34","Depressed mood or loss of interest that is the direct physiological consequence of a medical condition.",[]],
+ ["Other Specified Depressive Disorder","F32.89","Depressive symptoms causing distress or impairment that don't meet full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Depressive Disorder","F32.A","Depressive symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Anxiety Disorders",[
+ ["Separation Anxiety Disorder","F93.0","Developmentally inappropriate, excessive fear or anxiety about separation from attachment figures.",["Generalized Anxiety Disorder","Panic Disorder","Agoraphobia"]],
+ ["Selective Mutism","F94.0","Consistent failure to speak in specific social situations where speaking is expected, despite speaking in others.",["Social Anxiety Disorder","Language Disorder"]],
+ ["Specific Phobia","F40.2xx (by type)","Marked fear or anxiety about a specific object or situation that is actively avoided; coded by type (animal, natural environment, blood-injection-injury, situational, other).",["Agoraphobia","Social Anxiety Disorder","Panic Disorder"]],
+ ["Social Anxiety Disorder","F40.10","Marked fear of social situations involving possible scrutiny by others, with fear of negative evaluation.",["Avoidant Personality Disorder","Agoraphobia","Selective Mutism","Autism Spectrum Disorder"]],
+ ["Panic Disorder","F41.0","Recurrent unexpected panic attacks followed by persistent worry or maladaptive behavior change.",["Agoraphobia","Generalized Anxiety Disorder","Illness Anxiety Disorder"]],
+ ["Agoraphobia","F40.00","Marked fear or anxiety about situations such as public transport, open or enclosed spaces, crowds, or being outside the home alone.",["Panic Disorder","Specific Phobia","Social Anxiety Disorder"]],
+ ["Generalized Anxiety Disorder","F41.1","Excessive, hard-to-control worry about multiple areas of life on most days for at least six months, with physical symptoms.",["Major Depressive Disorder, Single Episode","Obsessive-Compulsive Disorder","Panic Disorder","Illness Anxiety Disorder","Posttraumatic Stress Disorder"]],
+ ["Anxiety Disorder Due to Another Medical Condition","F06.4","Panic or anxiety that is the direct physiological consequence of a medical condition.",[]],
+ ["Other Specified Anxiety Disorder","F41.8","Anxiety symptoms not meeting full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Anxiety Disorder","F41.9","Anxiety symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Obsessive-Compulsive and Related Disorders",[
+ ["Obsessive-Compulsive Disorder","F42.2","Obsessions and/or compulsions that are time-consuming or cause clinically significant distress or impairment.",["Generalized Anxiety Disorder","Obsessive-Compulsive Personality Disorder","Body Dysmorphic Disorder","Hoarding Disorder","Tourette's Disorder"]],
+ ["Body Dysmorphic Disorder","F45.22","Preoccupation with perceived flaws in appearance that are slight or not observable to others, with repetitive behaviors.",["Social Anxiety Disorder","Obsessive-Compulsive Disorder","Delusional Disorder"]],
+ ["Hoarding Disorder","F42.3","Persistent difficulty discarding possessions regardless of value, leading to clutter that compromises living areas.",["Obsessive-Compulsive Disorder"]],
+ ["Trichotillomania (Hair-Pulling Disorder)","F63.3","Recurrent pulling out of one's hair with repeated attempts to decrease or stop.",["Excoriation (Skin-Picking) Disorder","Obsessive-Compulsive Disorder"]],
+ ["Excoriation (Skin-Picking) Disorder","L98.1","Recurrent skin picking resulting in lesions, with repeated attempts to decrease or stop.",["Trichotillomania (Hair-Pulling Disorder)"]],
+ ["Other Specified Obsessive-Compulsive and Related Disorder","F42.8","OC-related symptoms not meeting full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Obsessive-Compulsive and Related Disorder","F42.9","OC-related symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Trauma- and Stressor-Related Disorders",[
+ ["Reactive Attachment Disorder","F94.1","Consistently inhibited, emotionally withdrawn behavior toward caregivers following insufficient care in early childhood.",["Disinhibited Social Engagement Disorder","Autism Spectrum Disorder"]],
+ ["Disinhibited Social Engagement Disorder","F94.2","Overly familiar behavior with unfamiliar adults following a pattern of insufficient early care.",["Reactive Attachment Disorder","Attention-Deficit/Hyperactivity Disorder"]],
+ ["Posttraumatic Stress Disorder","F43.10","Following trauma exposure: intrusion, avoidance, negative changes in cognition and mood, and arousal/reactivity lasting more than a month.",["Acute Stress Disorder","Adjustment Disorder With Mixed Anxiety and Depressed Mood","Generalized Anxiety Disorder","Borderline Personality Disorder","Dissociative Identity Disorder"]],
+ ["Acute Stress Disorder","F43.0","Trauma-related symptoms lasting from 3 days to 1 month after exposure.",["Posttraumatic Stress Disorder","Adjustment Disorder With Anxiety"]],
+ ["Adjustment Disorder With Depressed Mood","F43.21","Emotional or behavioral symptoms with low mood in response to an identifiable stressor, beginning within 3 months.",["Major Depressive Disorder, Single Episode","Posttraumatic Stress Disorder","Uncomplicated Bereavement"]],
+ ["Adjustment Disorder With Anxiety","F43.22","Stressor-related symptoms predominantly involving nervousness, worry, or separation anxiety.",["Generalized Anxiety Disorder","Acute Stress Disorder"]],
+ ["Adjustment Disorder With Mixed Anxiety and Depressed Mood","F43.23","Stressor-related symptoms with a combination of depression and anxiety.",["Posttraumatic Stress Disorder","Major Depressive Disorder, Single Episode"]],
+ ["Adjustment Disorder With Disturbance of Conduct","F43.24","Stressor-related symptoms predominantly involving conduct problems.",["Conduct Disorder","Oppositional Defiant Disorder"]],
+ ["Adjustment Disorder With Mixed Disturbance of Emotions and Conduct","F43.25","Stressor-related emotional symptoms together with conduct problems.",[]],
+ ["Adjustment Disorder, Unspecified","F43.20","Stressor-related reactions not classifiable as a specific subtype.",[]],
+ ["Prolonged Grief Disorder","F43.81","Intense, persistent grief (yearning or preoccupation) at least 12 months after a death (6 months for children), causing impairment.",["Uncomplicated Bereavement","Major Depressive Disorder, Single Episode","Posttraumatic Stress Disorder","Separation Anxiety Disorder"]],
+ ["Other Specified Trauma- and Stressor-Related Disorder","F43.89","Trauma/stressor-related symptoms not meeting full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Trauma- and Stressor-Related Disorder","F43.9","Trauma/stressor-related symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Dissociative Disorders",[
+ ["Dissociative Identity Disorder","F44.81","Disruption of identity characterized by two or more distinct personality states, with recurrent gaps in memory.",["Posttraumatic Stress Disorder","Borderline Personality Disorder","Dissociative Amnesia"]],
+ ["Dissociative Amnesia","F44.0 / F44.1 (with fugue)","Inability to recall important autobiographical information, usually traumatic or stressful, beyond ordinary forgetting.",["Dissociative Identity Disorder","Posttraumatic Stress Disorder"]],
+ ["Depersonalization/Derealization Disorder","F48.1","Persistent or recurrent experiences of detachment from oneself or one's surroundings, with intact reality testing.",["Panic Disorder","Major Depressive Disorder, Recurrent Episode"]],
+ ["Other Specified Dissociative Disorder","F44.89","Dissociative symptoms not meeting full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Dissociative Disorder","F44.9","Dissociative symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Somatic Symptom and Related Disorders",[
+ ["Somatic Symptom Disorder","F45.1","One or more distressing somatic symptoms with excessive thoughts, feelings, or behaviors about them.",["Illness Anxiety Disorder","Panic Disorder","Generalized Anxiety Disorder"]],
+ ["Illness Anxiety Disorder","F45.21","Preoccupation with having or acquiring a serious illness, with minimal or no somatic symptoms.",["Somatic Symptom Disorder","Generalized Anxiety Disorder","Obsessive-Compulsive Disorder"]],
+ ["Functional Neurological Symptom Disorder (Conversion Disorder)","F44.4–F44.7 (by symptom type)","Altered voluntary motor or sensory function incompatible with recognized neurological conditions.",["Factitious Disorder Imposed on Self","Dissociative Amnesia"]],
+ ["Psychological Factors Affecting Other Medical Conditions","F54","Psychological or behavioral factors that adversely affect a diagnosed medical condition.",[]],
+ ["Factitious Disorder Imposed on Self","F68.10","Falsification of physical or psychological signs or symptoms in oneself, without obvious external rewards.",["Somatic Symptom Disorder","Functional Neurological Symptom Disorder (Conversion Disorder)"]],
+ ["Factitious Disorder Imposed on Another","F68.A","Falsification of signs or symptoms in another person (the diagnosis applies to the perpetrator).",[]],
+ ["Other Specified Somatic Symptom and Related Disorder","F45.8","Somatic-related symptoms not meeting full criteria; clinician specifies the reason.",[]],
+ ["Unspecified Somatic Symptom and Related Disorder","F45.9","Somatic-related symptoms not meeting full criteria where the reason is not specified.",[]]
+]],
+["Feeding and Eating Disorders",[
+ ["Pica","F98.3 (children) / F50.89 (adults)","Persistent eating of nonnutritive, nonfood substances inappropriate to developmental level.",[]],
+ ["Rumination Disorder","F98.21","Repeated regurgitation of food over at least a month, not due to a medical condition.",[]],
+ ["Avoidant/Restrictive Food Intake Disorder","F50.82","Eating or feeding disturbance leading to significant nutritional or energy deficits, without body-image disturbance.",["Anorexia Nervosa","Autism Spectrum Disorder"]],
+ ["Anorexia Nervosa","F50.01x / F50.02x (by subtype & severity)","Restriction of intake leading to significantly low body weight, with intense fear of weight gain and disturbed body image.",["Avoidant/Restrictive Food Intake Disorder","Bulimia Nervosa"]],
+ ["Bulimia Nervosa","F50.2x","Recurrent binge eating with inappropriate compensatory behaviors; self-evaluation unduly influenced by shape and weight.",["Binge-Eating Disorder","Anorexia Nervosa"]],
+ ["Binge-Eating Disorder","F50.81x","Recurrent binge-eating episodes with marked distress, without regular compensatory behaviors.",["Bulimia Nervosa"]]
+]],
+["Elimination Disorders",[
+ ["Enuresis","F98.0","Repeated voiding of urine into bed or clothes at age 5 or older, not due to a substance or medical condition.",[]],
+ ["Encopresis","F98.1","Repeated passage of feces in inappropriate places at age 4 or older.",[]]
+]],
+["Sleep-Wake Disorders",[
+ ["Insomnia Disorder","F51.01","Dissatisfaction with sleep quantity or quality (initiating, maintaining, or early waking) at least 3 nights a week for 3+ months.",["Generalized Anxiety Disorder","Major Depressive Disorder, Single Episode","Circadian Rhythm Sleep-Wake Disorders"]],
+ ["Hypersomnolence Disorder","F51.11","Excessive sleepiness despite a main sleep period of at least 7 hours.",["Narcolepsy","Obstructive Sleep Apnea Hypopnea"]],
+ ["Narcolepsy","G47.4xx","Recurrent periods of irrepressible need to sleep, lapsing into sleep, or napping, with additional features such as cataplexy.",["Hypersomnolence Disorder"]],
+ ["Obstructive Sleep Apnea Hypopnea","G47.33","Evidence of obstructive apneas or hypopneas on polysomnography with nocturnal breathing disturbance or daytime sleepiness.",["Insomnia Disorder"]],
+ ["Circadian Rhythm Sleep-Wake Disorders","G47.2x (by type)","Persistent sleep disruption from a misalignment between the circadian rhythm and required sleep-wake schedule.",["Insomnia Disorder"]],
+ ["Non-Rapid Eye Movement Sleep Arousal Disorders","F51.3 (sleepwalking) / F51.4 (sleep terrors)","Recurrent incomplete awakenings from sleep with sleepwalking or sleep terrors.",["Nightmare Disorder"]],
+ ["Nightmare Disorder","F51.5","Repeated extended, extremely dysphoric, well-remembered dreams, with rapid orientation on waking.",["Posttraumatic Stress Disorder","Non-Rapid Eye Movement Sleep Arousal Disorders"]],
+ ["Rapid Eye Movement Sleep Behavior Disorder","G47.52","Repeated episodes of arousal during sleep with vocalization or complex motor behaviors.",[]],
+ ["Restless Legs Syndrome","G25.81","Urge to move the legs, usually with uncomfortable sensations, worse at rest and in the evening.",[]]
+]],
+["Sexual Dysfunctions",[
+ ["Delayed Ejaculation","F52.32","Marked delay in, or infrequency or absence of, ejaculation during partnered sexual activity.",[]],
+ ["Erectile Disorder","F52.21","Persistent difficulty obtaining or maintaining an erection during sexual activity.",[]],
+ ["Female Orgasmic Disorder","F52.31","Marked delay, infrequency, absence, or reduced intensity of orgasm.",[]],
+ ["Female Sexual Interest/Arousal Disorder","F52.22","Lack of, or significantly reduced, sexual interest or arousal.",["Relationship Distress With Spouse or Intimate Partner"]],
+ ["Genito-Pelvic Pain/Penetration Disorder","F52.6","Persistent difficulty with vaginal penetration, pain, fear of pain, or pelvic muscle tensing.",[]],
+ ["Male Hypoactive Sexual Desire Disorder","F52.0","Persistently deficient or absent sexual thoughts, fantasies, and desire for sexual activity.",["Relationship Distress With Spouse or Intimate Partner"]],
+ ["Premature (Early) Ejaculation","F52.4","Ejaculation occurring within about one minute of penetration and before the person wishes it.",[]]
+]],
+["Gender Dysphoria",[
+ ["Gender Dysphoria in Children","F64.2","Marked incongruence between experienced/expressed gender and assigned gender, with clinically significant distress, lasting 6+ months.",[]],
+ ["Gender Dysphoria in Adolescents and Adults","F64.0","Marked incongruence between experienced/expressed gender and assigned gender, with clinically significant distress, lasting 6+ months.",["Body Dysmorphic Disorder"]]
+]],
+["Disruptive, Impulse-Control, and Conduct Disorders",[
+ ["Oppositional Defiant Disorder","F91.3","A pattern of angry/irritable mood, argumentative/defiant behavior, or vindictiveness lasting at least 6 months.",["Conduct Disorder","Disruptive Mood Dysregulation Disorder","Attention-Deficit/Hyperactivity Disorder","Intermittent Explosive Disorder"]],
+ ["Intermittent Explosive Disorder","F63.81","Recurrent behavioral outbursts reflecting failure to control aggressive impulses, out of proportion to provocation.",["Disruptive Mood Dysregulation Disorder","Antisocial Personality Disorder","Borderline Personality Disorder"]],
+ ["Conduct Disorder","F91.1 / F91.2 / F91.9 (by onset)","A repetitive pattern of behavior violating others' basic rights or major age-appropriate norms; coded by childhood, adolescent, or unspecified onset.",["Oppositional Defiant Disorder","Antisocial Personality Disorder","Adjustment Disorder With Disturbance of Conduct"]],
+ ["Antisocial Personality Disorder","F60.2","Pervasive disregard for and violation of the rights of others since age 15 (also listed with Personality Disorders).",["Conduct Disorder","Narcissistic Personality Disorder"]],
+ ["Pyromania","F63.1","Deliberate, purposeful fire setting on more than one occasion with tension before and gratification after.",[]],
+ ["Kleptomania","F63.2","Recurrent failure to resist impulses to steal objects not needed for personal use or monetary value.",[]]
+]],
+["Substance-Related and Addictive Disorders",[
+ ["Alcohol Use Disorder","F10.10 (mild) / F10.20 (mod–severe)","Problematic pattern of alcohol use leading to impairment or distress; severity by number of symptoms.",["Cannabis Use Disorder","Major Depressive Disorder, Single Episode","Generalized Anxiety Disorder"]],
+ ["Cannabis Use Disorder","F12.10 / F12.20","Problematic pattern of cannabis use leading to impairment or distress.",["Alcohol Use Disorder"]],
+ ["Opioid Use Disorder","F11.10 / F11.20","Problematic pattern of opioid use leading to impairment or distress.",["Sedative, Hypnotic, or Anxiolytic Use Disorder"]],
+ ["Sedative, Hypnotic, or Anxiolytic Use Disorder","F13.10 / F13.20","Problematic pattern of sedative, hypnotic, or anxiolytic use leading to impairment or distress.",["Alcohol Use Disorder","Opioid Use Disorder"]],
+ ["Stimulant Use Disorder","F15.10 / F15.20 (amphetamine-type); F14.10 / F14.20 (cocaine)","Problematic pattern of amphetamine-type, cocaine, or other stimulant use leading to impairment or distress.",["Attention-Deficit/Hyperactivity Disorder","Bipolar I Disorder"]],
+ ["Tobacco Use Disorder","Z72.0 (mild) / F17.200 (mod–severe)","Problematic pattern of tobacco use leading to impairment or distress.",[]],
+ ["Gambling Disorder","F63.0","Persistent and recurrent problematic gambling behavior leading to impairment or distress.",["Bipolar I Disorder","Antisocial Personality Disorder"]]
+]],
+["Neurocognitive Disorders",[
+ ["Delirium","F05 (or by substance/medication)","Acute disturbance in attention and awareness with additional cognitive changes, fluctuating over the day.",["Major Neurocognitive Disorder"]],
+ ["Major Neurocognitive Disorder","Coded by etiology (e.g., F02.xx, F01.xx, F03.xx)","Significant cognitive decline from a previous level that interferes with independence in everyday activities.",["Mild Neurocognitive Disorder","Delirium","Major Depressive Disorder, Recurrent Episode"]],
+ ["Mild Neurocognitive Disorder","F06.70 / F06.71","Modest cognitive decline that does not interfere with independence in everyday activities.",["Major Neurocognitive Disorder"]]
+]],
+["Personality Disorders",[
+ ["Paranoid Personality Disorder","F60.0","Pervasive distrust and suspiciousness of others such that their motives are interpreted as malevolent.",["Delusional Disorder","Schizotypal Personality Disorder"]],
+ ["Schizoid Personality Disorder","F60.1","Pervasive detachment from social relationships and restricted range of emotional expression.",["Schizotypal Personality Disorder","Avoidant Personality Disorder","Autism Spectrum Disorder"]],
+ ["Antisocial Personality Disorder","F60.2","Pervasive disregard for and violation of the rights of others since age 15.",["Conduct Disorder","Narcissistic Personality Disorder","Borderline Personality Disorder"]],
+ ["Borderline Personality Disorder","F60.3","Pervasive instability of interpersonal relationships, self-image, and affect, with marked impulsivity.",["Bipolar II Disorder","Posttraumatic Stress Disorder","Histrionic Personality Disorder","Dependent Personality Disorder"]],
+ ["Histrionic Personality Disorder","F60.4","Pervasive excessive emotionality and attention-seeking.",["Borderline Personality Disorder","Narcissistic Personality Disorder"]],
+ ["Narcissistic Personality Disorder","F60.81","Pervasive grandiosity, need for admiration, and lack of empathy.",["Antisocial Personality Disorder","Histrionic Personality Disorder"]],
+ ["Avoidant Personality Disorder","F60.6","Pervasive social inhibition, feelings of inadequacy, and hypersensitivity to negative evaluation.",["Social Anxiety Disorder","Dependent Personality Disorder","Schizoid Personality Disorder"]],
+ ["Dependent Personality Disorder","F60.7","Pervasive and excessive need to be taken care of, leading to submissive, clinging behavior and fear of separation.",["Borderline Personality Disorder","Avoidant Personality Disorder"]],
+ ["Obsessive-Compulsive Personality Disorder","F60.5","Pervasive preoccupation with orderliness, perfectionism, and control at the expense of flexibility and efficiency.",["Obsessive-Compulsive Disorder","Hoarding Disorder"]],
+ ["Other Specified Personality Disorder","F60.89","Personality disorder features not meeting criteria for a specific disorder; clinician specifies the reason.",[]],
+ ["Unspecified Personality Disorder","F60.9","Personality disorder features not meeting criteria where the reason is not specified.",[]]
+]],
+["Paraphilic Disorders",[
+ ["Voyeuristic Disorder","F65.3","",[]],["Exhibitionistic Disorder","F65.2","",[]],["Frotteuristic Disorder","F65.81","",[]],
+ ["Sexual Masochism Disorder","F65.51","",[]],["Sexual Sadism Disorder","F65.52","",[]],["Pedophilic Disorder","F65.4","",[]],
+ ["Fetishistic Disorder","F65.0","",[]],["Transvestic Disorder","F65.1","",[]]
+]],
+["Other Conditions That May Be a Focus of Clinical Attention",[
+ ["Parent-Child Relational Problem","Z62.820","Relational difficulties between parent and child (biological, adoptive, or foster) that are the focus of clinical attention.",["Child Affected by Parental Relationship Distress","Oppositional Defiant Disorder"]],
+ ["Sibling Relational Problem","Z62.891","Relational difficulties between siblings associated with significant impairment in individual or family functioning.",[]],
+ ["Upbringing Away From Parents","Z62.29","A child raised away from parents (e.g., in relative or foster care) when this is the focus of clinical attention.",["Reactive Attachment Disorder"]],
+ ["Child Affected by Parental Relationship Distress","Z62.898","Negative effects of parental relationship discord on a child.",["Parent-Child Relational Problem","Relationship Distress With Spouse or Intimate Partner"]],
+ ["Relationship Distress With Spouse or Intimate Partner","Z63.0","Distress in an intimate relationship affecting behavioral, cognitive, or affective functioning, when it is the focus of clinical contact.",["Disruption of Family by Separation or Divorce","Child Affected by Parental Relationship Distress"]],
+ ["Disruption of Family by Separation or Divorce","Z63.5","Partners in an intimate couple living apart due to relationship problems or in the process of divorce.",["Relationship Distress With Spouse or Intimate Partner"]],
+ ["High Expressed Emotion Level Within Family","Z63.8","Family environment marked by high levels of hostility, emotional over-involvement, and criticism toward a family member.",[]],
+ ["Uncomplicated Bereavement","Z63.4","A normal reaction to the death of a loved one, when it is the focus of clinical attention.",["Prolonged Grief Disorder","Major Depressive Disorder, Single Episode"]],
+ ["Phase of Life Problem","Z60.0","Difficulty adapting to a life-cycle transition (e.g., starting school, leaving home, retirement).",["Adjustment Disorder With Depressed Mood"]],
+ ["Acculturation Difficulty","Z60.3","Problems adjusting to a new culture (e.g., following migration).",[]],
+ ["Academic or Educational Problem","Z55.9","Academic or educational problems that are the focus of clinical attention.",["Specific Learning Disorder"]],
+ ["Other Problem Related to Employment","Z56.9","Occupational problems that are the focus of clinical attention.",[]],
+ ["Homelessness","Z59.01 (sheltered) / Z59.02 (unsheltered)","Lack of a regular dwelling, when it affects treatment or prognosis.",[]],
+ ["Nonadherence to Medical Treatment","Z91.19","Nonadherence to an important aspect of treatment, when it is the focus of clinical attention.",[]],
+ ["Borderline Intellectual Functioning","R41.83","Borderline intellectual functioning that is the focus of clinical attention or affects treatment.",["Intellectual Developmental Disorder"]],
+ ["Personal History of Military Deployment","Z91.82","A history of military deployment relevant to treatment.",["Posttraumatic Stress Disorder"]],
+ ["Other Problem Related to Psychosocial Circumstances","Z65.8","Psychosocial problems not elsewhere classified that are the focus of clinical attention.",[]]
+]]
+];
+
+/* ---------- Index ---------- */
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const DIS = {}; const ORDER = [];
+CHAPTERS.forEach(([chap, list], ci) => list.forEach(([name, code, ov, rel]) => {
+  const id = slug(name);
+  if (DIS[id]) { DIS[id].alsoIn = chap; return; } // cross-listed (e.g., Antisocial PD)
+  DIS[id] = {id, name, code, ov, rel, chap, ci}; ORDER.push(id);
+}));
+
+/* ---------- State & storage ---------- */
+let S = { tab:'classification', sel:null, open:{}, q:'', cmp:null, flash:null };
+let U = {};               // user data: id -> {bm, note, crit, pg, ts}
+const LS = 'dsm-companion-v1';
+try { U = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch(e) {}
+let col = null;           // cloud collection (private to the signed-in user)
+const timers = {};
+
+function saveLocal(){ try { localStorage.setItem(LS, JSON.stringify(U)); } catch(e) {} }
+function put(id, patch){
+  U[id] = Object.assign({}, U[id] || {}, patch, {ts: Date.now()});
+  saveLocal();
+  clearTimeout(timers[id]);
+  timers[id] = setTimeout(() => {
+    if (!col) return;
+    try { Promise.resolve(col.doc(id).set(U[id])).catch(()=>{}); } catch(e) {}
+  }, 600);
+}
+async function initCloud(){
+  try {
+    if (!window.claude || !claude.use) return;
+    const [db, user] = await Promise.all([claude.use('db'), claude.use('user')]);
+    if (!db || !user) return;
+    const uid = await user.id(); if (!uid) return;
+    col = db.collection('data/users/' + uid);
+    let loaded = false;
+    const timeout = setTimeout(() => { if (!loaded) setSync(false); }, 10000);
+    col.onSnapshot(snap => {
+      loaded = true; clearTimeout(timeout);
+      const docs = Array.isArray(snap) ? snap : (snap && snap.docs) || [];
+      let changed = false;
+      docs.forEach(d => {
+        const id = d.id; const data = typeof d.data === 'function' ? d.data() : (d.data || d);
+        if (!id || !DIS[id] || !data) return;
+        const local = U[id];
+        if (!local || (data.ts || 0) > (local.ts || 0)) { U[id] = data; changed = true; }
+      });
+      // push any local-only items up once
+      Object.keys(U).forEach(id => { if (!docs.find(d => d.id === id) && DIS[id]) { try { col.doc(id).set(U[id]); } catch(e){} } });
+      saveLocal(); setSync(true);
+      if (changed && !isTyping()) render();
+    }, () => { clearTimeout(timeout); setSync(false); });
+  } catch(e) { setSync(false); }
+}
+function setSync(on){
+  const el = document.getElementById('sync');
+  el.className = 'sync' + (on ? ' on' : '');
+  el.innerHTML = '<b></b>' + (on ? 'Synced to your account' : 'Saved on this device');
+}
+const isTyping = () => { const a = document.activeElement; return a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.id !== 'q')); };
+
+/* ---------- Helpers ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = s => document.querySelector(s);
+const ago = ts => { if (!ts) return ''; const m = Math.round((Date.now()-ts)/60000);
+  if (m < 1) return 'just now'; if (m < 60) return m+'m ago'; const h = Math.round(m/60); if (h < 24) return h+'h ago';
+  return new Date(ts).toLocaleDateString(); };
+function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove('show'), 1600); }
+function matches(d, q){ q = q.trim().toLowerCase(); if (!q) return true;
+  const n = q.replace(/\s/g,''); return d.name.toLowerCase().includes(q) || d.code.toLowerCase().replace(/\s/g,'').includes(n) || d.chap.toLowerCase().includes(q); }
+function marks(id){ const u = U[id] || {}; return `<span class="marks">${u.bm?'★':''}${(u.note||'').trim()?'<span class="nt">✎</span>':''}</span>`; }
+
+/* ---------- Views ---------- */
+function vClassification(){
+  const q = S.q;
+  let html = '';
+  CHAPTERS.forEach(([chap, list], ci) => {
+    const items = list.map(x => DIS[slug(x[0])]).filter((d,i,a) => d && matches(d,q) && a.indexOf(d)===i);
+    if (!items.length) return;
+    const open = q ? true : !!S.open[ci];
+    html += `<div class="card"><button class="chap" data-chap="${ci}" aria-expanded="${open}">
+      <div><h3>${esc(chap)}</h3><div class="n">${items.length} ${items.length===1?'entry':'entries'}</div></div>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg></button>`;
+    if (open) html += `<div class="rows">` + items.map(d =>
+      `<button class="row${S.flash===d.id?' flash':''}" data-open="${d.id}" id="r-${d.id}"><span class="nm">${esc(d.name)}</span>${marks(d.id)}<span class="code">${esc(d.code.split(' (')[0])}</span></button>`).join('') + `</div>`;
+    html += `</div>`;
+  });
+  if (!html) html = `<div class="empty"><h3>No matches</h3>Try a different name or code.</div>`;
+  return `<div class="notice">Classification lists DSM-5-TR names and ICD-10-CM codes. Always confirm codes against the current manual and ICD-10-CM update before billing.</div>` + html + foot();
+}
+
+function critBlock(d, editable){
+  const u = U[d.id] || {};
+  if (!editable) {
+    return u.crit && u.crit.trim()
+      ? `<div class="crit-text">${esc(u.crit)}</div>${u.pg?`<div class="hint" style="margin-top:6px">Manual p. ${esc(u.pg)}</div>`:''}`
+      : `<div class="hint">No criteria reference saved yet.</div>`;
+  }
+  return `<textarea id="crit" placeholder="Type or paste the criteria from your licensed DSM-5-TR (print, DSM Library, or app) so you can review them here alongside your notes.">${esc(u.crit||'')}</textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:8px"><span class="hint" style="white-space:nowrap">Manual page</span><input class="f" id="pg" style="max-width:120px;padding:7px 10px" value="${esc(u.pg||'')}" placeholder="e.g. 183"></div>`;
+}
+
+function vCriteria(){
+  if (S.q && !S.sel) return vSearchResults();
+  const d = DIS[S.sel];
+  if (!d) return `<div class="empty"><h3>Pick a diagnosis</h3>Choose one from Classification, or search above, to see its criteria workspace.<div style="margin-top:14px"><button class="btn primary" data-tab="classification">Browse Classification</button></div></div>`;
+  const u = U[d.id] || {};
+  const rel = d.rel.map(n => DIS[slug(n)]).filter(Boolean);
+  const cmp = S.cmp && DIS[S.cmp];
+  const opts = ORDER.filter(id => id !== d.id).map(id => `<option value="${id}"${S.cmp===id?' selected':''}>${esc(DIS[id].name)} — ${esc(DIS[id].code.split(' (')[0])}</option>`).join('');
+  return `<div class="detail">
+    <h2>${esc(d.name)}</h2>
+    <div class="meta"><span class="code">${esc(d.code)}</span>
+      <button class="link" data-reveal="${d.id}">${esc(d.chap)}</button>${d.alsoIn?`<span>· also listed in ${esc(d.alsoIn)}</span>`:''}</div>
+    <div class="actions">
+      <button class="btn ${u.bm?'bm-on':''}" data-bm="${d.id}">${u.bm?'★ In Read Later':'☆ Read Later'}</button>
+      <button class="btn" data-reveal="${d.id}">↩ Show in Classification</button>
+    </div>
+    ${d.ov?`<section class="blk"><h3>Clinical overview</h3><p class="ov">${esc(d.ov)}</p><div class="hint" style="margin-top:6px">Plain-language summary for orientation only — not the DSM criteria.</div></section>`:''}
+    <section class="blk"><h3>Diagnostic criteria <span class="saved" id="critSaved">${u.crit?'Saved':''}</span></h3>${critBlock(d,true)}</section>
+    ${rel.length?`<section class="blk"><h3>Cross-reference / differentials</h3><div class="chips">${rel.map(r=>`<button class="chip" data-open="${r.id}">${esc(r.name)} <span style="opacity:.6">${esc(r.code.split(' (')[0])}</span></button>`).join('')}</div></section>`:''}
+    <section class="blk"><h3>Compare side by side</h3>
+      <select class="f" id="cmpSel"><option value="">Choose a diagnosis to compare…</option>
+      ${rel.length?`<optgroup label="Differentials">${rel.map(r=>`<option value="${r.id}"${S.cmp===r.id?' selected':''}>${esc(r.name)}</option>`).join('')}</optgroup>`:''}
+      <optgroup label="All diagnoses">${opts}</optgroup></select>
+      ${cmp?`<div class="cmp">
+        <div class="col"><h4>${esc(d.name)}</h4><div class="code" style="display:inline-block;margin-bottom:6px">${esc(d.code.split(' (')[0])}</div>${critBlock(d,false)}</div>
+        <div class="col"><h4>${esc(cmp.name)}</h4><div class="code" style="display:inline-block;margin-bottom:6px">${esc(cmp.code.split(' (')[0])}</div>${critBlock(cmp,false)}
+          <div style="margin-top:8px"><button class="link" data-open="${cmp.id}">Open ${esc(cmp.name)}</button></div></div>
+      </div>`:''}
+    </section>
+    <section class="blk"><h3>My notes <span class="saved" id="noteSaved">${u.note?'Saved '+ago(u.ts):''}</span></h3>
+      <textarea id="note" placeholder="Clinical reasoning, differential thoughts, reminders, readings to follow up on…">${esc(u.note||'')}</textarea>
+      <div class="hint" style="margin-top:6px">Keep client identifiers out of notes.</div></section>
+  </div>` + foot();
+}
+
+function vSearchResults(){
+  const res = ORDER.map(id=>DIS[id]).filter(d=>matches(d,S.q));
+  if (!res.length) return `<div class="empty"><h3>No matches</h3>Try a different name or code.</div>`;
+  return `<div class="card">${res.map(d=>`<button class="row" data-open="${d.id}"><span class="nm">${esc(d.name)}<div class="hint">${esc(d.chap)}</div></span>${marks(d.id)}<span class="code">${esc(d.code.split(' (')[0])}</span></button>`).join('')}</div>`;
+}
+
+function vBookmarks(){
+  const items = ORDER.filter(id => U[id] && U[id].bm && matches(DIS[id], S.q)).sort((a,b)=>(U[b].ts||0)-(U[a].ts||0));
+  if (!items.length) return `<div class="empty"><h3>Nothing saved to read later</h3>Tap “☆ Read Later” on any diagnosis to save it here.</div>`;
+  return `<div class="card">${items.map(id=>{const d=DIS[id];return `<div style="display:flex;align-items:center;border-bottom:1px solid var(--line)">
+    <button class="list-item" data-open="${id}" style="border:0"><div class="t"><span>${esc(d.name)}</span><span class="code">${esc(d.code.split(' (')[0])}</span></div><div class="s">${esc(d.chap)}</div></button>
+    <button class="btn" style="margin-right:10px;border:0;color:var(--star)" data-bm="${id}" aria-label="Remove">★</button></div>`}).join('')}</div>`;
+}
+
+function vNotes(){
+  const items = ORDER.filter(id => U[id] && ((U[id].note||'').trim() || (U[id].crit||'').trim()))
+    .filter(id => { const q=S.q.trim().toLowerCase(); return !q || matches(DIS[id],q) || (U[id].note||'').toLowerCase().includes(q); })
+    .sort((a,b)=>(U[b].ts||0)-(U[a].ts||0));
+  if (!items.length) return `<div class="empty"><h3>No notes yet</h3>Open any diagnosis and write in “My notes” — everything you write shows up here, newest first.</div>`;
+  return `<div class="card">${items.map(id=>{const d=DIS[id],u=U[id];return `<button class="list-item" data-open="${id}">
+    <div class="t"><span>${esc(d.name)}</span><span class="hint" style="font-weight:400">${ago(u.ts)}</span></div>
+    <div class="s">${esc((u.note||'').trim() || 'Criteria reference saved')}</div></button>`}).join('')}</div>`;
+}
+
+function foot(){ return `<p class="foot">DSM-5-TR is © American Psychiatric Association. This companion does not reproduce DSM diagnostic criteria; it provides the classification structure and codes, and a private space for criteria you enter from your own licensed copy. It is a reference aid and does not replace clinical judgment.</p>`; }
+
+/* ---------- Render & events ---------- */
+function render(){
+  const v = {classification:vClassification, criteria:vCriteria, bookmarks:vBookmarks, notes:vNotes}[S.tab];
+  $('#main').innerHTML = v();
+  document.querySelectorAll('.tabbar button').forEach(b => b.classList.toggle('on', b.dataset.tab === S.tab));
+  $('#segClass').classList.toggle('on', S.tab === 'classification');
+  $('#segCrit').classList.toggle('on', S.tab === 'criteria');
+  bindFields();
+  if (S.flash) { const el = document.getElementById('r-'+S.flash); if (el) el.scrollIntoView({block:'center'}); S.flash = null; }
+}
+function go(tab){ S.tab = tab; render(); window.scrollTo(0,0); }
+function openDis(id){ if (S.sel !== id) S.cmp = null; S.sel = id; S.q = ''; $('#q').value=''; go('criteria'); }
+
+function bindFields(){
+  const note = $('#note'), crit = $('#crit'), pg = $('#pg'), cmpSel = $('#cmpSel');
+  if (note) note.oninput = () => { put(S.sel, {note: note.value}); $('#noteSaved').textContent = 'Saved'; };
+  if (crit) crit.oninput = () => { put(S.sel, {crit: crit.value}); $('#critSaved').textContent = 'Saved'; };
+  if (pg) pg.oninput = () => put(S.sel, {pg: pg.value});
+  if (cmpSel) cmpSel.onchange = () => { S.cmp = cmpSel.value || null; render(); };
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-open],[data-chap],[data-bm],[data-reveal],[data-tab]');
+  if (!t) return;
+  if (t.dataset.open) return openDis(t.dataset.open);
+  if (t.dataset.chap) { S.open[t.dataset.chap] = !S.open[t.dataset.chap]; return render(); }
+  if (t.dataset.bm) { const id = t.dataset.bm, on = !(U[id]&&U[id].bm); put(id, {bm:on}); toast(on?'Saved to Read Later':'Removed from Read Later'); return render(); }
+  if (t.dataset.reveal) { const d = DIS[t.dataset.reveal]; S.open[d.ci] = true; S.flash = d.id; S.q=''; $('#q').value=''; S.tab='classification'; return render(); }
+  if (t.dataset.tab) return go(t.dataset.tab);
+});
+$('#segClass').onclick = () => { if (S.sel) { const d = DIS[S.sel]; S.open[d.ci] = true; S.flash = d.id; } S.tab='classification'; render(); };
+$('#segCrit').onclick = () => go('criteria');
+$('#q').addEventListener('input', e => { S.q = e.target.value; if (S.tab==='criteria') S.sel = S.q ? null : S.sel; render(); });
+
+render();
+initCloud();
+</script>
+</body>
+</html>

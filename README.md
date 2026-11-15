@@ -15,6 +15,17 @@ Everything is in `index.html` with no build step. Progress is saved on the devic
 
 Live app: https://aaronhernandez559-code.github.io/Next-steps/
 
+## DSM-5-TR Clinician Companion
+
+A separate reference app for therapists (for example marriage and family therapists), in `dsm-companion/index.html`.
+
+- Toggle between **Classification** (chapters, disorders and ICD-10-CM codes) and **Diagnostic Criteria** for any diagnosis.
+- Cross-reference differentials and compare two diagnoses side by side.
+- Write notes and save diagnoses to **Read Later**. Notes and bookmarks are saved on the device in that browser.
+- The DSM-5-TR criteria text is copyrighted by the American Psychiatric Association and is not included. Each diagnosis has a field where clinicians enter criteria from their own licensed copy.
+
+Live app: https://aaronhernandez559-code.github.io/Next-steps/dsm-companion/
+
 ## Put it on an iPhone home screen
 
 1. Host this folder anywhere that serves static files (for example GitHub Pages: repo Settings → Pages → deploy from the main branch, root folder).
