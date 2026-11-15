@@ -26,6 +26,17 @@ A separate reference app for therapists (for example marriage and family therapi
 
 Live app: https://aaronhernandez559-code.github.io/Next-steps/dsm-companion/
 
+## Chronicle: Learn History & Art
+
+A bite-sized learning app in `chronicle/index.html`, in the spirit of story-based history apps.
+
+- Two tracks, **History** and **Art**, each with 6 lessons on a path that unlocks one step at a time.
+- Each lesson is about 5 minutes: 5 short story screens, then a 3-question quiz with an explanation after every answer.
+- Earn XP, level up, keep a daily streak, and collect a **Legend** card for every lesson you finish.
+- Progress is saved on the device in that browser.
+
+Live app: https://aaronhernandez559-code.github.io/Next-steps/chronicle/
+
 ## Put it on an iPhone home screen
 
 1. Host this folder anywhere that serves static files (for example GitHub Pages: repo Settings → Pages → deploy from the main branch, root folder).

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chronicle: Learn History &amp; Art</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Chronicle">
+<meta name="theme-color" content="#14121f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14121f;--bg2:#1e1b2e;--card:#262238;--line:#363050;
+  --text:#f4efe6;--muted:#a59fb8;--gold:#f2b84b;--gold2:#ffd98a;
+  --hist:#e26d4f;--art:#4fb3c9;--good:#4cc38a;--bad:#e5566a;
+  --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+body{overflow:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;max-width:520px;margin:0 auto}
+.top{padding:calc(var(--safe-t) + 14px) 18px 10px;display:flex;align-items:center;gap:10px}
+.brand{font-family:Fraunces;font-weight:800;font-size:22px;flex:1;letter-spacing:.2px}
+.brand span{color:var(--gold)}
+.pill{display:flex;align-items:center;gap:5px;background:var(--bg2);border:1px solid var(--line);padding:6px 10px;border-radius:99px;font-weight:700;font-size:14px}
+.view{flex:1;overflow-y:auto;padding:4px 18px 110px;-webkit-overflow-scrolling:touch}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:flex;background:rgba(20,18,31,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:8px 0 calc(var(--safe-b) + 8px)}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--muted)}
+.tab svg{width:24px;height:24px}
+.tab.on{color:var(--gold)}
+.seg{display:flex;background:var(--bg2);border-radius:14px;padding:4px;margin:6px 0 18px;border:1px solid var(--line)}
+.seg button{flex:1;padding:10px;border-radius:10px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button.on{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.hero{background:linear-gradient(135deg,#2c2546,#1e1b2e);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:8px}
+.hero .mascot{width:58px;height:58px;flex:none}
+.hero p{margin:4px 0 0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.hero b{font-size:15px}
+.path{position:relative;padding:20px 0 10px}
+.node{display:flex;align-items:center;gap:14px;margin:0 0 22px;position:relative}
+.node:nth-child(even){flex-direction:row-reverse;text-align:right}
+.bubble{width:76px;height:76px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:34px;position:relative;
+  box-shadow:0 6px 0 rgba(0,0,0,.35);transition:transform .15s}
+.bubble:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.bubble.locked{background:#2a2640 !important;filter:grayscale(1);opacity:.55}
+.bubble .check{position:absolute;right:-2px;bottom:-2px;background:var(--good);width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:14px;border:3px solid var(--bg)}
+.node .info{flex:1}
+.node .era{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.node .nm{font-family:Fraunces;font-weight:600;font-size:18px;margin-top:2px}
+.node .sub{font-size:13px;color:var(--muted);margin-top:2px}
+.connector{position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;background:repeating-linear-gradient(var(--line) 0 10px,transparent 10px 20px);z-index:-1}
+.sec-title{font-family:Fraunces;font-size:24px;margin:8px 0 4px}
+.sec-sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cc{border-radius:16px;padding:12px;min-height:170px;display:flex;flex-direction:column;position:relative;overflow:hidden;border:1px solid var(--line);text-align:left}
+.cc .em{font-size:42px;margin:6px 0 8px}
+.cc .n{font-family:Fraunces;font-weight:600;font-size:15px;line-height:1.2}
+.cc .r{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-top:auto;padding-top:8px}
+.cc.lock{background:var(--bg2)}
+.cc.lock .em{filter:grayscale(1) brightness(.3)}
+.cc.lock .n{color:var(--muted)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:14px 8px;text-align:center}
+.stat .v{font-family:Fraunces;font-size:26px;font-weight:800}
+.stat .l{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:2px}
+.bar{height:12px;background:var(--bg2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:99px;transition:width .5s}
+.panel{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px}
+.btn{display:block;width:100%;padding:16px;border-radius:16px;font-weight:800;font-size:16px;background:var(--gold);color:#241a05;box-shadow:0 5px 0 #b9852a;letter-spacing:.3px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #b9852a}
+.btn.ghost{background:var(--card);color:var(--text);box-shadow:0 5px 0 #15121f}
+.btn:disabled{opacity:.4}
+/* overlay */
+.ov{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;max-width:520px;margin:0 auto;animation:up .25s ease}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.ov-top{padding:calc(var(--safe-t) + 12px) 16px 8px;display:flex;align-items:center;gap:12px}
+.x{width:36px;height:36px;border-radius:50%;background:var(--bg2);display:grid;place-items:center;font-size:18px;flex:none}
+.prog{flex:1;display:flex;gap:4px}
+.prog i{flex:1;height:5px;border-radius:9px;background:var(--line)}
+.prog i.on{background:var(--gold)}
+.ov-body{flex:1;overflow-y:auto;padding:10px 20px 20px;display:flex;flex-direction:column}
+.ov-foot{padding:10px 20px calc(var(--safe-b) + 16px)}
+.scene{border-radius:24px;padding:22px;margin-bottom:18px;min-height:150px;display:flex;align-items:center;justify-content:center;font-size:76px;position:relative;overflow:hidden}
+.scene::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.18),transparent 60%)}
+.story h2{font-size:26px;margin:0 0 12px;line-height:1.2}
+.story p{font-size:17.5px;line-height:1.6;margin:0;color:#e6e0d4}
+.tapnote{text-align:center;color:var(--muted);font-size:12.5px;margin-top:auto;padding-top:16px}
+.qtag{font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.q{font-family:Fraunces;font-size:23px;line-height:1.3;margin:0 0 20px}
+.opt{display:block;width:100%;text-align:left;padding:15px 16px;border-radius:14px;border:2px solid var(--line);background:var(--bg2);margin-bottom:10px;font-size:16px;font-weight:500;transition:.15s}
+.opt.sel{border-color:var(--gold)}
+.opt.right{border-color:var(--good);background:rgba(76,195,138,.15)}
+.opt.wrong{border-color:var(--bad);background:rgba(229,86,106,.15)}
+.fb{border-radius:16px;padding:14px 16px;margin-top:6px;font-size:15px;line-height:1.5}
+.fb.ok{background:rgba(76,195,138,.15);border:1px solid rgba(76,195,138,.4)}
+.fb.no{background:rgba(229,86,106,.13);border:1px solid rgba(229,86,106,.4)}
+.fb b{display:block;margin-bottom:3px}
+.reward{text-align:center;padding-top:10px}
+.big-card{width:220px;margin:16px auto;border-radius:22px;padding:18px;text-align:left;border:2px solid rgba(255,255,255,.25);box-shadow:0 20px 50px rgba(0,0,0,.5);animation:flip .7s ease}
+@keyframes flip{from{transform:rotateY(90deg) scale(.8)}to{transform:none}}
+.big-card .em{font-size:64px;text-align:center;margin:8px 0}
+.big-card .n{font-family:Fraunces;font-weight:800;font-size:21px}
+.big-card .t{font-size:12.5px;opacity:.85;margin-top:2px}
+.big-card .lg{font-size:13px;line-height:1.45;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.25)}
+.big-card .r{font-size:10.5px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;margin-top:10px}
+.xp-pop{font-family:Fraunces;font-size:40px;font-weight:800;color:var(--gold)}
+.confetti{position:fixed;top:-10px;width:9px;height:14px;z-index:30;animation:fall linear forwards;border-radius:2px}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+.fact{display:flex;gap:12px;align-items:flex-start}
+.fact .ic{font-size:26px}
+.fact p{margin:3px 0 0;font-size:14.5px;line-height:1.5;color:#e1dbcf}
+.toast{position:fixed;left:50%;bottom:calc(var(--safe-b) + 90px);transform:translateX(-50%);background:var(--card);border:1px solid var(--line);padding:10px 16px;border-radius:12px;font-size:14px;z-index:40;animation:up .2s}
+.small{font-size:13px;color:var(--muted)}
+.lvl-row{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:6px}
+.link-btn{color:var(--muted);font-size:13px;text-decoration:underline;margin:16px auto 0;display:block}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top">
+    <div class="brand">Chron<span>i</span>cle</div>
+    <div class="pill" title="Day streak">🔥 <span id="streak">0</span></div>
+    <div class="pill" title="Experience points">⭐ <span id="xp">0</span></div>
+  </div>
+  <div class="view" id="view"></div>
+  <nav class="tabs">
+    <button class="tab on" data-tab="learn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19V6a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M8 8h7M8 12h5"/></svg>Learn</button>
+    <button class="tab" data-tab="cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="12" height="16" rx="2"/><path d="M9 3h10a2 2 0 0 1 2 2v12"/></svg>Legends</button>
+    <button class="tab" data-tab="me"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>Progress</button>
+  </nav>
+</div>
+
+<script>
+/* ---------------- CONTENT ---------------- */
+const LESSONS = [
+/* ===== HISTORY ===== */
+{id:"hatshepsut",track:"history",name:"Hatshepsut",title:"The Pharaoh Queen",era:"Ancient Egypt · c. 1479–1458 BCE",icon:"👑",bg:"linear-gradient(135deg,#c98a2b,#7a4a12)",rarity:"Legendary",
+ legacy:"One of the most successful rulers of ancient Egypt, who reigned as a full pharaoh in a role made for men.",
+ story:[
+  {e:"🏺",h:"A woman on the throne",t:"Around 3,500 years ago, Hatshepsut did something almost unheard of: she ruled Egypt as pharaoh. Not as a queen beside a king, but as the king herself, for about 20 years."},
+  {e:"👶",h:"From regent to ruler",t:"When her husband died, the heir, her young stepson Thutmose III, was just a child. Hatshepsut ruled for him as regent. A few years later, she went further and declared herself pharaoh."},
+  {e:"🗿",h:"Dressed for the job",t:"Pharaohs were expected to look a certain way. Many of Hatshepsut's statues show her with a man's body and the traditional false beard that pharaohs wore. It was a powerful political message."},
+  {e:"⛵",h:"The voyage to Punt",t:"Instead of wars, she's famous for trade. She sent ships to a far-off land called Punt and they came back loaded with ebony, gold, exotic animals, and living incense trees."},
+  {e:"🏛️",h:"Erased from history",t:"She built a stunning terraced temple at Deir el-Bahari near Luxor. But after her death, many of her statues and images were smashed or chiseled away, likely late in Thutmose III's reign. Her mummy was finally identified in 2007."}
+ ],
+ quiz:[
+  {q:"Who did Hatshepsut first rule on behalf of?",o:["Her father","Her young stepson, Thutmose III","Ramses II","Cleopatra"],a:1,why:"She began as regent for the child Thutmose III, then crowned herself pharaoh."},
+  {q:"True or false: Statues often showed Hatshepsut wearing a pharaoh's false beard.",o:["True","False"],a:0,why:"True. The false beard was a symbol of kingship, and she used it to show she was a real pharaoh."},
+  {q:"What is Hatshepsut best remembered for, instead of war?",o:["Building pyramids at Giza","A great trade expedition to Punt","Inventing hieroglyphs","Conquering Rome"],a:1,why:"Her expedition to Punt brought back incense trees, ebony, and gold. The pyramids at Giza were already over 1,000 years old."}
+ ]},
+{id:"caesar",track:"history",name:"Julius Caesar",title:"The Dice Are Thrown",era:"Ancient Rome · 100–44 BCE",icon:"🏛️",bg:"linear-gradient(135deg,#b23a48,#5c1a24)",rarity:"Legendary",
+ legacy:"A general and politician whose rise ended the Roman Republic. Our calendar and the month of July still carry his mark.",
+ story:[
+  {e:"⚔️",h:"A general on the rise",t:"Julius Caesar was a brilliant Roman general. Over about eight years he conquered Gaul (roughly modern France and Belgium), making him rich, famous, and dangerous to his rivals in Rome."},
+  {e:"🌊",h:"Crossing the Rubicon",t:"In 49 BCE, the Senate ordered him to give up his army. Instead, he marched his soldiers across the Rubicon River into Italy, an act of civil war. Today, 'crossing the Rubicon' means passing the point of no return."},
+  {e:"📅",h:"He changed your calendar",t:"After winning the civil war, Caesar reformed Rome's messy calendar. His Julian calendar had 365 days plus a leap year, and it's the foundation of the one we use. The month of July is named after him."},
+  {e:"🗡️",h:"The Ides of March",t:"In 44 BCE he was named dictator for life. Fearing he'd become a king, a group of senators including Brutus and Cassius stabbed him to death on March 15, the Ides of March."},
+  {e:"🦅",h:"Not an emperor",t:"Here's the twist: Caesar was never emperor. His adopted heir, Octavian, won the next power struggle and became Augustus, Rome's first emperor. But 'Caesar' became a title for rulers for centuries."}
+ ],
+ quiz:[
+  {q:"What river did Caesar cross, starting a civil war?",o:["The Nile","The Tiber","The Rubicon","The Danube"],a:2,why:"Crossing the Rubicon with an army broke Roman law. That's why the phrase means a point of no return."},
+  {q:"True or false: Julius Caesar was Rome's first emperor.",o:["True","False"],a:1,why:"False! His heir Octavian became Augustus, the first emperor. Caesar was 'dictator for life.'"},
+  {q:"Which month is named after Julius Caesar?",o:["March","June","July","August"],a:2,why:"July honors Julius. August is named after his heir, Augustus."}
+ ]},
+{id:"qin",track:"history",name:"Qin Shi Huang",title:"The First Emperor",era:"Ancient China · 259–210 BCE",icon:"🐉",bg:"linear-gradient(135deg,#2f7d5b,#123d2b)",rarity:"Epic",
+ legacy:"Unified China for the first time and standardized its writing, money and measurements. His army of clay still guards his tomb.",
+ story:[
+  {e:"🏯",h:"A boy king",t:"He became king of the state of Qin at just 13. China was then split into warring kingdoms. By 221 BCE he had conquered them all and named himself Shi Huangdi, the 'First Emperor.'"},
+  {e:"📏",h:"One China, one standard",t:"To hold his empire together, he standardized everything: the written script, coins, weights, measures, and even the width of cart axles so wagons could use the same roads."},
+  {e:"🧱",h:"About that wall...",t:"He linked older defensive walls into an early version of the Great Wall. But most of the wall you see in photos today was built much later, during the Ming dynasty."},
+  {e:"⚗️",h:"Chasing immortality",t:"The First Emperor was obsessed with living forever. He sent expeditions searching for an elixir of life. Despite all that, he died in 210 BCE, around age 49."},
+  {e:"🪖",h:"The army in the earth",t:"In 1974, farmers digging a well near Xi'an hit something hard: a life-size clay soldier. It was part of the Terracotta Army, thousands of warriors, each with a unique face. His main tomb still hasn't been opened."}
+ ],
+ quiz:[
+  {q:"In what year did he unify China?",o:["221 BCE","1066 CE","44 BCE","1492 CE"],a:0,why:"In 221 BCE he defeated the last rival state and declared himself First Emperor."},
+  {q:"How was the Terracotta Army discovered?",o:["By a famous archaeologist","By farmers digging a well","By a satellite","In an earthquake"],a:1,why:"Farmers digging a well in 1974 found pieces of a clay soldier."},
+  {q:"True or false: Most of the Great Wall standing today was built by the First Emperor.",o:["True","False"],a:1,why:"False. He connected earlier walls, but most of today's wall dates to the Ming dynasty, over 1,500 years later."}
+ ]},
+{id:"joan",track:"history",name:"Joan of Arc",title:"The Maid of Orléans",era:"Medieval France · c. 1412–1431",icon:"🛡️",bg:"linear-gradient(135deg,#4a6fd1,#1d2f66)",rarity:"Epic",
+ legacy:"A teenage peasant who led French troops to victory, was executed at 19, and was later declared a saint.",
+ story:[
+  {e:"🌾",h:"A farm girl",t:"Joan was born around 1412 in the village of Domrémy, France. Her country was losing the Hundred Years' War to England, and much of France was under English control."},
+  {e:"✨",h:"The voices",t:"As a teenager, Joan said she heard the voices of saints telling her to help Charles, the uncrowned heir to the French throne, drive out the English. Somehow, she convinced him to let her join the army."},
+  {e:"🏰",h:"The siege of Orléans",t:"In 1429, at just 17, Joan rode with the army to the besieged city of Orléans. In about nine days, the siege was broken. It was a turning point in the war."},
+  {e:"👑",h:"A crown at Reims",t:"She then pushed for Charles to be crowned at Reims Cathedral, where French kings were traditionally crowned. In July 1429, he became King Charles VII, with Joan standing nearby."},
+  {e:"🔥",h:"Trial and sainthood",t:"In 1430 she was captured and handed to the English, who put her on trial for heresy. She was burned at the stake in Rouen in 1431, at about 19. A later trial declared her innocent, and in 1920 she was made a saint."}
+ ],
+ quiz:[
+  {q:"Which city's siege did Joan help break in 1429?",o:["Paris","Orléans","London","Rome"],a:1,why:"Breaking the siege of Orléans earned her the nickname 'the Maid of Orléans.'"},
+  {q:"Where was Charles VII crowned?",o:["Reims","Versailles","Notre-Dame in Paris","Rouen"],a:0,why:"Reims Cathedral was the traditional site for crowning French kings."},
+  {q:"True or false: Joan of Arc was declared a saint in 1920.",o:["True","False"],a:0,why:"True. Nearly 500 years after her death, the Catholic Church canonized her."}
+ ]},
+{id:"musa",track:"history",name:"Mansa Musa",title:"The Lord of Gold",era:"Mali Empire · ruled c. 1312–1337",icon:"🪙",bg:"linear-gradient(135deg,#d9a426,#8a5a0b)",rarity:"Legendary",
+ legacy:"Ruler of the wealthy Mali Empire whose famous pilgrimage put West Africa on the world's maps and turned Timbuktu into a center of learning.",
+ story:[
+  {e:"🌍",h:"An empire of gold",t:"In the 1300s, the Mali Empire in West Africa controlled huge gold and salt trade routes. Its ruler, Mansa Musa ('mansa' means king), is often called one of the richest people who ever lived."},
+  {e:"🐫",h:"The great journey",t:"In 1324, he made the Muslim pilgrimage (hajj) to Mecca. His caravan was legendary: thousands of people and camels, many carrying gold."},
+  {e:"📉",h:"He crashed a market",t:"When he passed through Cairo, he spent and gave away so much gold that its value there dropped for years. One trip by one man affected a whole economy."},
+  {e:"📚",h:"Building Timbuktu",t:"He returned with scholars and architects. The Djinguereber Mosque was built in Timbuktu, and the city grew into a famous center of learning, with libraries and thousands of manuscripts."},
+  {e:"🗺️",h:"On the map",t:"News of his wealth reached Europe. On the Catalan Atlas, a famous map made in 1375, Mansa Musa is drawn on a throne, holding up a gold nugget."}
+ ],
+ quiz:[
+  {q:"Which empire did Mansa Musa rule?",o:["Egypt","Mali","Ethiopia","Persia"],a:1,why:"He ruled the Mali Empire in West Africa during the 1300s."},
+  {q:"What happened to the value of gold in Cairo after his visit?",o:["It went up","It dropped","Nothing changed","Gold was banned"],a:1,why:"So much gold flooded into the city that its value fell for years."},
+  {q:"Which city became a famous center of learning under him?",o:["Timbuktu","Athens","Baghdad","Venice"],a:0,why:"Timbuktu became famous for its mosques, scholars, and manuscripts."}
+ ]},
+{id:"lincoln",track:"history",name:"Abraham Lincoln",title:"A House Divided",era:"United States · 1809–1865",icon:"🎩",bg:"linear-gradient(135deg,#5a5f73,#24263a)",rarity:"Epic",
+ legacy:"The 16th U.S. president, who led the country through the Civil War and pushed to end slavery.",
+ story:[
+  {e:"🪵",h:"The log cabin",t:"Lincoln was born in 1809 in a one-room log cabin in Kentucky. He had less than a year or so of formal schooling and taught himself mostly by borrowing and reading books."},
+  {e:"⚖️",h:"Lawyer and debater",t:"He became a lawyer in Illinois. In 1858, his debates against Stephen Douglas over the spread of slavery made him nationally known, even though he lost that Senate race."},
+  {e:"🇺🇸",h:"A nation splits",t:"In 1860 he was elected the 16th president. Southern states began leaving the Union, and in 1861 the Civil War began."},
+  {e:"📜",h:"Emancipation",t:"On January 1, 1863, his Emancipation Proclamation took effect, declaring enslaved people in the rebelling states free. That November, he gave the Gettysburg Address, a speech of about 270 words that took around two minutes."},
+  {e:"🎭",h:"Ford's Theatre",t:"Days after the war's main army surrendered, Lincoln was shot by John Wilkes Booth at Ford's Theatre on April 14, 1865. He died the next morning. That December, the 13th Amendment abolished slavery across the country."}
+ ],
+ quiz:[
+  {q:"Which number president was Lincoln?",o:["1st","3rd","16th","32nd"],a:2,why:"He was elected the 16th president in 1860."},
+  {q:"When did the Emancipation Proclamation take effect?",o:["July 4, 1776","January 1, 1863","April 14, 1865","December 25, 1861"],a:1,why:"It took effect on New Year's Day, 1863."},
+  {q:"True or false: The Gettysburg Address lasted over an hour.",o:["True","False"],a:1,why:"False. It was only about 270 words and took about two minutes."}
+ ]},
+/* ===== ART ===== */
+{id:"lascaux",track:"art",name:"Lascaux Caves",title:"The First Gallery",era:"Stone Age · c. 17,000 years ago",icon:"🐂",bg:"linear-gradient(135deg,#a8552a,#4a2210)",rarity:"Legendary",
+ legacy:"Some of the most famous prehistoric paintings on Earth, showing that people have been making art for a very long time.",
+ story:[
+  {e:"🕳️",h:"A hole in the hill",t:"In September 1940, four teenagers in southwestern France squeezed into a hidden opening in a hillside. Inside, by lamplight, they saw walls covered in painted animals."},
+  {e:"🐎",h:"A herd on the walls",t:"The cave holds around 600 paintings and about 1,500 engravings: horses, stags, bison, and huge aurochs (wild cattle). In the 'Hall of the Bulls,' some animals are over 15 feet long."},
+  {e:"🎨",h:"Stone Age paint",t:"The artists, about 17,000 years ago, made paint from crushed minerals: ochre for reds and yellows, and charcoal or manganese for black. They worked by the light of lamps burning animal fat."},
+  {e:"🦠",h:"Loved too much",t:"Lascaux opened to the public in 1948. But the breath and body heat of thousands of visitors brought moisture and mold that damaged the art. It was closed to the public in 1963."},
+  {e:"🏗️",h:"The copies",t:"Today, visitors see detailed replicas instead. Lascaux II opened in 1983, and Lascaux IV, a full recreation of the cave, opened in 2016. The real cave is protected and monitored by scientists."}
+ ],
+ quiz:[
+  {q:"Who discovered the Lascaux paintings in 1940?",o:["A team of archaeologists","Four teenagers","A farmer's cow","French soldiers"],a:1,why:"Four teenagers found the hidden entrance and explored the cave."},
+  {q:"Why was the real cave closed to visitors?",o:["It flooded","Visitors' breath and body heat caused damage","It was too dark","A war broke out"],a:1,why:"Moisture and carbon dioxide from crowds encouraged mold and damage."},
+  {q:"True or false: The paintings are about 17,000 years old.",o:["True","False"],a:0,why:"True. They date to the Upper Paleolithic, roughly 17,000 years ago."}
+ ]},
+{id:"leonardo",track:"art",name:"Leonardo da Vinci",title:"The Restless Genius",era:"Italian Renaissance · 1452–1519",icon:"🖌️",bg:"linear-gradient(135deg,#7d6b3d,#3a301a)",rarity:"Legendary",
+ legacy:"Painter, inventor and scientist whose curiosity had no limits, and whose Mona Lisa may be the most famous painting in the world.",
+ story:[
+  {e:"🏘️",h:"From Vinci",t:"Leonardo was born in 1452 near the small town of Vinci, Italy. That's why we call him 'da Vinci,' meaning 'from Vinci.' He trained as an artist's apprentice in Florence."},
+  {e:"🌫️",h:"The smoky trick",t:"He began the Mona Lisa around 1503. Its magic comes from sfumato, a technique of blending colors so softly there are no hard outlines, like smoke. It makes her smile seem to shift as you look."},
+  {e:"🍞",h:"The Last Supper",t:"His Last Supper, painted on a wall in Milan in the 1490s, used an experimental method on dry plaster. It looked amazing, but it started flaking within years and has been restored many times."},
+  {e:"🪞",h:"Backwards notebooks",t:"Leonardo filled thousands of notebook pages with flying machines, human anatomy, rivers, and weapons. He usually wrote in mirror script, right to left, so you need a mirror to read it easily."},
+  {e:"🕵️",h:"The heist",t:"Leonardo finished surprisingly few paintings, fewer than 20 are credited to him. And the Mona Lisa wasn't world-famous until 1911, when it was stolen from the Louvre. It was recovered two years later, and a legend was born."}
+ ],
+ quiz:[
+  {q:"What does 'sfumato' describe?",o:["Bright, bold outlines","Soft, smoky blending with no hard edges","Painting on wet plaster","Using gold leaf"],a:1,why:"Sfumato comes from the Italian for 'smoke.' It creates soft transitions."},
+  {q:"How did Leonardo usually write in his notebooks?",o:["In code numbers","In mirror script, right to left","Only in pictures","In Greek"],a:1,why:"His notes are mostly in mirror writing."},
+  {q:"What event made the Mona Lisa world-famous?",o:["It was stolen in 1911","It was painted on the ceiling","It was found in a cave","It sold for a record price"],a:0,why:"The 1911 theft from the Louvre made headlines around the world."}
+ ]},
+{id:"michelangelo",track:"art",name:"Michelangelo",title:"Sculptor of Giants",era:"Italian Renaissance · 1475–1564",icon:"🗿",bg:"linear-gradient(135deg,#8c8aa8,#3c3a55)",rarity:"Legendary",
+ legacy:"Sculptor of David and painter of the Sistine Chapel ceiling, who saw himself first and always as a sculptor.",
+ story:[
+  {e:"🪨",h:"A sculptor at heart",t:"Michelangelo Buonarroti, born in 1475, thought of himself as a sculptor above all. He said figures were already inside the stone, and his job was to set them free."},
+  {e:"✍️",h:"His only signature",t:"At about 24, he carved the Pietà, Mary holding Jesus, now in St. Peter's Basilica. It's the only work he ever signed, carving his name on a sash across Mary's chest."},
+  {e:"💪",h:"David",t:"From 1501 to 1504, he carved David from a huge block of marble that other sculptors had given up on. The finished statue stands about 17 feet tall."},
+  {e:"⛪",h:"The Sistine ceiling",t:"From 1508 to 1512, he painted the Sistine Chapel ceiling for Pope Julius II: more than 300 figures, including the famous Creation of Adam. And no, he didn't lie on his back. He stood on scaffolding, craning his neck upward."},
+  {e:"🏛️",h:"A long life",t:"Decades later, he painted The Last Judgment on the chapel's altar wall and designed the great dome of St. Peter's. He worked almost until his death at 88, a very old age for his time."}
+ ],
+ quiz:[
+  {q:"True or false: Michelangelo painted the Sistine ceiling lying on his back.",o:["True","False"],a:1,why:"False. He stood on scaffolding he helped design, painting above his head."},
+  {q:"Which is the only work Michelangelo signed?",o:["David","The Pietà","The Creation of Adam","The Last Judgment"],a:1,why:"He carved his name on a sash across Mary's chest in the Pietà."},
+  {q:"What did Michelangelo consider himself first?",o:["A painter","An architect","A sculptor","A poet"],a:2,why:"He always saw himself as a sculptor, even while painting the Sistine Chapel."}
+ ]},
+{id:"monet",track:"art",name:"Claude Monet",title:"Chasing the Light",era:"Impressionism · 1840–1926",icon:"🌅",bg:"linear-gradient(135deg,#e0846a,#4b6fae)",rarity:"Epic",
+ legacy:"Founder of Impressionism, who painted the same scenes again and again to capture how light and color change.",
+ story:[
+  {e:"⛵",h:"Out of the studio",t:"Claude Monet, born in 1840, grew up in the port town of Le Havre. He loved painting outdoors, called 'en plein air,' working fast to catch light before it changed."},
+  {e:"🌞",h:"A rude nickname",t:"In 1874, Monet and friends held their own exhibition. One painting was Impression, Sunrise, a hazy harbor scene. A critic mocked the group as mere 'Impressionists.' The insult became the movement's name."},
+  {e:"🌾",h:"Same subject, new light",t:"Monet painted series: haystacks, poplar trees, and the front of Rouen Cathedral, over and over at different times of day and seasons. The subject stayed the same. The light was the real subject."},
+  {e:"🪷",h:"The garden at Giverny",t:"At his home in Giverny, he built a garden with a pond and a Japanese-style bridge. He painted its water lilies around 250 times in his later years."},
+  {e:"👁️",h:"Changing eyes",t:"Later in life, Monet developed cataracts, which clouded his vision and shifted the colors he saw. Some late paintings turn reddish and abstract, and they later inspired modern abstract painters."}
+ ],
+ quiz:[
+  {q:"Which painting gave Impressionism its name?",o:["Water Lilies","Impression, Sunrise","Starry Night","The Haystacks"],a:1,why:"A critic used its title to mock the group, and the name stuck."},
+  {q:"Where was Monet's famous water lily garden?",o:["Giverny","Venice","Arles","Madrid"],a:0,why:"He lived and gardened at Giverny for over 40 years."},
+  {q:"Why did Monet paint the same haystacks many times?",o:["He ran out of ideas","To capture changing light and seasons","A buyer asked him to","They were easy to sell"],a:1,why:"His series show how light and atmosphere transform one subject."}
+ ]},
+{id:"vangogh",track:"art",name:"Vincent van Gogh",title:"Painting the Stars",era:"Post-Impressionism · 1853–1890",icon:"🌻",bg:"linear-gradient(135deg,#2d4fa0,#e3b23c)",rarity:"Legendary",
+ legacy:"Barely known in his lifetime, he is now one of the most beloved artists in history, famous for his swirling, colorful brushwork.",
+ story:[
+  {e:"🇳🇱",h:"A late start",t:"Vincent van Gogh was born in 1853 in the Netherlands. He tried being an art dealer, a teacher, and a preacher before deciding to become an artist at about 27."},
+  {e:"✉️",h:"Brother Theo",t:"His younger brother Theo, an art dealer, supported him with money and encouragement. Their hundreds of letters tell us much of what we know about Vincent's life and ideas."},
+  {e:"⚡",h:"A furious pace",t:"In only about ten years, he made around 2,100 artworks, including about 860 oil paintings. Many of his most famous works came in his last two years."},
+  {e:"🌻",h:"Arles",t:"In 1888 he moved to Arles in sunny southern France and painted his Sunflowers. When fellow painter Paul Gauguin came to stay, their arguing ended in a crisis where Vincent cut off part of his own ear."},
+  {e:"🌌",h:"The Starry Night",t:"In 1889, while staying at a mental health asylum in Saint-Rémy, he painted The Starry Night, inspired by the view from his window. He died in 1890 at 37, having sold very little. His fame came after his death."}
+ ],
+ quiz:[
+  {q:"Who supported Vincent with money and letters?",o:["His brother Theo","Paul Gauguin","Claude Monet","The King of France"],a:0,why:"Theo supported him throughout his career, and their letters survive."},
+  {q:"Where did he paint The Starry Night?",o:["In Paris","At an asylum in Saint-Rémy","In Amsterdam","On a boat"],a:1,why:"He painted it in 1889 at the asylum in Saint-Rémy-de-Provence."},
+  {q:"About how old was he when he decided to become an artist?",o:["7","27","50","65"],a:1,why:"He began seriously around 27 and worked for only about a decade."}
+ ]},
+{id:"frida",track:"art",name:"Frida Kahlo",title:"I Paint My Reality",era:"Mexico · 1907–1954",icon:"🌺",bg:"linear-gradient(135deg,#d8456b,#2b8a6e)",rarity:"Epic",
+ legacy:"A Mexican painter who turned pain, identity and culture into bold, unforgettable self-portraits.",
+ story:[
+  {e:"🏠",h:"The Blue House",t:"Frida Kahlo was born in 1907 in Coyoacán, Mexico City, in a bright blue house known as La Casa Azul. Today it's a museum dedicated to her."},
+  {e:"🚌",h:"The accident",t:"She had polio as a child. Then at 18, in 1925, a bus she was riding collided with a streetcar, leaving her badly injured. While recovering in bed, she started painting, using a mirror placed above her."},
+  {e:"🪞",h:"Her favorite subject",t:"Of her roughly 143 paintings, about 55 are self-portraits. She once explained she painted herself because she was so often alone, and she was the subject she knew best."},
+  {e:"🎨",h:"Frida and Diego",t:"In 1929 she married the famous Mexican muralist Diego Rivera. Their relationship was stormy. They divorced and then remarried each other a year later."},
+  {e:"🇲🇽",h:"Her own style",t:"Her art mixes Mexican folk traditions, bright colors, and dreamlike symbols. People called her a surrealist, but she rejected the label. In 1939 the Louvre bought one of her paintings, The Frame, a first for a 20th-century Mexican artist."}
+ ],
+ quiz:[
+  {q:"What event led Frida to start painting?",o:["Winning a contest","Recovering from a bus accident","Meeting Picasso","Moving to Paris"],a:1,why:"She began painting in bed while recovering from the 1925 bus accident."},
+  {q:"Who was Frida's husband?",o:["Pablo Picasso","Diego Rivera","Salvador Dalí","Leonardo da Vinci"],a:1,why:"She married muralist Diego Rivera in 1929, and married him again in 1940."},
+  {q:"What was her childhood home called?",o:["The Red Palace","The Blue House","The Golden Gate","The White Tower"],a:1,why:"La Casa Azul, the Blue House, is now the Frida Kahlo Museum."}
+ ]}
+];
+
+const FACTS = [
+ ["🏺","Cleopatra lived closer in time to the Moon landing than to the building of the Great Pyramid of Giza."],
+ ["🎨","The color ultramarine blue was once made by grinding lapis lazuli stone. In the Renaissance it could cost more than gold."],
+ ["⚔️","The Hundred Years' War between England and France actually lasted 116 years (1337–1453)."],
+ ["🖼️","The Mona Lisa has no visible eyebrows or eyelashes."],
+ ["📜","The Magna Carta, sealed in 1215, is one of the earliest documents limiting a king's power."],
+ ["🌻","Van Gogh painted more than 30 self-portraits, partly because he couldn't afford to pay models."],
+ ["🏛️","Ancient Greek statues, now white marble, were originally painted in bright colors."],
+ ["🧭","The Silk Road wasn't one road but a vast web of trade routes linking China to the Mediterranean."]
+];
+
+/* ---------------- STATE ---------------- */
+const KEY="chronicle_v1";
+let S={xp:0,done:{},streak:0,last:null,correct:0,answered:0};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s)S=Object.assign(S,s)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let tab="learn",track="history";
+const $=s=>document.querySelector(s);
+const today=()=>new Date().toISOString().slice(0,10);
+function level(){return Math.floor(S.xp/100)+1}
+function checkStreak(){
+  if(!S.last)return;
+  const diff=Math.round((new Date(today())-new Date(S.last))/86400000);
+  if(diff>1){S.streak=0;save()}
+}
+checkStreak();
+
+const mascot=`<svg class="mascot" viewBox="0 0 64 64"><circle cx="32" cy="34" r="24" fill="#f2b84b"/><path d="M14 28 Q32 4 50 28" fill="#6b5bd6"/><rect x="12" y="26" width="40" height="7" rx="3" fill="#8c7cf0"/><circle cx="24" cy="38" r="4" fill="#241a05"/><circle cx="40" cy="38" r="4" fill="#241a05"/><circle cx="25.4" cy="36.6" r="1.4" fill="#fff"/><circle cx="41.4" cy="36.6" r="1.4" fill="#fff"/><path d="M26 46 Q32 51 38 46" stroke="#241a05" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="10" r="4" fill="#ffd98a"/></svg>`;
+
+/* ---------------- RENDER ---------------- */
+function header(){$("#xp").textContent=S.xp;$("#streak").textContent=S.streak}
+function render(){
+  header();
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  const v=$("#view");v.scrollTop=0;
+  if(tab==="learn")v.innerHTML=learnView();
+  if(tab==="cards")v.innerHTML=cardsView();
+  if(tab==="me")v.innerHTML=meView();
+  bind();
+}
+function learnView(){
+  const list=LESSONS.filter(l=>l.track===track);
+  const doneN=list.filter(l=>S.done[l.id]).length;
+  const next=list.find(l=>!S.done[l.id]);
+  const msg=next?`Next up: <b>${next.name}</b>. About 5 minutes.`:`You finished every ${track} lesson. Try the other track!`;
+  let html=`<div class="seg"><button data-track="history" class="${track==='history'?'on':''}">🏛️ History</button><button data-track="art" class="${track==='art'?'on':''}">🎨 Art</button></div>
+  <div class="hero">${mascot}<div><b>${doneN} of ${list.length} complete</b><p>${msg}</p></div></div>
+  <div class="path"><div class="connector"></div>`;
+  list.forEach((l,i)=>{
+    const unlocked=i===0||S.done[list[i-1].id];
+    html+=`<div class="node"><button class="bubble ${unlocked?'':'locked'}" style="background:${l.bg}" data-open="${l.id}" ${unlocked?'':'data-locked="1"'} aria-label="${l.name}">${unlocked?l.icon:'🔒'}${S.done[l.id]?'<span class="check">✓</span>':''}</button>
+    <div class="info"><div class="era">${l.era}</div><div class="nm">${l.name}</div><div class="sub">${l.title}</div></div></div>`;
+  });
+  const f=FACTS[new Date().getDate()%FACTS.length];
+  html+=`</div><div class="panel fact"><div class="ic">${f[0]}</div><div><b style="font-size:13px;color:var(--gold);letter-spacing:1px;text-transform:uppercase">Fact of the day</b><p>${f[1]}</p></div></div>`;
+  return html;
+}
+function rarColor(r){return r==="Legendary"?"var(--gold2)":"#c9b6ff"}
+function cardsView(){
+  const got=LESSONS.filter(l=>S.done[l.id]).length;
+  let h=`<h2 class="sec-title">Legends</h2><p class="sec-sub">Finish a lesson to unlock its card. ${got} of ${LESSONS.length} collected.</p><div class="grid">`;
+  LESSONS.forEach(l=>{
+    const has=S.done[l.id];
+    h+=has?`<button class="cc" style="background:${l.bg}" data-card="${l.id}"><div class="em">${l.icon}</div><div class="n">${l.name}</div><div class="small" style="color:rgba(255,255,255,.8)">${l.track==='art'?'Art':'History'}</div><div class="r" style="color:${rarColor(l.rarity)}">★ ${l.rarity}</div></button>`
+      :`<div class="cc lock"><div class="em">${l.icon}</div><div class="n">???</div><div class="small">${l.track==='art'?'Art':'History'} legend</div><div class="r" style="color:var(--muted)">🔒 Locked</div></div>`;
+  });
+  return h+`</div>`;
+}
+function meView(){
+  const lv=level(),into=S.xp%100;
+  const acc=S.answered?Math.round(S.correct/S.answered*100):0;
+  const h=LESSONS.filter(l=>l.track==='history'&&S.done[l.id]).length,a=LESSONS.filter(l=>l.track==='art'&&S.done[l.id]).length;
+  const titles=["Curious Visitor","Apprentice","Scholar","Chronicler","Historian","Master Curator","Living Legend"];
+  return `<h2 class="sec-title">Your progress</h2><p class="sec-sub">${titles[Math.min(lv-1,titles.length-1)]}</p>
+  <div class="panel"><div class="lvl-row"><span>Level ${lv}</span><span>${into}/100 XP</span></div><div class="bar"><i style="width:${into}%"></i></div></div>
+  <div class="stat-row"><div class="stat"><div class="v">🔥${S.streak}</div><div class="l">Day streak</div></div><div class="stat"><div class="v">${S.xp}</div><div class="l">Total XP</div></div><div class="stat"><div class="v">${acc}%</div><div class="l">Quiz accuracy</div></div></div>
+  <div class="panel"><div class="lvl-row"><span>🏛️ History</span><span>${h}/6</span></div><div class="bar"><i style="width:${h/6*100}%;background:var(--hist)"></i></div>
+  <div class="lvl-row" style="margin-top:14px"><span>🎨 Art</span><span>${a}/6</span></div><div class="bar"><i style="width:${a/6*100}%;background:var(--art)"></i></div></div>
+  <div class="panel small">Your progress is saved on this phone in this browser. Do one lesson a day to keep your streak going.</div>
+  <button class="link-btn" id="reset">Reset progress</button>`;
+}
+function bind(){
+  document.querySelectorAll("[data-track]").forEach(b=>b.onclick=()=>{track=b.dataset.track;render()});
+  document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{
+    if(b.dataset.locked){toast("Finish the lesson before this one to unlock it");return}
+    openLesson(LESSONS.find(l=>l.id===b.dataset.open));
+  });
+  document.querySelectorAll("[data-card]").forEach(b=>b.onclick=()=>showCard(LESSONS.find(l=>l.id===b.dataset.card)));
+  const r=$("#reset");if(r)r.onclick=confirmReset;
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render()});
+
+function toast(t){const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+
+/* ---------------- LESSON FLOW ---------------- */
+let L,step,qi,picked,earned,rightN;
+function openLesson(l){L=l;step=0;qi=-1;picked=null;earned=0;rightN=0;
+  const ov=document.createElement("div");ov.className="ov";ov.id="ov";document.body.appendChild(ov);drawStory()}
+function close(){const o=$("#ov");if(o)o.remove();render()}
+function progBar(){
+  const total=L.story.length+L.quiz.length;const cur=qi<0?step:L.story.length+qi;
+  return Array.from({length:total},(_,i)=>`<i class="${i<=cur?'on':''}"></i>`).join("");
+}
+function drawStory(){
+  const s=L.story[step];
+  $("#ov").innerHTML=`<div class="ov-top"><button class="x" id="cl">✕</button><div class="prog">${progBar()}</div></div>
+  <div class="ov-body story" id="tapzone"><div class="scene" style="background:${L.bg}">${s.e}</div>
+  <div class="qtag">${L.name} · ${step+1}/${L.story.length}</div><h2>${s.h}</h2><p>${s.t}</p>
+  <div class="tapnote">${step>0?'← Back':''}</div></div>
+  <div class="ov-foot"><button class="btn" id="nx">${step<L.story.length-1?'Continue':'Start quiz'}</button></div>`;
+  $("#cl").onclick=close;
+  $("#nx").onclick=()=>{if(step<L.story.length-1){step++;drawStory()}else{qi=0;drawQuiz()}};
+  const back=$(".tapnote");if(step>0){back.style.cursor="pointer";back.onclick=()=>{step--;drawStory()}}
+}
+function drawQuiz(){
+  const q=L.quiz[qi];picked=null;
+  $("#ov").innerHTML=`<div class="ov-top"><button class="x" id="cl">✕</button><div class="prog">${progBar()}</div></div>
+  <div class="ov-body"><div class="qtag">Question ${qi+1} of ${L.quiz.length}</div><div class="q">${q.q}</div>
+  <div id="opts">${q.o.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join("")}</div><div id="fb"></div></div>
+  <div class="ov-foot"><button class="btn" id="chk" disabled>Check</button></div>`;
+  $("#cl").onclick=close;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if($("#chk").dataset.done)return;
+    document.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");picked=+b.dataset.i;$("#chk").disabled=false});
+  $("#chk").onclick=()=>{
+    const c=$("#chk");
+    if(c.dataset.done){qi++;if(qi<L.quiz.length)drawQuiz();else finish();return}
+    const ok=picked===q.a;S.answered++;if(ok){S.correct++;rightN++;earned+=10}
+    const opts=document.querySelectorAll(".opt");opts[q.a].classList.add("right");if(!ok)opts[picked].classList.add("wrong");
+    $("#fb").innerHTML=`<div class="fb ${ok?'ok':'no'}"><b>${ok?'✅ Correct! +10 XP':'❌ Not quite'}</b>${q.why}</div>`;
+    c.dataset.done=1;c.textContent=qi<L.quiz.length-1?"Next question":"See results";
+  };
+}
+function finish(){
+  const first=!S.done[L.id];
+  const bonus=first?20:5;earned+=bonus;S.xp+=earned;
+  const t=today();
+  if(S.last!==t){
+    const diff=S.last?Math.round((new Date(t)-new Date(S.last))/86400000):99;
+    S.streak=diff===1?S.streak+1:1;S.last=t;
+  }
+  S.done[L.id]=true;save();
+  $("#ov").innerHTML=`<div class="ov-top"><button class="x" id="cl">✕</button><div class="prog">${progBar()}</div></div>
+  <div class="ov-body reward"><div class="qtag">${rightN} of ${L.quiz.length} correct</div>
+  <div class="xp-pop">+${earned} XP</div>
+  <div class="small">${first?'New legend unlocked!':'Lesson replayed. Nice review!'} 🔥 ${S.streak}-day streak</div>
+  ${bigCard(L)}</div>
+  <div class="ov-foot"><button class="btn" id="dn">Continue</button></div>`;
+  $("#cl").onclick=close;$("#dn").onclick=close;
+  if(first)confetti();
+}
+function bigCard(l){return `<div class="big-card" style="background:${l.bg}"><div class="r" style="color:${rarColor(l.rarity)};margin:0">★ ${l.rarity}</div><div class="em">${l.icon}</div><div class="n">${l.name}</div><div class="t">${l.era}</div><div class="lg">${l.legacy}</div></div>`}
+function showCard(l){
+  const ov=document.createElement("div");ov.className="ov";ov.id="ov";
+  ov.innerHTML=`<div class="ov-top"><button class="x" id="cl">✕</button><div style="flex:1"></div></div><div class="ov-body reward">${bigCard(l)}<p class="small" style="margin-top:10px">${l.title}</p></div>
+  <div class="ov-foot"><button class="btn ghost" id="rp">Replay lesson</button></div>`;
+  document.body.appendChild(ov);
+  $("#cl").onclick=close;$("#rp").onclick=()=>{ov.remove();openLesson(l)};
+}
+function confirmReset(){
+  const ov=document.createElement("div");ov.className="ov";ov.id="ov";
+  ov.innerHTML=`<div class="ov-top"><button class="x" id="cl">✕</button></div><div class="ov-body" style="justify-content:center;text-align:center"><h2 class="serif">Reset everything?</h2><p class="small">This clears your XP, streak and cards on this device.</p></div>
+  <div class="ov-foot"><button class="btn" id="yes" style="background:var(--bad);box-shadow:0 5px 0 #8f2a38;color:#fff">Yes, reset</button><div style="height:12px"></div><button class="btn ghost" id="no">Cancel</button></div>`;
+  document.body.appendChild(ov);
+  $("#cl").onclick=close;$("#no").onclick=close;
+  $("#yes").onclick=()=>{S={xp:0,done:{},streak:0,last:null,correct:0,answered:0};save();close()};
+}
+function confetti(){
+  const cols=["#f2b84b","#e26d4f","#4fb3c9","#4cc38a","#c9b6ff"];
+  for(let i=0;i<40;i++){const c=document.createElement("i");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=cols[i%5];c.style.animationDuration=(1.6+Math.random()*1.4)+"s";c.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3600)}
+}
+render();
+</script>
+</body>
+</html>
