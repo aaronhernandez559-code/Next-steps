@@ -30,7 +30,10 @@ Live app: https://aaronhernandez559-code.github.io/Next-steps/dsm-companion/
 
 A bite-sized learning app in `chronicle/index.html`, in the spirit of story-based history apps.
 
-- Two tracks, **History** and **Art**, each with 6 lessons on a path that unlocks one step at a time.
+- Four tracks on a path that unlocks one step at a time:
+  - **History** (6 lessons) and **Art** (6 lessons).
+  - **America** (9 lessons): a Harlem Renaissance unit (the movement, Langston Hughes, Zora Neale Hurston, Harlem's jazz stages, Harlem's artists) and an American Turning Points unit (the Lincoln Memorial in 1939 and 1963, Jackie Robinson, the Moon landing, Woodstock).
+  - **Places** (8 lessons): the Grand Canyon, the Mississippi River, Yellowstone, Mount Everest, the Amazon, the Sahara, the Great Barrier Reef and Antarctica.
 - Each lesson is about 5 minutes: 5 short story screens, then a 3-question quiz with an explanation after every answer.
 - Earn XP, level up, keep a daily streak, and collect a **Legend** card for every lesson you finish.
 - Progress is saved on the device in that browser.

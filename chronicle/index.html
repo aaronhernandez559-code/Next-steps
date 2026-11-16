@@ -32,7 +32,9 @@ h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif}
 .tab svg{width:24px;height:24px}
 .tab.on{color:var(--gold)}
 .seg{display:flex;background:var(--bg2);border-radius:14px;padding:4px;margin:6px 0 18px;border:1px solid var(--line)}
-.seg button{flex:1;padding:10px;border-radius:10px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button{flex:1;padding:8px 2px;border-radius:10px;font-weight:700;font-size:12.5px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+.seg button .se{font-size:19px}
+.unit{font-family:Fraunces;font-weight:600;font-size:15px;color:var(--gold);text-align:center;margin:6px auto 22px;background:var(--bg);padding:6px 14px;border:1px solid var(--line);border-radius:99px;width:max-content;max-width:100%}
 .seg button.on{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .hero{background:linear-gradient(135deg,#2c2546,#1e1b2e);border:1px solid var(--line);border-radius:20px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:8px}
 .hero .mascot{width:58px;height:58px;flex:none}
@@ -40,7 +42,7 @@ h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif}
 .hero b{font-size:15px}
 .path{position:relative;padding:20px 0 10px}
 .node{display:flex;align-items:center;gap:14px;margin:0 0 22px;position:relative}
-.node:nth-child(even){flex-direction:row-reverse;text-align:right}
+.node.alt{flex-direction:row-reverse;text-align:right}
 .bubble{width:76px;height:76px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:34px;position:relative;
   box-shadow:0 6px 0 rgba(0,0,0,.35);transition:transform .15s}
 .bubble:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.35)}
@@ -304,6 +306,247 @@ const LESSONS = [
   {q:"What event led Frida to start painting?",o:["Winning a contest","Recovering from a bus accident","Meeting Picasso","Moving to Paris"],a:1,why:"She began painting in bed while recovering from the 1925 bus accident."},
   {q:"Who was Frida's husband?",o:["Pablo Picasso","Diego Rivera","Salvador Dalí","Leonardo da Vinci"],a:1,why:"She married muralist Diego Rivera in 1929, and married him again in 1940."},
   {q:"What was her childhood home called?",o:["The Red Palace","The Blue House","The Golden Gate","The White Tower"],a:1,why:"La Casa Azul, the Blue House, is now the Frida Kahlo Museum."}
+ ]},
+/* ===== AMERICA: HARLEM RENAISSANCE ===== */
+{id:"harlem",track:"america",unit:"The Harlem Renaissance",name:"The Harlem Renaissance",title:"A Cultural Explosion",era:"New York · 1920s–1930s",icon:"🎺",bg:"linear-gradient(135deg,#c4552d,#3b1d4a)",rarity:"Legendary",
+ legacy:"A flowering of Black art, music, writing and ideas, centered in Harlem, that reshaped American culture.",
+ story:[
+  {e:"🚂",h:"The Great Migration",t:"Starting in the 1910s, millions of Black Americans left the rural South for cities in the North and West. They were escaping Jim Crow segregation and violence, and looking for jobs and a better life. About 6 million moved between 1910 and 1970."},
+  {e:"🏙️",h:"Harlem rises",t:"Many settled in Harlem, a neighborhood in upper Manhattan. By the 1920s it had become the cultural capital of Black America, packed with writers, musicians, artists, churches and clubs."},
+  {e:"📖",h:"The 'New Negro'",t:"In 1925, Alain Locke, a Howard University philosopher and the first Black Rhodes Scholar, published an anthology called The New Negro. It became a kind of manifesto: Black Americans would define themselves, with pride, through their own art."},
+  {e:"✒️",h:"Magazines and contests",t:"Magazines like The Crisis, edited by W.E.B. Du Bois for the NAACP, and Opportunity published young writers and held literary contests. Those prizes helped launch careers like Langston Hughes's."},
+  {e:"📉",h:"The fade, and the legacy",t:"The Great Depression, starting in 1929, hit Harlem very hard, and by the mid-1930s the movement had faded. But its ideas about pride, identity and artistic freedom fed directly into the civil rights movement decades later."}
+ ],
+ quiz:[
+  {q:"What was the Great Migration?",o:["Settlers moving west in covered wagons","Millions of Black Americans moving from the South to northern and western cities","Immigrants arriving at Ellis Island","Birds flying south"],a:1,why:"About 6 million Black Americans moved out of the South between 1910 and 1970."},
+  {q:"Who edited the 1925 anthology The New Negro?",o:["Alain Locke","Frederick Douglass","Martin Luther King Jr.","Booker T. Washington"],a:0,why:"Alain Locke, a Howard philosopher, edited the book that gave the movement its manifesto."},
+  {q:"What helped bring the Harlem Renaissance to an end?",o:["World War I","The Great Depression","The invention of TV","A hurricane"],a:1,why:"The economic crash of 1929 hit Harlem hard, and the movement faded by the mid-1930s."}
+ ]},
+{id:"hughes",track:"america",unit:"The Harlem Renaissance",name:"Langston Hughes",title:"The Poet of Harlem",era:"Harlem Renaissance · 1901–1967",icon:"✒️",bg:"linear-gradient(135deg,#3f6cc4,#1c2552)",rarity:"Legendary",
+ legacy:"The poet who put the rhythms of jazz and the blues into American literature and wrote about everyday Black life with pride.",
+ story:[
+  {e:"🌾",h:"A Midwest childhood",t:"Langston Hughes was born in 1901 in Joplin, Missouri, and grew up mostly in Kansas, Illinois and Ohio. He moved around a lot, and he found comfort in books."},
+  {e:"🌊",h:"A poem on a train",t:"As a teenager, while riding a train across the Mississippi River, he wrote a poem called The Negro Speaks of Rivers. It connected Black history to the world's great rivers. The Crisis magazine published it in 1921, and it made his name."},
+  {e:"🎷",h:"Jazz on the page",t:"Hughes did something new: he wrote poems that moved like jazz and the blues, with their repetition, rhythm and feeling. His first book, The Weary Blues, came out in 1926."},
+  {e:"🍽️",h:"Discovered as a busboy",t:"The story goes that while working as a busboy in a Washington, D.C. hotel, he left some poems by the plate of the famous poet Vachel Lindsay. Lindsay praised them publicly, and newspapers picked up the story of the 'busboy poet.'"},
+  {e:"🏠",h:"A Harlem landmark",t:"Hughes wrote poetry, novels, plays, newspaper columns and children's books for over 40 years. His home on East 127th Street in Harlem is now a protected landmark."}
+ ],
+ quiz:[
+  {q:"Which poem made Langston Hughes famous?",o:["The Raven","The Negro Speaks of Rivers","Leaves of Grass","The Road Not Taken"],a:1,why:"He wrote it as a teenager on a train crossing the Mississippi, and The Crisis published it in 1921."},
+  {q:"What music did Hughes bring into his poetry?",o:["Opera","Jazz and the blues","Country","Classical symphonies"],a:1,why:"His poems borrowed the rhythm and repetition of jazz and the blues."},
+  {q:"True or false: Hughes was born in Harlem.",o:["True","False"],a:1,why:"False. He was born in Joplin, Missouri, and later made Harlem his home."}
+ ]},
+{id:"hurston",track:"america",unit:"The Harlem Renaissance",name:"Zora Neale Hurston",title:"Storyteller of the South",era:"Harlem Renaissance · 1891–1960",icon:"📚",bg:"linear-gradient(135deg,#c79a32,#5a3a12)",rarity:"Epic",
+ legacy:"A novelist and folklorist who captured Black Southern speech and stories, and whose work was rescued from obscurity after her death.",
+ story:[
+  {e:"🏡",h:"Eatonville",t:"Zora Neale Hurston grew up in Eatonville, Florida, one of the first all-Black towns to be incorporated in the United States. She later said growing up there gave her confidence, because the people running everything looked like her."},
+  {e:"🔍",h:"A scientist of stories",t:"She studied anthropology at Barnard College under the famous scholar Franz Boas. Then she traveled the South, and later Haiti and Jamaica, collecting folktales, songs and traditions."},
+  {e:"🌳",h:"Her masterpiece",t:"In 1937 she published Their Eyes Were Watching God, the story of a Black woman named Janie finding her own voice. It's written in the rich dialect she had recorded, which some critics at the time didn't appreciate."},
+  {e:"🪦",h:"Forgotten",t:"Hurston's books went out of print. She died in 1960 in Fort Pierce, Florida, with very little money, and was buried in an unmarked grave."},
+  {e:"✨",h:"Found again",t:"In 1973, writer Alice Walker went searching for the grave and placed a headstone there. Her 1975 magazine essay about the search sparked a huge revival. Today, Their Eyes Were Watching God is taught in schools across the country."}
+ ],
+ quiz:[
+  {q:"What was special about Eatonville, Florida?",o:["It was the first U.S. capital","It was one of the first incorporated all-Black towns","It was a gold-mining town","It was where jazz was invented"],a:1,why:"Hurston grew up in a town run by Black residents, which shaped her confidence."},
+  {q:"What did Hurston study at Barnard?",o:["Medicine","Anthropology","Law","Painting"],a:1,why:"She studied anthropology under Franz Boas and collected folklore."},
+  {q:"Who helped bring Hurston's work back to fame?",o:["Alice Walker","Oprah Winfrey","Maya Angelou","Toni Morrison"],a:0,why:"Alice Walker marked her grave in 1973 and wrote about it, sparking a revival."}
+ ]},
+{id:"jazzharlem",track:"america",unit:"The Harlem Renaissance",name:"Harlem's Jazz Stages",title:"Ellington, the Savoy & the Apollo",era:"Harlem · 1920s–1930s",icon:"🎹",bg:"linear-gradient(135deg,#a3305f,#2a1238)",rarity:"Epic",
+ legacy:"Harlem's clubs and ballrooms made jazz the sound of America and launched legends like Duke Ellington and Ella Fitzgerald.",
+ story:[
+  {e:"🎩",h:"Duke at the Cotton Club",t:"In 1927, bandleader Duke Ellington began a long run at Harlem's Cotton Club. Radio broadcasts from the club made his orchestra famous nationwide."},
+  {e:"🚫",h:"The ugly catch",t:"The Cotton Club had a cruel rule: the performers were Black, but the audience was white only. It was a sharp example of the segregation Black artists faced even at the height of their fame."},
+  {e:"💃",h:"The Savoy Ballroom",t:"The Savoy Ballroom, which opened in 1926, was different. It welcomed Black and white dancers on the same floor. It became the home of the Lindy Hop, a wild, swinging dance with flips and spins."},
+  {e:"🎤",h:"Amateur Night",t:"In 1934, the Apollo Theater on 125th Street began presenting Black performers and launched its famous Amateur Night. Audiences there were known for cheering hard or booing harder."},
+  {e:"⭐",h:"Ella's big night",t:"That same year, a 17-year-old named Ella Fitzgerald planned to dance at Amateur Night. She got nervous, sang instead, and won. She became the 'First Lady of Song.' The Apollo still holds Amateur Night today."}
+ ],
+ quiz:[
+  {q:"Which bandleader became famous at the Cotton Club?",o:["Duke Ellington","Elvis Presley","Frank Sinatra","Glenn Miller"],a:0,why:"Ellington's orchestra played there starting in 1927, and radio spread his sound."},
+  {q:"What made the Savoy Ballroom stand out?",o:["It was only for musicians","Black and white dancers shared the floor","It was underground","It had no music"],a:1,why:"The Savoy was integrated, and it was the home of the Lindy Hop."},
+  {q:"True or false: Ella Fitzgerald originally planned to dance at Amateur Night.",o:["True","False"],a:0,why:"True! She switched to singing at the last moment and won."}
+ ]},
+{id:"harlemart",track:"america",unit:"The Harlem Renaissance",name:"Harlem's Artists",title:"Douglas, Savage & Lawrence",era:"Harlem · 1920s–1940s",icon:"🖼️",bg:"linear-gradient(135deg,#2f8f86,#123d3a)",rarity:"Epic",
+ legacy:"Painters and sculptors who gave the Harlem Renaissance its look and passed their skills on to the next generation.",
+ story:[
+  {e:"🔷",h:"Aaron Douglas",t:"Aaron Douglas became the movement's leading visual artist. His style used flat silhouettes, layered circles of light, and Egyptian and African influences. He illustrated The New Negro and books by Langston Hughes."},
+  {e:"🏛️",h:"Murals in the library",t:"In 1934 Douglas painted a set of murals called Aspects of Negro Life for the 135th Street library in Harlem. They trace Black history from Africa through slavery to the modern city. They're still there, in what is now the Schomburg Center."},
+  {e:"🗿",h:"Augusta Savage",t:"Sculptor Augusta Savage ran an art school in Harlem that trained many young artists. For the 1939 World's Fair she made The Harp, a 16-foot sculpture of singers shaped like the strings of a harp."},
+  {e:"💔",h:"A lost masterpiece",t:"The Harp was one of the fair's most popular works. But Savage had no money to cast it in bronze or store it, and after the fair the plaster sculpture was destroyed. Only photos and small copies remain."},
+  {e:"🚂",h:"Jacob Lawrence",t:"One of Savage's students, Jacob Lawrence, grew up in Harlem. At about 23, he finished the Migration Series: 60 panels telling the story of the Great Migration. Today, half hang in New York's Museum of Modern Art and half in the Phillips Collection in Washington, D.C."}
+ ],
+ quiz:[
+  {q:"Where are Aaron Douglas's 1934 murals?",o:["The White House","The Schomburg Center in Harlem","The Louvre","Hollywood"],a:1,why:"He painted them for the 135th Street library, now the Schomburg Center."},
+  {q:"What happened to Augusta Savage's sculpture The Harp?",o:["It's in a museum in Paris","It was destroyed after the 1939 World's Fair","It was sold to a king","It was buried"],a:1,why:"She couldn't afford to cast or store it, so the plaster original was destroyed."},
+  {q:"What does Jacob Lawrence's Migration Series show?",o:["The Great Migration of Black Americans","Birds flying south","The Gold Rush","The Pilgrims"],a:0,why:"Its 60 panels tell the story of millions moving out of the South."}
+ ]},
+/* ===== AMERICA: TURNING POINTS ===== */
+{id:"anderson",track:"america",unit:"American Turning Points",name:"The Lincoln Memorial",title:"Two Moments That Moved a Nation",era:"Washington, D.C. · 1939 & 1963",icon:"🎙️",bg:"linear-gradient(135deg,#6d7a91,#232a3a)",rarity:"Legendary",
+ legacy:"The steps where Marian Anderson sang and Martin Luther King Jr. dreamed out loud, turning a monument into a stage for civil rights.",
+ story:[
+  {e:"🚪",h:"A door slammed shut",t:"In 1939, Marian Anderson was one of the greatest singers in the world. But the Daughters of the American Revolution refused to let her perform at their Constitution Hall in Washington, D.C., because she was Black."},
+  {e:"✉️",h:"The First Lady resigns",t:"First Lady Eleanor Roosevelt quit the organization in protest. With government help, a new stage was found: the steps of the Lincoln Memorial."},
+  {e:"🎶",h:"Easter Sunday, 1939",t:"On Easter Sunday, about 75,000 people gathered on the National Mall to hear Anderson sing, and millions more listened on the radio. In 1955 she became the first Black singer to perform as a member of the Metropolitan Opera."},
+  {e:"✊",h:"The March on Washington",t:"On August 28, 1963, about 250,000 people filled the same space for the March on Washington for Jobs and Freedom. It was one of the largest protests in American history up to that time."},
+  {e:"🗣️",h:"'I Have a Dream'",t:"Martin Luther King Jr. was the last major speaker. Partway through, gospel singer Mahalia Jackson reportedly urged him to tell the crowd about his dream, and he set aside his notes. The next year, Congress passed the Civil Rights Act of 1964."}
+ ],
+ quiz:[
+  {q:"Why did Marian Anderson sing at the Lincoln Memorial in 1939?",o:["It had the best acoustics","She was refused a concert hall because she was Black","It was her birthday","The president asked her to"],a:1,why:"After Constitution Hall refused her, the outdoor concert drew about 75,000 people."},
+  {q:"About how many people attended the 1963 March on Washington?",o:["2,500","25,000","250,000","2.5 million"],a:2,why:"About 250,000 people came, making it one of the largest protests of its time."},
+  {q:"Which major law passed the year after the March?",o:["The Civil Rights Act of 1964","The Bill of Rights","The 19th Amendment","The New Deal"],a:0,why:"The Civil Rights Act of 1964 banned discrimination in public places and employment."}
+ ]},
+{id:"jackie",track:"america",unit:"American Turning Points",name:"Jackie Robinson",title:"Breaking the Color Line",era:"Brooklyn · 1947",icon:"⚾",bg:"linear-gradient(135deg,#2b5fb3,#0f2550)",rarity:"Epic",
+ legacy:"The first Black player in modern Major League Baseball, whose courage helped open doors far beyond sports.",
+ story:[
+  {e:"🏟️",h:"A divided game",t:"For decades, Major League Baseball was white only. Black players starred in the Negro Leagues instead. Jackie Robinson played for one of its top teams, the Kansas City Monarchs."},
+  {e:"🤝",h:"The deal",t:"Brooklyn Dodgers executive Branch Rickey wanted to sign a Black player. He chose Robinson and warned him he'd face terrible abuse. He needed a player with the strength not to fight back."},
+  {e:"📅",h:"April 15, 1947",t:"On that day, Robinson took the field at first base for the Brooklyn Dodgers. He endured insults, threats and hard slides from opponents, and kept playing."},
+  {e:"🏆",h:"He was great, too",t:"That year he won the very first Rookie of the Year award. In 1949 he was named the league's Most Valuable Player, and in 1962 he entered the Baseball Hall of Fame."},
+  {e:"4️⃣",h:"Number 42",t:"In 1997, Major League Baseball retired his number, 42, for every team, a first in the sport. Every April 15, on Jackie Robinson Day, every player in the majors wears 42."}
+ ],
+ quiz:[
+  {q:"Which team did Jackie Robinson join in 1947?",o:["New York Yankees","Brooklyn Dodgers","Boston Red Sox","Chicago Cubs"],a:1,why:"He debuted for the Brooklyn Dodgers on April 15, 1947."},
+  {q:"What number did MLB retire for every team in his honor?",o:["7","24","42","99"],a:2,why:"Number 42 was retired league-wide in 1997."},
+  {q:"True or false: Robinson won the first-ever Rookie of the Year award.",o:["True","False"],a:0,why:"True. He won it in 1947, his first season."}
+ ]},
+{id:"moon",track:"america",unit:"American Turning Points",name:"The Moon Landing",title:"The Whole World Watched",era:"July 20, 1969",icon:"🌕",bg:"linear-gradient(135deg,#4b4f6b,#0d0f1c)",rarity:"Legendary",
+ legacy:"Humanity's first steps on another world, and one of the most-watched broadcasts in history.",
+ story:[
+  {e:"🚀",h:"A race to the Moon",t:"In 1961, President John F. Kennedy challenged America to land a person on the Moon before the decade ended. It was part of a space race with the Soviet Union."},
+  {e:"👨‍🚀",h:"Apollo 11",t:"On July 16, 1969, Neil Armstrong, Buzz Aldrin and Michael Collins launched from Florida. Collins stayed in orbit in the command module while Armstrong and Aldrin flew the lunar module, the Eagle, to the surface."},
+  {e:"📺",h:"Everyone was watching",t:"On July 20, Armstrong stepped onto the Moon. An estimated 600 million people around the world watched on TV, one of the largest audiences in history up to then."},
+  {e:"🇺🇸",h:"What they left",t:"The astronauts planted a flag, set up experiments, and left a plaque saying they came in peace for all of humanity. Their bootprints are still there, because the Moon has no wind to erase them."},
+  {e:"👣",h:"Only twelve",t:"Between 1969 and 1972, twelve astronauts walked on the Moon. Apollo 17 in December 1972 was the last time humans visited."}
+ ],
+ quiz:[
+  {q:"Who stayed in orbit during the Apollo 11 landing?",o:["Neil Armstrong","Buzz Aldrin","Michael Collins","John Glenn"],a:2,why:"Collins piloted the command module while the others landed."},
+  {q:"Why are the astronauts' bootprints still on the Moon?",o:["They were painted","The Moon has no wind or weather to erase them","Robots guard them","They were set in concrete"],a:1,why:"With no air or wind, nothing wears the prints away."},
+  {q:"How many people have walked on the Moon?",o:["2","6","12","24"],a:2,why:"Twelve astronauts walked on the Moon between 1969 and 1972."}
+ ]},
+{id:"woodstock",track:"america",unit:"American Turning Points",name:"Woodstock",title:"Three Days of Peace & Music",era:"New York · August 1969",icon:"☮️",bg:"linear-gradient(135deg,#d46a9a,#6b3fa0)",rarity:"Epic",
+ legacy:"A rain-soaked music festival on a dairy farm that became a symbol of a whole generation.",
+ story:[
+  {e:"🐄",h:"Not in Woodstock",t:"Despite the name, the 1969 Woodstock festival wasn't held in the town of Woodstock. It took place on Max Yasgur's dairy farm in Bethel, New York, about 40 miles away."},
+  {e:"👥",h:"Way more than expected",t:"Organizers hoped for maybe 50,000 to 200,000 people. Roughly 400,000 showed up. Roads jammed for miles, and fences came down, so it effectively became a free concert."},
+  {e:"🌧️",h:"Rain and mud",t:"Food and water ran short, and storms turned the fields into mud. Yet the crowd was famously peaceful. Nearby residents brought food, and many people shared what they had."},
+  {e:"🎸",h:"The music",t:"More than 30 acts played, including Janis Joplin, The Who, Santana, and Creedence Clearwater Revival. The festival ran so late that the final act went on Monday morning."},
+  {e:"🇺🇸",h:"Hendrix's anthem",t:"That closing act was Jimi Hendrix, playing to a crowd that had shrunk to tens of thousands. His electric guitar version of The Star-Spangled Banner, full of sounds like bombs and sirens, became one of the defining moments of the Vietnam War era."}
+ ],
+ quiz:[
+  {q:"Where was the Woodstock festival actually held?",o:["In the town of Woodstock","On a dairy farm in Bethel, New York","In Central Park","In California"],a:1,why:"It was held on Max Yasgur's farm in Bethel, about 40 miles from Woodstock."},
+  {q:"About how many people came?",o:["5,000","40,000","400,000","4 million"],a:2,why:"Around 400,000 people arrived, far more than planned."},
+  {q:"Who played the famous closing set?",o:["Elvis Presley","Jimi Hendrix","The Beatles","Bob Dylan"],a:1,why:"Hendrix closed the festival on Monday morning."}
+ ]},
+/* ===== PLACES ===== */
+{id:"grandcanyon",track:"places",name:"The Grand Canyon",title:"Two Billion Years Deep",era:"Arizona, USA",icon:"🏜️",bg:"linear-gradient(135deg,#d0683a,#6b2a14)",rarity:"Legendary",
+ legacy:"A mile-deep canyon carved by the Colorado River, with rock layers that read like a history book of the Earth.",
+ story:[
+  {e:"📏",h:"Bigger than you think",t:"The Grand Canyon is about 277 river miles long, up to 18 miles wide, and over a mile deep. You could stack about four Empire State Buildings inside it and still not reach the rim."},
+  {e:"🌊",h:"Carved by a river",t:"The Colorado River did most of the cutting, slowly grinding through rock over roughly the last 5 to 6 million years as the land around it rose."},
+  {e:"🍰",h:"A layer cake of time",t:"The canyon walls are layers of rock stacked like a cake. The oldest rocks at the bottom are about 1.7 to 1.8 billion years old. Walking down the trail is like walking back in time."},
+  {e:"🐴",h:"Mail by mule",t:"The Havasupai people have lived in the canyon for centuries. Their village, Supai, is so remote that the U.S. Postal Service still delivers its mail by mule, the only place in the country where that happens."},
+  {e:"🏞️",h:"Protected",t:"President Theodore Roosevelt visited and pushed to protect it. He made it a national monument in 1908, and it became a national park in 1919. Today around 5 million people visit each year."}
+ ],
+ quiz:[
+  {q:"Which river carved the Grand Canyon?",o:["The Mississippi","The Colorado","The Rio Grande","The Amazon"],a:1,why:"The Colorado River cut the canyon over millions of years."},
+  {q:"About how old are the oldest rocks at the bottom?",o:["10,000 years","1 million years","Nearly 2 billion years","100 years"],a:2,why:"The deepest rocks are about 1.7 to 1.8 billion years old."},
+  {q:"What's unusual about mail delivery to Supai?",o:["It's delivered by drone","It's delivered by mule","There is no mail","It comes by boat"],a:1,why:"Supai is the only place in the U.S. that gets its mail by mule."}
+ ]},
+{id:"mississippi",track:"places",name:"The Mississippi River",title:"America's Great River",era:"Central United States",icon:"🛶",bg:"linear-gradient(135deg,#3d7f9c,#163545)",rarity:"Epic",
+ legacy:"The river that drains much of a continent and carried goods, people, music and stories through American history.",
+ story:[
+  {e:"👣",h:"A tiny start",t:"The Mississippi begins at Lake Itasca in northern Minnesota, where it's so small and shallow you can walk across it on stepping stones."},
+  {e:"🗺️",h:"A giant drain",t:"From there it flows about 2,340 miles to the Gulf of Mexico. Its basin collects water from all or part of 31 states and two Canadian provinces, about 40% of the lower 48 states."},
+  {e:"🚢",h:"A highway of water",t:"Before railroads, the river was America's main highway. Steamboats carried cotton, grain and passengers, and river towns like New Orleans, Memphis and St. Louis boomed."},
+  {e:"✍️",h:"Mark Twain's name",t:"Samuel Clemens worked as a steamboat pilot before becoming a writer. His pen name, Mark Twain, came from a riverboat call meaning the water was two fathoms (12 feet) deep, safe for a steamboat."},
+  {e:"🎵",h:"The music river",t:"The river helped carry music north. Jazz from New Orleans and the blues from the Mississippi Delta traveled up the river and into cities like Chicago, part of the same migration that fed the Harlem Renaissance."}
+ ],
+ quiz:[
+  {q:"Where does the Mississippi River begin?",o:["Lake Itasca, Minnesota","The Rocky Mountains","Lake Michigan","New Orleans"],a:0,why:"It starts as a small stream flowing out of Lake Itasca."},
+  {q:"What does 'mark twain' mean on a riverboat?",o:["Turn left","Two fathoms deep, safe water","Danger ahead","Time for dinner"],a:1,why:"It means the water is 12 feet deep, enough for a steamboat."},
+  {q:"True or false: The Mississippi's basin covers about 40% of the lower 48 states.",o:["True","False"],a:0,why:"True. It drains all or part of 31 states."}
+ ]},
+{id:"yellowstone",track:"places",name:"Yellowstone",title:"The World's First National Park",era:"Wyoming, Montana & Idaho, USA",icon:"♨️",bg:"linear-gradient(135deg,#d9a031,#2e6b4f)",rarity:"Epic",
+ legacy:"The first national park, sitting on top of a giant volcano and holding about half of the world's geysers.",
+ story:[
+  {e:"✍️",h:"A world first",t:"On March 1, 1872, President Ulysses S. Grant signed a law creating Yellowstone National Park. It's widely considered the first national park in the world."},
+  {e:"🌋",h:"Sitting on a volcano",t:"Yellowstone sits on top of a huge volcanic hotspot. Its last giant eruption, about 631,000 years ago, left a crater-like caldera about 30 by 45 miles across."},
+  {e:"⛲",h:"Half the world's geysers",t:"That underground heat powers more than 10,000 hot springs, mud pots and steam vents, including about half of all the geysers on Earth. Old Faithful erupts about every hour and a half."},
+  {e:"🌈",h:"Living rainbows",t:"The Grand Prismatic Spring is the largest hot spring in the U.S. Its rings of orange, yellow and green come from heat-loving microbes, each color living at a different water temperature."},
+  {e:"🦬",h:"Ancient herds",t:"Yellowstone is the only place in the U.S. where bison have lived continuously since prehistoric times. Fun warning: bison injure more visitors than bears do, so keep your distance."}
+ ],
+ quiz:[
+  {q:"Which president created Yellowstone National Park?",o:["Abraham Lincoln","Ulysses S. Grant","Theodore Roosevelt","George Washington"],a:1,why:"Grant signed the law on March 1, 1872."},
+  {q:"What gives Grand Prismatic Spring its colors?",o:["Paint","Minerals from meteors","Heat-loving microbes","Sunlight on ice"],a:2,why:"Different microbes thrive at different temperatures, creating colored rings."},
+  {q:"About what share of the world's geysers are in Yellowstone?",o:["1%","10%","About half","All of them"],a:2,why:"Yellowstone holds about half of the geysers on Earth."}
+ ]},
+{id:"everest",track:"places",name:"Mount Everest",title:"The Roof of the World",era:"Nepal & China (Tibet)",icon:"🏔️",bg:"linear-gradient(135deg,#7fa3c9,#2a3f5c)",rarity:"Legendary",
+ legacy:"Earth's highest mountain above sea level, still being pushed upward by colliding continents.",
+ story:[
+  {e:"📐",h:"The highest point",t:"Mount Everest stands about 29,032 feet (8,849 meters) above sea level, the height announced jointly by Nepal and China in 2020. It sits on the border between Nepal and Tibet."},
+  {e:"🏷️",h:"Many names",t:"In Nepal it's called Sagarmatha, and in Tibet, Chomolungma. The English name honors George Everest, a British surveyor in India, who never climbed it."},
+  {e:"🐚",h:"Seashells at the summit",t:"The rock near the very top is limestone that formed on an ancient seafloor. It contains fossils of tiny sea creatures, lifted more than five miles into the sky."},
+  {e:"🧗",h:"First to the top",t:"On May 29, 1953, Edmund Hillary of New Zealand and Tenzing Norgay, a Sherpa from Nepal, became the first people confirmed to reach the summit."},
+  {e:"⬆️",h:"Still growing",t:"The Himalayas formed when the Indian plate crashed into Asia, and that collision is still happening. Everest is still rising by a few millimeters each year."}
+ ],
+ quiz:[
+  {q:"Who first reached the summit of Everest?",o:["George Everest","Edmund Hillary and Tenzing Norgay","Neil Armstrong","Marco Polo"],a:1,why:"They reached the top on May 29, 1953."},
+  {q:"What can be found in the rock near the summit?",o:["Gold","Fossils of sea creatures","Dinosaur eggs","Diamonds"],a:1,why:"The summit rock formed on an ancient seafloor, then was pushed up."},
+  {q:"True or false: Mount Everest is still slowly rising.",o:["True","False"],a:0,why:"True. India is still pushing into Asia, lifting the Himalayas a few millimeters a year."}
+ ]},
+{id:"amazon",track:"places",name:"The Amazon",title:"The River Sea",era:"South America",icon:"🦜",bg:"linear-gradient(135deg,#2f9a55,#0f3d22)",rarity:"Legendary",
+ legacy:"The world's largest rainforest and the river that carries more water than any other on Earth.",
+ story:[
+  {e:"💧",h:"The mightiest river",t:"The Amazon carries more water than any other river on Earth, about a fifth of all the river water that flows into the oceans. Scientists still debate whether it or the Nile is longer."},
+  {e:"🌳",h:"The great rainforest",t:"Its rainforest is the largest on the planet, spreading across nine countries. About 60% of it is in Brazil."},
+  {e:"🐸",h:"Life everywhere",t:"The Amazon is home to an enormous share of the world's plant and animal species, including jaguars, sloths, poison dart frogs, and thousands of kinds of trees."},
+  {e:"🐬",h:"Pink dolphins",t:"Its waters hold the Amazon river dolphin, or boto, which is often pink. Local legends say botos can turn into people at night."},
+  {e:"🌉",h:"No bridges",t:"Here's a surprise: no bridge crosses the main Amazon River. Much of it runs through thinly populated rainforest, the banks flood heavily, and people mostly travel by boat."}
+ ],
+ quiz:[
+  {q:"What makes the Amazon River special?",o:["It's the coldest river","It carries more water than any other river","It flows uphill","It's completely straight"],a:1,why:"It carries roughly a fifth of all river water reaching the oceans."},
+  {q:"Which country holds most of the Amazon rainforest?",o:["Peru","Colombia","Brazil","Mexico"],a:2,why:"About 60% of the rainforest is in Brazil."},
+  {q:"True or false: There are no bridges across the main Amazon River.",o:["True","False"],a:0,why:"True. People mostly cross by boat."}
+ ]},
+{id:"sahara",track:"places",name:"The Sahara",title:"The Desert That Was Green",era:"North Africa",icon:"🐪",bg:"linear-gradient(135deg,#e0b057,#8a5a1e)",rarity:"Epic",
+ legacy:"The largest hot desert on Earth, which was once full of lakes and grassland, and still helps feed the Amazon.",
+ story:[
+  {e:"🗺️",h:"As big as a country",t:"The Sahara is the world's largest hot desert, about 3.5 million square miles, roughly the size of the United States. It stretches across 11 countries in North Africa."},
+  {e:"🪨",h:"Not all sand",t:"Picture endless dunes? Only about a quarter of the Sahara is sand. Most of it is gravel plains, rocky plateaus and even mountains."},
+  {e:"🦛",h:"The Green Sahara",t:"From about 11,000 to 5,000 years ago, the Sahara was much wetter, with lakes, grasslands and hippos. Ancient rock paintings there show giraffes, cattle and people swimming."},
+  {e:"🌬️",h:"Dust that travels",t:"Winds lift Saharan dust high into the air and carry it across the Atlantic Ocean. That dust delivers nutrients like phosphorus that help fertilize the Amazon rainforest."},
+  {e:"🏜️",h:"Not the biggest desert",t:"Surprise: the Sahara isn't the largest desert overall. A desert is any place with very little rain, so cold Antarctica is bigger. The Sahara is the largest hot one."}
+ ],
+ quiz:[
+  {q:"About how much of the Sahara is covered by sand dunes?",o:["All of it","About a quarter","Half","None"],a:1,why:"Most of the Sahara is gravel, rock plateaus and mountains."},
+  {q:"What did the Sahara look like about 8,000 years ago?",o:["Covered in ice","Green, with lakes and grasslands","Underwater","Exactly the same"],a:1,why:"During the 'Green Sahara' period it had lakes, grass and hippos."},
+  {q:"How does the Sahara help the Amazon?",o:["Its dust fertilizes the rainforest","It sends rivers there","It blocks hurricanes","It doesn't"],a:0,why:"Wind carries nutrient-rich dust across the Atlantic to the Amazon."}
+ ]},
+{id:"reef",track:"places",name:"Great Barrier Reef",title:"Built by Tiny Animals",era:"Queensland, Australia",icon:"🐠",bg:"linear-gradient(135deg,#25b5c4,#0e4a7a)",rarity:"Epic",
+ legacy:"The largest structure on Earth built by living things, and one of the richest ocean habitats on the planet.",
+ story:[
+  {e:"🌊",h:"Huge",t:"The Great Barrier Reef runs about 1,400 miles (2,300 km) along Australia's northeast coast. It's made of about 2,900 separate reefs and 900 islands, and it covers an area bigger than Italy."},
+  {e:"🪸",h:"Built by animals",t:"Coral may look like rock or plants, but it's made by tiny animals called polyps. Over thousands of years, their limestone skeletons built the largest structure made by living things. You can see it from space."},
+  {e:"🐢",h:"Crowded with life",t:"The reef is home to about 1,500 kinds of fish, six of the world's seven species of sea turtles, sharks, dolphins and countless other creatures."},
+  {e:"👥",h:"Traditional Owners",t:"Aboriginal and Torres Strait Islander peoples have connections to the reef going back tens of thousands of years. More than 70 Traditional Owner groups are linked to the area today."},
+  {e:"🌡️",h:"In danger",t:"When ocean water gets too warm, coral expels the colorful algae living inside it and turns white, called bleaching. The reef has suffered several mass bleaching events since 2016. It has been a World Heritage Site since 1981."}
+ ],
+ quiz:[
+  {q:"What builds coral reefs?",o:["Rocks pushed by waves","Tiny animals called polyps","Seaweed","Volcanoes"],a:1,why:"Coral polyps build limestone skeletons that pile up into reefs."},
+  {q:"What is coral bleaching?",o:["Cleaning the reef","Coral turning white after it expels its algae in warm water","A type of fish","Sunlight reflecting"],a:1,why:"Heat stress makes coral expel its algae, leaving it white and weak."},
+  {q:"True or false: The Great Barrier Reef is visible from space.",o:["True","False"],a:0,why:"True. It's the largest structure built by living organisms."}
+ ]},
+{id:"antarctica",track:"places",name:"Antarctica",title:"The Frozen Continent",era:"South Pole",icon:"🐧",bg:"linear-gradient(135deg,#9fc7e8,#33557a)",rarity:"Legendary",
+ legacy:"The coldest, windiest and driest continent, holding most of Earth's fresh water and reserved for peace and science.",
+ story:[
+  {e:"🏜️",h:"The biggest desert",t:"Antarctica gets so little snow and rain that it counts as a desert, the largest one on Earth. Some valleys there haven't seen rain in thousands of years."},
+  {e:"🧊",h:"Earth's freezer",t:"Its ice sheet is up to about 3 miles thick and holds roughly 70% of the world's fresh water. If it all melted, sea levels would rise by about 190 feet."},
+  {e:"🥶",h:"The coldest place",t:"On July 21, 1983, Russia's Vostok Station recorded −128.6°F (−89.2°C), the lowest air temperature ever measured on the ground."},
+  {e:"🕊️",h:"A continent for peace",t:"In 1959, twelve countries signed the Antarctic Treaty. It bans military activity and mining, and sets the continent aside for peace and science. Today more than 50 countries have signed."},
+  {e:"🔬",h:"No permanent residents",t:"No one lives there permanently. Instead, a few thousand scientists come to research stations in summer, and far fewer stay through the dark winter, studying ice, climate, space and penguins."}
+ ],
+ quiz:[
+  {q:"True or false: Antarctica is the largest desert on Earth.",o:["True","False"],a:0,why:"True. A desert is defined by very little precipitation, not by heat."},
+  {q:"About how much of the world's fresh water is in Antarctica's ice?",o:["5%","25%","About 70%","100%"],a:2,why:"Its ice sheet holds roughly 70% of Earth's fresh water."},
+  {q:"What does the Antarctic Treaty do?",o:["Gives Antarctica to one country","Sets it aside for peace and science","Allows oil drilling","Creates a city"],a:1,why:"Signed in 1959, it bans military activity and protects the continent for research."}
  ]}
 ];
 
@@ -315,10 +558,15 @@ const FACTS = [
  ["📜","The Magna Carta, sealed in 1215, is one of the earliest documents limiting a king's power."],
  ["🌻","Van Gogh painted more than 30 self-portraits, partly because he couldn't afford to pay models."],
  ["🏛️","Ancient Greek statues, now white marble, were originally painted in bright colors."],
- ["🧭","The Silk Road wasn't one road but a vast web of trade routes linking China to the Mediterranean."]
+ ["🧭","The Silk Road wasn't one road but a vast web of trade routes linking China to the Mediterranean."],
+ ["🎷","The Apollo Theater's Amateur Night has been running since 1934 and helped launch Ella Fitzgerald."],
+ ["🌋","Lake Titicaca, on the border of Peru and Bolivia, is one of the highest large lakes in the world that boats can travel on."],
+ ["🗽","The Statue of Liberty was a gift from France and was dedicated in 1886. Its copper skin turned green over about 30 years."],
+ ["🌊","The Dead Sea's shore is the lowest land on Earth, more than 1,400 feet below sea level."]
 ];
 
 /* ---------------- STATE ---------------- */
+const TRACKS={history:{label:"History",icon:"🏛️",color:"var(--hist)"},art:{label:"Art",icon:"🎨",color:"var(--art)"},america:{label:"America",icon:"🎷",color:"#d46a9a"},places:{label:"Places",icon:"🌎",color:"var(--good)"}};
 const KEY="chronicle_v1";
 let S={xp:0,done:{},streak:0,last:null,correct:0,answered:0};
 try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s)S=Object.assign(S,s)}catch(e){}
@@ -352,12 +600,14 @@ function learnView(){
   const doneN=list.filter(l=>S.done[l.id]).length;
   const next=list.find(l=>!S.done[l.id]);
   const msg=next?`Next up: <b>${next.name}</b>. About 5 minutes.`:`You finished every ${track} lesson. Try the other track!`;
-  let html=`<div class="seg"><button data-track="history" class="${track==='history'?'on':''}">🏛️ History</button><button data-track="art" class="${track==='art'?'on':''}">🎨 Art</button></div>
+  let html=`<div class="seg">${Object.entries(TRACKS).map(([k,t])=>`<button data-track="${k}" class="${track===k?'on':''}"><span class="se">${t.icon}</span>${t.label}</button>`).join("")}</div>
   <div class="hero">${mascot}<div><b>${doneN} of ${list.length} complete</b><p>${msg}</p></div></div>
   <div class="path"><div class="connector"></div>`;
   list.forEach((l,i)=>{
-    const unlocked=i===0||S.done[list[i-1].id];
-    html+=`<div class="node"><button class="bubble ${unlocked?'':'locked'}" style="background:${l.bg}" data-open="${l.id}" ${unlocked?'':'data-locked="1"'} aria-label="${l.name}">${unlocked?l.icon:'🔒'}${S.done[l.id]?'<span class="check">✓</span>':''}</button>
+    const newUnit=l.unit&&(i===0||l.unit!==list[i-1].unit);
+    const unlocked=i===0||newUnit||S.done[list[i-1].id];
+    if(newUnit)html+=`<div class="unit">${l.unit}</div>`;
+    html+=`<div class="node ${i%2?'alt':''}"><button class="bubble ${unlocked?'':'locked'}" style="background:${l.bg}" data-open="${l.id}" ${unlocked?'':'data-locked="1"'} aria-label="${l.name}">${unlocked?l.icon:'🔒'}${S.done[l.id]?'<span class="check">✓</span>':''}</button>
     <div class="info"><div class="era">${l.era}</div><div class="nm">${l.name}</div><div class="sub">${l.title}</div></div></div>`;
   });
   const f=FACTS[new Date().getDate()%FACTS.length];
@@ -370,21 +620,19 @@ function cardsView(){
   let h=`<h2 class="sec-title">Legends</h2><p class="sec-sub">Finish a lesson to unlock its card. ${got} of ${LESSONS.length} collected.</p><div class="grid">`;
   LESSONS.forEach(l=>{
     const has=S.done[l.id];
-    h+=has?`<button class="cc" style="background:${l.bg}" data-card="${l.id}"><div class="em">${l.icon}</div><div class="n">${l.name}</div><div class="small" style="color:rgba(255,255,255,.8)">${l.track==='art'?'Art':'History'}</div><div class="r" style="color:${rarColor(l.rarity)}">★ ${l.rarity}</div></button>`
-      :`<div class="cc lock"><div class="em">${l.icon}</div><div class="n">???</div><div class="small">${l.track==='art'?'Art':'History'} legend</div><div class="r" style="color:var(--muted)">🔒 Locked</div></div>`;
+    h+=has?`<button class="cc" style="background:${l.bg}" data-card="${l.id}"><div class="em">${l.icon}</div><div class="n">${l.name}</div><div class="small" style="color:rgba(255,255,255,.8)">${TRACKS[l.track].label}</div><div class="r" style="color:${rarColor(l.rarity)}">★ ${l.rarity}</div></button>`
+      :`<div class="cc lock"><div class="em">${l.icon}</div><div class="n">???</div><div class="small">${TRACKS[l.track].label} legend</div><div class="r" style="color:var(--muted)">🔒 Locked</div></div>`;
   });
   return h+`</div>`;
 }
 function meView(){
   const lv=level(),into=S.xp%100;
   const acc=S.answered?Math.round(S.correct/S.answered*100):0;
-  const h=LESSONS.filter(l=>l.track==='history'&&S.done[l.id]).length,a=LESSONS.filter(l=>l.track==='art'&&S.done[l.id]).length;
-  const titles=["Curious Visitor","Apprentice","Scholar","Chronicler","Historian","Master Curator","Living Legend"];
+    const titles=["Curious Visitor","Apprentice","Scholar","Chronicler","Historian","Master Curator","Living Legend"];
   return `<h2 class="sec-title">Your progress</h2><p class="sec-sub">${titles[Math.min(lv-1,titles.length-1)]}</p>
   <div class="panel"><div class="lvl-row"><span>Level ${lv}</span><span>${into}/100 XP</span></div><div class="bar"><i style="width:${into}%"></i></div></div>
   <div class="stat-row"><div class="stat"><div class="v">🔥${S.streak}</div><div class="l">Day streak</div></div><div class="stat"><div class="v">${S.xp}</div><div class="l">Total XP</div></div><div class="stat"><div class="v">${acc}%</div><div class="l">Quiz accuracy</div></div></div>
-  <div class="panel"><div class="lvl-row"><span>🏛️ History</span><span>${h}/6</span></div><div class="bar"><i style="width:${h/6*100}%;background:var(--hist)"></i></div>
-  <div class="lvl-row" style="margin-top:14px"><span>🎨 Art</span><span>${a}/6</span></div><div class="bar"><i style="width:${a/6*100}%;background:var(--art)"></i></div></div>
+  <div class="panel">${Object.entries(TRACKS).map(([k,t],i)=>{const all=LESSONS.filter(l=>l.track===k),d=all.filter(l=>S.done[l.id]).length;return `<div class="lvl-row" ${i?'style="margin-top:14px"':''}><span>${t.icon} ${t.label}</span><span>${d}/${all.length}</span></div><div class="bar"><i style="width:${d/all.length*100}%;background:${t.color}"></i></div>`}).join("")}</div>
   <div class="panel small">Your progress is saved on this phone in this browser. Do one lesson a day to keep your streak going.</div>
   <button class="link-btn" id="reset">Reset progress</button>`;
 }
