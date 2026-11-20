@@ -40,6 +40,21 @@ A bite-sized learning app in `chronicle/index.html`, in the spirit of story-base
 
 Live app: https://aaronhernandez559-code.github.io/Next-steps/chronicle/
 
+## Trust Setup Guide
+
+A step-by-step guide for families planning a trust, in `trust-guide/index.html`.
+
+- **Find my trust**: 9 quick questions (state, family, goals, estate size, real estate, lawsuit risk, long-term care) recommend a trust type, other trusts to consider, and clauses to include (spendthrift, staggered ages, special-needs sub-trust and more).
+- **Learn**: 8 trust types (revocable living, testamentary, irrevocable gifting/SLAT, life insurance (ILIT), special needs, domestic asset protection, Medicaid, charitable remainder). Each one covers how it protects assets, what it doesn't protect, tax consequences (income, gift, estate, capital gains basis), setup steps and cost. Also includes an asset-protection comparison, 2026 tax numbers, and common questions.
+- **My details**: grantors, trustees, successors, beneficiaries and shares, payout ages, and the assets going into the trust.
+- **Documents**: draft trust agreement, Schedule A, certification of trust, assignment of assets, pour-over will, Crummey notice, affidavit of solvency, funding checklist, attorney meeting worksheet, and a letter to family. Print any one or all of them (or save as PDF), or download them as Word files to edit.
+- **Set up & file**: a checklist for that trust type covering signing, notarizing, recording deeds, getting an IRS EIN, and Forms 709, 1041 and 5227, with links to the official sites.
+- **Share**: send the app link to family. Use **Plan file** to save your answers as a file that a family member can open on their own device.
+
+Documents are drafts for review with a licensed attorney, not legal advice. Answers are saved only on the device.
+
+Live app: https://aaronhernandez559-code.github.io/Next-steps/trust-guide/
+
 ## Put it on an iPhone home screen
 
 1. Host this folder anywhere that serves static files (for example GitHub Pages: repo Settings → Pages → deploy from the main branch, root folder).

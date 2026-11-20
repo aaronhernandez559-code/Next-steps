@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trust Setup Guide</title>
+<meta name="description" content="Walk through choosing, understanding and setting up a family trust, then print draft documents to review with an attorney.">
+<meta name="theme-color" content="#f5f3ee">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23284b63'/%3E%3Cpath d='M32 12 14 20v12c0 10 8 18 18 20 10-2 18-10 18-20V20z' fill='none' stroke='%23fff' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='m24 32 6 6 10-12' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f3ee; --panel:#ffffff; --ink:#1d2730; --muted:#5f6b75; --line:#e1ddd3;
+  --accent:#284b63; --accent-ink:#ffffff; --accent-soft:#e4ecf2; --good:#2f6f4f; --good-soft:#e3f1e8;
+  --warn:#8a5410; --warn-soft:#fbf0df; --bad:#9b2c2c; --bad-soft:#f9e5e3;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12181d; --panel:#1a2229; --ink:#e6ebef; --muted:#9aa6af; --line:#2a353e;
+    --accent:#8fb6d3; --accent-ink:#0d1a24; --accent-soft:#1e2e3a; --good:#7cc79e; --good-soft:#18291f;
+    --warn:#e4ac62; --warn-soft:#2c2416; --bad:#e8908a; --bad-soft:#2e1b1a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12181d; --panel:#1a2229; --ink:#e6ebef; --muted:#9aa6af; --line:#2a353e;
+  --accent:#8fb6d3; --accent-ink:#0d1a24; --accent-soft:#1e2e3a; --good:#7cc79e; --good-soft:#18291f;
+  --warn:#e4ac62; --warn-soft:#2c2416; --bad:#e8908a; --bad-soft:#2e1b1a;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,h4{font-family:"Source Serif 4",Georgia,serif;font-weight:650;margin:0;line-height:1.25}
+a{color:var(--accent)}
+.app{max-width:900px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+header{position:sticky;top:0;z-index:10;background:var(--bg);padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand h1{font-size:20px;display:flex;align-items:center;gap:8px}
+.brand h1 svg{flex:none}
+.hbtns{display:flex;gap:6px}
+.icon-btn{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:6px 10px;font-size:13px;font-weight:500;white-space:nowrap}
+.icon-btn:hover{border-color:var(--accent)}
+nav.tabs{display:flex;gap:4px;margin-top:10px;background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:3px;overflow-x:auto;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:1 0 auto;border:0;background:transparent;padding:8px 10px;border-radius:8px;font-weight:500;font-size:13.5px;color:var(--muted);white-space:nowrap}
+nav.tabs button.on{background:var(--accent);color:var(--accent-ink)}
+nav.tabs .num{display:inline-block;width:18px;height:18px;border-radius:50%;font-size:11px;line-height:18px;text-align:center;background:var(--accent-soft);color:var(--accent);margin-right:5px;font-weight:600}
+nav.tabs button.on .num{background:rgba(255,255,255,.25);color:inherit}
+main{flex:1;padding:16px 16px 80px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:12px}
+.card h2{font-size:21px;margin-bottom:6px}
+.card h3{font-size:17px;margin-bottom:6px}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.notice{border-radius:11px;padding:11px 13px;font-size:13.5px;margin-bottom:12px}
+.notice.warn{background:var(--warn-soft);color:var(--warn)}
+.notice.info{background:var(--accent-soft);color:var(--accent)}
+.notice.good{background:var(--good-soft);color:var(--good)}
+.notice b{font-weight:600}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:10px;padding:10px 16px;font-weight:600}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+/* quiz */
+.progress{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin:4px 0 16px}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.qtext{font-size:20px;margin-bottom:4px}
+.opts{display:grid;gap:8px;margin:14px 0 18px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1.5px solid var(--line);background:var(--panel);border-radius:11px;padding:12px 14px}
+.opt:hover{border-color:var(--accent)}
+.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.opt .box{flex:none;width:18px;height:18px;margin-top:2px;border:2px solid var(--muted);border-radius:50%}
+.opt.multi .box{border-radius:5px}
+.opt.on .box{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 3px var(--accent-soft)}
+.opt small{display:block;color:var(--muted);font-size:12.5px}
+/* results */
+.rec{border:2px solid var(--accent);border-radius:14px;padding:16px;margin:12px 0;background:var(--accent-soft)}
+.rec .tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.rec h3{font-size:20px}
+.reasons{margin:8px 0 0;padding-left:18px}
+.reasons li{margin:2px 0}
+.also{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin:10px 0}
+.also .card{margin:0;padding:14px}
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-right:4px}
+.pill.rev{background:var(--good-soft);color:var(--good)}
+.pill.irr{background:var(--warn-soft);color:var(--warn)}
+/* learn */
+.acc{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:8px;overflow:hidden}
+.acc>button{width:100%;border:0;background:transparent;text-align:left;padding:14px 16px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.acc>button h3{font-size:16.5px;margin:0}
+.acc>button .chev{transition:transform .2s;flex:none;color:var(--muted)}
+.acc.open>button .chev{transform:rotate(90deg)}
+.acc .body{display:none;padding:0 16px 16px}
+.acc.open .body{display:block}
+.sec{margin-top:12px}
+.sec h4{font-size:14.5px;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.sec ul{margin:4px 0;padding-left:18px}
+.sec li{margin:3px 0}
+.taxgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px;margin-top:6px}
+.taxgrid div{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.taxgrid b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:2px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:8px}
+.fact{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact .v{font-family:"Source Serif 4",serif;font-size:20px;font-weight:650}
+.fact .l{font-size:12.5px;color:var(--muted)}
+.subtabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.subtabs button{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:500}
+.subtabs button.on{border-color:var(--accent);background:var(--accent);color:var(--accent-ink)}
+/* forms */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+@media (max-width:620px){.grid2{grid-template-columns:1fr}}
+label.f{display:block;font-size:13px;font-weight:500;color:var(--muted)}
+label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;margin-top:4px;border:1px solid var(--line);background:var(--bg);border-radius:9px;padding:9px 10px;font-size:15px;color:var(--ink)}
+label.f textarea{min-height:70px;resize:vertical}
+label.chk{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:6px 0}
+label.chk input{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+.listrow{display:grid;gap:8px;align-items:end;border:1px solid var(--line);border-radius:11px;padding:10px;margin-bottom:8px;background:var(--bg)}
+.listrow.ben{grid-template-columns:2fr 1.4fr .8fr auto}
+.listrow.asset{grid-template-columns:2fr 1.3fr 1fr 1.3fr auto}
+@media (max-width:680px){.listrow.ben,.listrow.asset{grid-template-columns:1fr 1fr}.listrow .wide{grid-column:1/-1}}
+.listrow label.f input,.listrow label.f select{background:var(--panel)}
+.del{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 10px;color:var(--bad);font-size:13px}
+.total{font-size:13px;margin-top:4px}
+.total.bad{color:var(--bad)}
+fieldset{border:0;padding:0;margin:0}
+.section-title{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:18px 0 8px}
+/* docs */
+.doclist{display:grid;gap:8px}
+.docitem{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:var(--panel)}
+.docitem h3{font-size:16px;margin:0}
+.docitem p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.paper{background:#fff;color:#111;border:1px solid var(--line);border-radius:6px;padding:40px 44px;margin-top:12px;font-family:"Source Serif 4",Georgia,serif;font-size:15px;line-height:1.6;box-shadow:0 2px 10px rgba(0,0,0,.06);overflow-wrap:anywhere}
+@media (max-width:620px){.paper{padding:22px 18px;font-size:14px}}
+.paper h1{font-size:22px;text-align:center;margin:0 0 4px}
+.paper h2{font-size:16px;margin:22px 0 6px;text-transform:uppercase;letter-spacing:.03em}
+.paper .sub{text-align:center;font-size:13px;color:#555;margin-bottom:18px}
+.paper .draft{border:1px dashed #b06a00;color:#7a4a00;background:#fff7e8;padding:8px 10px;font-family:Inter,sans-serif;font-size:12px;border-radius:4px;margin-bottom:18px}
+.paper table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+.paper th,.paper td{border:1px solid #999;padding:6px 8px;text-align:left;vertical-align:top}
+.paper th{background:#f1f1f1}
+.paper .sig{display:grid;grid-template-columns:1fr 1fr;gap:28px 30px;margin-top:26px}
+.paper .sig div{border-top:1px solid #111;padding-top:4px;font-size:13px;margin-top:30px}
+.paper .blank{display:inline-block;min-width:140px;border-bottom:1px solid #111}
+.paper .box{border:1px solid #111;padding:12px 14px;margin-top:18px;font-size:13.5px}
+.paper .cb{display:inline-block;width:12px;height:12px;border:1px solid #111;margin-right:6px;vertical-align:-1px}
+.paper .fill{background:#fff3b0;padding:0 3px}
+/* setup */
+.step{display:flex;gap:12px;border:1px solid var(--line);border-radius:12px;padding:13px 14px;background:var(--panel);margin-bottom:8px}
+.step.done{opacity:.65}
+.step.done h4{text-decoration:line-through}
+.step input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent);flex:none}
+.step h4{font-size:15.5px;margin-bottom:2px}
+.step p{margin:2px 0;font-size:13.5px;color:var(--muted)}
+.step .where{font-size:12.5px;margin-top:4px}
+.step .where span{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:6px;padding:1px 7px;margin:2px 4px 0 0}
+.bar{height:8px;border-radius:8px;background:var(--line);overflow:hidden;margin:6px 0 14px}
+.bar i{display:block;height:100%;background:var(--good)}
+footer{padding:20px 16px 40px;font-size:12.5px;color:var(--muted);text-align:center;border-top:1px solid var(--line)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;z-index:50;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);max-width:520px;width:calc(100% - 32px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.4)}
+dialog h3{font-size:19px;margin-bottom:8px}
+#printArea{display:none}
+@media print{
+  body{background:#fff}
+  .app,.toast,dialog{display:none !important}
+  #printArea{display:block}
+  #printArea .paper{border:0;box-shadow:none;padding:0;margin:0;font-size:12pt}
+  #printArea .paper + .paper{page-break-before:always}
+  .paper h2{page-break-after:avoid}
+  .paper .sig,.paper .box,.paper table{page-break-inside:avoid}
+  .paper .fill{background:none;border-bottom:1px solid #111}
+  @page{margin:0.9in}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <h1><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg>Trust Setup Guide</h1>
+      <div class="hbtns">
+        <button class="icon-btn" id="shareBtn" title="Share this app with family">Share</button>
+        <button class="icon-btn" id="fileBtn" title="Save or open a plan file">Plan file</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  </header>
+  <main id="main"></main>
+  <footer>
+    Educational guide, not legal or tax advice. Trust law is different in every state, so have a licensed estate-planning attorney in your state review any document before you sign it.<br>
+    Your answers are saved only in this browser on this device.
+  </footer>
+</div>
+<div id="printArea"></div>
+<div class="toast" id="toast"></div>
+
+<dialog id="fileDlg">
+  <h3>Plan file</h3>
+  <p class="small muted">Save your answers as a file to back them up, or send it to a family member so they can open the same plan in this app on their device. The file has names and asset details in it, so share it privately (for example as a text or email attachment, not a public post).</p>
+  <div class="row" style="margin:14px 0">
+    <button class="btn sm" id="exportBtn">Save plan file</button>
+    <button class="btn sm ghost" id="importBtn">Open a plan file</button>
+    <input type="file" id="importInput" accept=".json,application/json" hidden>
+  </div>
+  <div class="spread" style="border-top:1px solid var(--line);padding-top:12px">
+    <button class="btn sm ghost" id="resetBtn" style="color:var(--bad);border-color:var(--bad)">Clear everything on this device</button>
+    <button class="btn sm" id="closeDlg">Done</button>
+  </div>
+</dialog>
+
+<script>
+/* ---------------------------------------------------------------
+   Reference data
+---------------------------------------------------------------- */
+const STATES={AL:"Alabama",AK:"Alaska",AZ:"Arizona",AR:"Arkansas",CA:"California",CO:"Colorado",CT:"Connecticut",DE:"Delaware",DC:"District of Columbia",FL:"Florida",GA:"Georgia",HI:"Hawaii",ID:"Idaho",IL:"Illinois",IN:"Indiana",IA:"Iowa",KS:"Kansas",KY:"Kentucky",LA:"Louisiana",ME:"Maine",MD:"Maryland",MA:"Massachusetts",MI:"Michigan",MN:"Minnesota",MS:"Mississippi",MO:"Missouri",MT:"Montana",NE:"Nebraska",NV:"Nevada",NH:"New Hampshire",NJ:"New Jersey",NM:"New Mexico",NY:"New York",NC:"North Carolina",ND:"North Dakota",OH:"Ohio",OK:"Oklahoma",OR:"Oregon",PA:"Pennsylvania",RI:"Rhode Island",SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",WI:"Wisconsin",WY:"Wyoming"};
+const ESTATE_TAX_STATES=["CT","DC","HI","IL","ME","MD","MA","MN","NY","OR","RI","VT","WA"];
+const INHERIT_TAX_STATES=["KY","MD","NE","NJ","PA"];
+const COMMUNITY_STATES=["AZ","CA","ID","LA","NV","NM","TX","WA","WI"];
+const DAPT_STATES=["AK","CT","DE","HI","IN","MI","MS","MO","NV","NH","OH","OK","RI","SD","TN","UT","VA","WV","WY"];
+
+const T={
+rlt:{name:"Revocable Living Trust",short:"Living trust",rev:true,
+ what:"You put your assets into a trust while you are alive. You are usually the trustee, so you still buy, sell and spend exactly as before. You can change it or cancel it any time. When you die or can't manage things, the successor trustee you picked takes over without going to court.",
+ goodFor:["Skipping probate (court process, fees, and months of delay)","Someone managing your money if you become ill or incapacitated","Keeping your estate private (wills become public in probate; trusts don't)","Owning real estate in more than one state (avoids a probate case in each state)","Holding an inheritance for young children until the ages you choose"],
+ protects:["Protects your family from probate court costs, delays and public records.","Protects you if you become incapacitated: your successor trustee steps in without a court conservatorship.","After your death it can hold each child's share in a protected sub-trust with a spendthrift clause, so a beneficiary's creditors or ex-spouse can't easily reach it."],
+ notProtect:["It does NOT protect your assets from your own creditors or lawsuits while you're alive. Because you can take everything back, the law treats it as yours.","It does NOT protect against nursing-home or Medicaid costs.","It does not by itself cut estate taxes (married couples can add tax-planning sub-trusts)."],
+ tax:{income:"No change. It is a \"grantor trust\": you keep using your Social Security number and report all income on your own Form 1040. No separate trust tax return while you're alive.",gift:"Putting assets in is not a gift because you can take them back.",estate:"Everything in it still counts in your taxable estate. In 2026 the federal exemption is $15 million per person ($30 million for a married couple), so most families owe no federal estate tax. Some states tax much smaller estates.",basis:"Assets get a \"step-up\" in tax basis when you die, so heirs can usually sell appreciated property with little or no capital gains tax.",after:"After your death it becomes irrevocable, needs its own EIN, and may file Form 1041."},
+ steps:["Choose your successor trustee(s) and beneficiaries","Have the trust agreement drafted and reviewed","Sign it (usually in front of a notary)","\"Fund\" it: retitle your home, accounts and other assets into the trust","Sign a pour-over will to catch anything left out","Review every few years or after big life changes"],
+ cost:"About $1,500 to $5,000 with an attorney; $300 to $800 with online services.",change:"Yes. You can amend or revoke it any time while you have capacity."},
+testamentary:{name:"Testamentary Trust (in a Will)",short:"Will-based trust",rev:true,
+ what:"The trust is written inside your will and only comes into existence after you die. It's often used to hold money for minor children.",
+ goodFor:["Smaller estates where probate is simple or cheap in your state","Naming who manages a child's inheritance","Lowest up-front cost"],
+ protects:["After death, it can hold a beneficiary's share with spendthrift protection and staggered ages.","It lets you choose who manages money for minors instead of a court-appointed guardian of the estate."],
+ notProtect:["It does NOT avoid probate. The will has to go through court before the trust exists.","No protection from your creditors during your life, and no help if you become incapacitated.","The will becomes a public court record."],
+ tax:{income:"Nothing changes while you are alive. After death the trust is a separate taxpayer filing Form 1041. Income it keeps is taxed at compressed trust rates (the 37% bracket starts around $16,000).",gift:"No gift. Nothing is transferred until death.",estate:"Everything is in your taxable estate.",basis:"Heirs get a step-up in basis at death.",after:"The trust needs an EIN after death."},
+ steps:["Write a will that includes trust terms","Sign it with two witnesses (and a notary for a self-proving affidavit)","At death, the executor probates the will and funds the trust"],
+ cost:"Usually included with a will: about $300 to $1,500.",change:"Yes, by updating your will any time before death."},
+irrev:{name:"Irrevocable Gifting Trust",short:"Irrevocable trust",rev:false,
+ what:"You permanently give assets to a trust run by someone else for your beneficiaries. Married couples often use a version called a SLAT (Spousal Lifetime Access Trust), where your spouse can still benefit.",
+ goodFor:["Removing growth on assets from a large taxable estate","Protecting assets from future creditors once they've been in the trust a while","Locking in long-term plans for children and grandchildren (a \"dynasty\" trust)"],
+ protects:["Because you no longer own the assets, your future creditors generally can't reach them (unless the transfer was a fraudulent transfer made to dodge existing creditors).","Beneficiaries' shares are protected by a spendthrift clause from their creditors, lawsuits and divorces.","An independent trustee can hold back distributions if a beneficiary has problems with addiction or money."],
+ notProtect:["Gifts made when you already owe a debt or face a lawsuit can be undone by a court.","You give up control and can't easily get the assets back.","A SLAT can be lost to you in a divorce, because your spouse is the beneficiary."],
+ tax:{income:"Usually set up as a grantor trust for income tax: you keep paying its income tax, which is effectively an extra tax-free gift to the family. If it's set up as a non-grantor trust it files Form 1041 and pays tax at compressed trust rates.",gift:"Funding it is a taxable gift. You file Form 709. Gifts use up part of your $15 million lifetime exemption (2026), but no tax is due until you go over it. Gifts can qualify for the $19,000 per-person annual exclusion if beneficiaries get \"Crummey\" withdrawal rights.",estate:"Assets and all their future growth are out of your taxable estate.",basis:"No step-up at death. Heirs keep your original basis, so they may owe more capital gains tax when they sell. Good to fund with cash or assets that won't appreciate much, or plan for a swap power.",after:"Needs its own EIN when you create it."},
+ steps:["Decide what to give and confirm you stay solvent afterward","Pick an independent trustee","Draft and sign the trust","Get an EIN for the trust","Transfer the assets and keep records of their value","File Form 709 by April 15 of the next year"],
+ cost:"About $3,000 to $10,000+ with an attorney, plus yearly accounting.",change:"Very limited. Some states allow \"decanting\" or a trust protector can make certain changes."},
+ilit:{name:"Irrevocable Life Insurance Trust (ILIT)",short:"Life insurance trust",rev:false,
+ what:"A trust that owns and is the beneficiary of your life insurance policy. When you die, the payout goes to the trust and isn't counted in your estate.",
+ goodFor:["Large policies that would push your estate over the estate-tax limit","Providing cash to pay estate taxes or equalize an inheritance","Controlling how a large payout is used for children"],
+ protects:["The payout is kept out of your taxable estate and out of probate.","The trust holds the money for beneficiaries with spendthrift protection instead of handing a lump sum to a young adult.","The policy and its cash value are generally protected from your creditors."],
+ notProtect:["If you transfer an existing policy and die within 3 years, it's pulled back into your estate. Having the trust buy a new policy avoids this.","You can't change the beneficiaries or borrow against the policy."],
+ tax:{income:"Usually a grantor trust with little or no income. Death benefits are generally income-tax free.",gift:"Money you give the trust to pay premiums is a gift. With Crummey notices, it usually qualifies for the $19,000 per-beneficiary annual exclusion (2026).",estate:"Done correctly, the entire payout is outside your estate. That can save up to 40% federal estate tax on large estates.",basis:"Not usually relevant; insurance proceeds are cash.",after:"Needs its own EIN and a bank account to pay premiums."},
+ steps:["Draft and sign the ILIT before buying the policy (or transfer an existing one)","Get an EIN and open a trust bank account","The trustee applies for the policy as owner and beneficiary","Each year, give the trust money for premiums","The trustee sends Crummey notices to beneficiaries","Trustee pays the premium from the trust account"],
+ cost:"About $2,500 to $6,000, plus a small yearly admin cost.",change:"No, but you can stop paying premiums or a trust protector may have limited powers."},
+snt:{name:"Special (Supplemental) Needs Trust",short:"Special needs trust",rev:false,
+ what:"A trust for someone with a disability that pays for extras (therapy, education, travel, equipment, phone, recreation) without disqualifying them from SSI, Medicaid or other needs-based benefits. This is a \"third-party\" trust funded with your money, not theirs.",
+ goodFor:["A child or relative who receives SSI or Medicaid, or might in the future","Leaving an inheritance without it counting as their asset","Naming a trustee who knows their needs"],
+ protects:["Protects the beneficiary's eligibility for SSI and Medicaid, since the money isn't theirs to demand.","Protects the inheritance from the beneficiary's creditors and from being spent all at once.","With a third-party trust, Medicaid does not have to be paid back when the beneficiary dies."],
+ notProtect:["If the trustee pays for food or shelter directly, SSI can be reduced.","A trust funded with the beneficiary's own money (a \"first-party\" trust) has different rules and requires Medicaid payback."],
+ tax:{income:"Usually a separate taxpayer after funding (Form 1041). It can elect to be a \"Qualified Disability Trust\" for a larger exemption. Income paid out for the beneficiary is generally taxed to them, often at low rates.",gift:"Gifts into it are taxable gifts (but usually under the annual exclusion or covered by your lifetime exemption). Many families leave it empty until death, funded by their living trust or life insurance.",estate:"If funded at your death, the assets are in your estate. Most families are well under the $15 million exemption.",basis:"Assets inherited at death get a step-up in basis.",after:"Needs its own EIN once it holds money."},
+ steps:["Choose a trustee and backup who understand benefit rules","Draft as a standalone trust or as a sub-trust inside your living trust","Write a \"letter of intent\" describing the person's needs, routines and preferences","Tell relatives to leave gifts to the trust, NOT directly to the person","Name the trust as beneficiary of life insurance or accounts where appropriate"],
+ cost:"About $2,000 to $5,000. Often added to a living trust plan.",change:"A standalone trust is usually irrevocable; a sub-trust inside your living trust can be changed while you're alive."},
+dapt:{name:"Domestic Asset Protection Trust (DAPT)",short:"Asset protection trust",rev:false,
+ what:"A special irrevocable trust, allowed in about 20 states, where you can still be a possible beneficiary but your future creditors generally can't reach the assets after a waiting period.",
+ goodFor:["Doctors, business owners, landlords and others with lawsuit risk","Protecting a nest egg from future, unknown creditors","Keeping some access to the money (through an independent trustee)"],
+ protects:["After the state's waiting period (often 2 to 4 years), your future creditors generally can't reach trust assets.","An independent trustee in the DAPT state controls distributions, which is what blocks creditors.","Spendthrift protection for the other beneficiaries as well."],
+ notProtect:["It won't protect against debts or lawsuits that already exist or are expected; that's a fraudulent transfer.","If you live in a non-DAPT state, courts there may not respect it. This is an unsettled area of law.","Child support, alimony and some tort claims can be exceptions in certain states.","Bankruptcy law can reach transfers made within 10 years."],
+ tax:{income:"Usually a grantor trust: you keep paying the income tax on your own return.",gift:"Usually designed as an \"incomplete gift\" so no gift tax is due and nothing uses up your exemption. It can be designed as a completed gift if estate tax reduction is also a goal.",estate:"With incomplete-gift design, it stays in your estate (with a step-up in basis at death).",basis:"Step-up at death if it's included in your estate.",after:"Usually needs its own EIN and an account held with a trustee in the DAPT state."},
+ steps:["Make sure you have no pending claims and stay solvent (sign a solvency affidavit)","Choose an independent trustee or trust company in a DAPT state","Draft the trust under that state's law","Get an EIN, open accounts in that state, and transfer assets","Keep good records and never treat trust assets as your own"],
+ cost:"About $5,000 to $15,000+, plus yearly trustee fees.",change:"Generally not, though a trust protector may have limited powers."},
+medicaid:{name:"Medicaid Asset Protection Trust (MAPT)",short:"Medicaid trust",rev:false,
+ what:"An irrevocable trust that holds your home or savings so they don't count against you if you later need Medicaid to pay for nursing-home care. You may still receive income from the trust, but not principal.",
+ goodFor:["Protecting the family home from Medicaid estate recovery","Planning at least 5 years before long-term care may be needed","Leaving an inheritance despite high care costs"],
+ protects:["After the 5-year Medicaid \"look-back\" period (2.5 years in California), assets in the trust don't count for eligibility.","The home can be protected from Medicaid estate recovery after death.","You can keep the right to live in the home and receive trust income."],
+ notProtect:["Transfers made within the look-back period can cause a penalty period of ineligibility.","You can't get the principal back for yourself.","Medicaid rules vary a lot by state and change often."],
+ tax:{income:"Usually a grantor trust: you report the income and can keep tax breaks such as the home-sale exclusion.",gift:"Usually designed as an incomplete gift (by keeping certain powers), so there's no gift tax.",estate:"Designed to stay in your estate so heirs get a step-up in basis at death.",basis:"Step-up at death when designed correctly. This is a key benefit.",after:"Usually needs its own EIN."},
+ steps:["Talk to an elder-law attorney about your state's Medicaid rules","Sign the trust and deed the home into it","Move savings you won't need into the trust","Keep enough outside the trust for your own needs","Wait out the look-back period"],
+ cost:"About $3,000 to $8,000 with an elder-law attorney.",change:"No. You can't take back principal, though limited changes may be possible."},
+crt:{name:"Charitable Remainder Trust (CRT)",short:"Charitable trust",rev:false,
+ what:"You give an asset (often appreciated stock or real estate) to the trust. The trust sells it without capital gains tax, pays you or your family income for life or a set number of years, and what's left goes to charity.",
+ goodFor:["Selling a highly appreciated asset without paying capital gains tax up front","Creating lifetime income","Leaving a gift to charity and getting an income-tax deduction now"],
+ protects:["Assets in the trust are generally protected from your creditors (your income payments may not be).","Spreads out capital gains tax over many years instead of all at once."],
+ notProtect:["The principal goes to charity, not your children. Families often pair it with life insurance in an ILIT to replace that value.","The trust must follow strict IRS rules (payout of 5% to 50%, at least 10% must be projected to go to charity)."],
+ tax:{income:"The trust itself is tax-exempt, so it can sell appreciated assets tax-free. You pay income tax on the payments you receive, in a tiered order. The trust files Form 5227 each year.",gift:"You get an immediate charitable income-tax deduction for the present value of what charity will receive.",estate:"The charity's share is out of your estate.",basis:"The trust keeps your original basis, but it doesn't matter because the trust doesn't pay tax on the sale.",after:"Needs its own EIN at creation."},
+ steps:["Get the asset valued (a qualified appraisal for real estate)","Choose payout type (fixed annuity or percentage unitrust) and rate","Draft using IRS sample language","Transfer the asset to the trust BEFORE any sale is agreed","Trustee sells, invests and pays you","File Form 5227 every year"],
+ cost:"About $3,000 to $10,000, plus yearly administration.",change:"No, though you can often keep the right to change which charity receives the remainder."}
+};
+
+const PROVISIONS={
+ spendthrift:{name:"Spendthrift clause",text:"Stops beneficiaries from borrowing against or selling their inheritance, and stops their creditors from reaching it before it's paid out."},
+ staggered:{name:"Staggered ages for children",text:"Pays out a child's share in parts (for example a third at 25, 30 and 35) instead of all at 18."},
+ sntSub:{name:"Special-needs sub-trust",text:"Holds any share for a beneficiary with a disability so they keep SSI and Medicaid."},
+ pet:{name:"Pet trust provision",text:"Sets aside money and names a caregiver for your pets."},
+ ab:{name:"Marital / disclaimer trust",text:"Lets a surviving spouse shelter assets from state estate tax and protect them for your children, even if your spouse remarries."},
+ discretion:{name:"Discretionary trustee",text:"Lets the trustee hold back payments if a beneficiary is struggling with addiction, a lawsuit, divorce or overspending."},
+ protector:{name:"Trust protector",text:"Names someone who can fix problems in an irrevocable trust later (for example, tax law changes or a move to another state)."}
+};
+
+const QUIZ=[
+ {id:"state",type:"state",q:"Which state do you live in?",help:"Trusts follow state law. Your state also affects estate taxes and which trusts are allowed."},
+ {id:"married",q:"Are you married?",opts:[["single","Single, widowed or divorced"],["married","Married"],["partner","Living with an unmarried partner","Partners don't automatically inherit from each other, so a trust matters more."]]},
+ {id:"family",multi:true,q:"Who do you want to provide for?",help:"Pick all that apply.",opts:[["minors","Children under 18"],["adults","Adult children or grandchildren"],["disabled","Someone with a disability","Gets SSI or Medicaid now, or may need it later"],["spender","Someone who may struggle with money","For example addiction, debt, a shaky marriage, or overspending"],["pets","Pets"],["charity","A charity or cause"]]},
+ {id:"goals",multi:true,q:"What matters most to you?",help:"Pick everything that applies. This drives the recommendation most.",opts:[["probate","Skip probate court","Avoid the court process, its fees, and months of delay"],["control","Keep control","Be able to change my mind and use my assets as usual"],["incap","Plan for illness","Have someone I trust manage things if I can't"],["privacy","Keep my affairs private"],["creditors","Protect assets from lawsuits or creditors"],["ltc","Protect my home and savings from nursing-home costs"],["estatetax","Reduce estate taxes"],["insurance","Keep a life insurance payout out of my estate"],["income","Turn an appreciated asset into lifetime income","For example stock or property with a large gain"]]},
+ {id:"size",q:"Roughly what is everything you own worth?",help:"Include your home, savings, retirement accounts, business interests and life insurance payouts. A rough guess is fine.",opts:[["s1","Under $1 million"],["s2","$1 million to $5 million"],["s3","$5 million to $15 million"],["s4","More than $15 million"]]},
+ {id:"control",q:"Would you give up control of some assets permanently in exchange for protection or tax savings?",opts:[["no","No, I want full control"],["some","For some assets, yes"],["yes","Yes, if it does the job"]]},
+ {id:"realestate",q:"Do you own real estate?",opts:[["none","No"],["home","Yes, only in my state"],["multi","Yes, including property in another state","Each state would need its own probate case without a trust."]]},
+ {id:"risk",q:"Do you have a higher-than-average chance of being sued?",help:"For example: doctor, contractor, landlord, business owner, or someone with significant assets in their own name.",opts:[["no","No"],["yes","Yes"]]},
+ {id:"care",q:"How soon might long-term care be a concern for you or your spouse?",opts:[["far","Not for many years"],["mid","Possibly in 5 or more years"],["soon","Within the next 5 years"]]}
+];
+
+const ASSET_TYPES={home:"Home / real estate",bank:"Bank account",brokerage:"Investment account",retirement:"Retirement account (IRA, 401k)",insurance:"Life insurance",business:"Business interest / LLC",vehicle:"Vehicle",personal:"Personal property",other:"Other"};
+
+/* ---------------------------------------------------------------
+   State
+---------------------------------------------------------------- */
+const KEY="trustGuide.v1";
+const blank=()=>({tab:"find",quizStep:0,quiz:{},done:false,learnSub:"types",openType:null,docOpen:null,checks:{},
+ d:{type:"",trustName:"",state:"",county:"",g1:"",g2:"",address:"",trustee1:"",trustee2:"",succ1:"",succ2:"",executor:"",guardian:"",
+   bens:[{name:"",rel:"",share:"100"}],assets:[],distAge:"staggered",ageA:"25",ageB:"30",ageC:"35",outrightAge:"21",
+   spendthrift:true,snBen:"",charity:"",payout:"5",petCare:"",protector:"",signDate:""}});
+let S=blank();
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){S=Object.assign(blank(),s);S.d=Object.assign(blank().d,s.d||{});}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+const $=s=>document.querySelector(s);
+const esc=v=>String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),2400)}
+
+/* ---------------------------------------------------------------
+   Recommendation engine
+---------------------------------------------------------------- */
+function recommend(a){
+ const sc={rlt:3,testamentary:0,irrev:0,ilit:0,snt:0,dapt:0,medicaid:0,crt:0};
+ const why={};Object.keys(sc).forEach(k=>why[k]=[]);
+ const add=(k,n,r)=>{sc[k]+=n;if(r&&n>0)why[k].push(r)};
+ const g=a.goals||[],f=a.family||[],st=a.state;
+ const has=x=>g.includes(x);
+ if(has("probate"))add("rlt",3,"You want to skip probate court.");
+ if(has("control"))add("rlt",3,"You want to keep control and be able to make changes.");
+ if(has("incap"))add("rlt",2,"Your successor trustee can step in if you get sick, with no court conservatorship.");
+ if(has("privacy"))add("rlt",2,"A trust stays private; a will becomes a public court record.");
+ if(a.realestate==="multi")add("rlt",3,"You own property in more than one state, so a trust avoids a probate case in each one.");
+ if(a.realestate==="home")add("rlt",1,"Your home can pass to your family without court.");
+ if(f.includes("minors"))add("rlt",2,"It can hold your children's inheritance until the ages you choose.");
+ if(a.married==="partner")add("rlt",2,"Unmarried partners don't inherit automatically; a trust makes sure your partner is provided for.");
+ if(a.size==="s1"&&a.realestate==="none"&&!has("probate")&&!has("incap"))add("testamentary",4,"Your estate is modest with no real estate, so a will with a trust inside it may be enough and costs less.");
+ const big=a.size==="s3"||a.size==="s4",stateTax=ESTATE_TAX_STATES.includes(st)||INHERIT_TAX_STATES.includes(st);
+ if(has("estatetax")){
+  if(a.size==="s4"){add("irrev",5,"Your estate may be over the 2026 federal exemption of $15 million per person, so moving future growth out of it can save up to 40% tax.");add("ilit",2,"An insurance trust keeps any policy payout out of the taxable estate.")}
+  else if(big){add("irrev",3,"Your estate is large enough that gifting to an irrevocable trust (or a SLAT if married) can lock in tax savings.")}
+  if(stateTax&&a.size!=="s1")add("irrev",2,STATES[st]+" has its own estate or inheritance tax that starts well below the federal limit.");
+ }
+ if(has("insurance"))add("ilit",6,"You want a life insurance payout kept out of your taxable estate.");
+ if(f.includes("disabled"))add("snt",9,"A beneficiary with a disability can keep SSI and Medicaid if their share goes into a special needs trust.");
+ if(has("creditors")){add("dapt",4,"You want protection from future lawsuits and creditors, which a revocable trust can't give.");add("irrev",2,"Assets you give away to an irrevocable trust are generally out of reach of your future creditors.")}
+ if(a.risk==="yes"){add("dapt",3,"Your work carries higher lawsuit risk.");}
+ if(has("creditors")&&DAPT_STATES.includes(st))add("dapt",1,STATES[st]+" allows this type of trust.");
+ if(has("ltc"))add("medicaid",5,"You want to protect your home and savings from nursing-home costs.");
+ if(a.care==="mid")add("medicaid",2,"You likely have time to get through Medicaid's 5-year look-back period.");
+ if(has("ltc")&&a.care==="soon")why.medicaid.push("Care may be needed within 5 years, so timing matters. Talk to an elder-law attorney soon; other strategies may work better.");
+ if(has("income"))add("crt",5,"You want to turn an appreciated asset into income without paying capital gains tax up front.");
+ if(f.includes("charity"))add("crt",2,"You want to leave something to charity.");
+ if(a.control==="no"){["irrev","ilit","dapt","medicaid","crt"].forEach(k=>sc[k]-=4)}
+ if(a.control==="yes"){["irrev","dapt","medicaid"].forEach(k=>sc[k]+=1)}
+ const ranked=Object.keys(sc).sort((x,y)=>sc[y]-sc[x]);
+ let primary=ranked[0];
+ if(primary==="testamentary"&&sc.rlt>=sc.testamentary)primary="rlt";
+ const also=ranked.filter(k=>k!==primary&&sc[k]>=4&&!(k==="testamentary"&&primary==="rlt"));
+ if(primary!=="rlt"&&!also.includes("rlt")&&sc.rlt>=4)also.unshift("rlt");
+ const prov=[];
+ if(f.includes("spender")||f.includes("minors")||f.includes("adults"))prov.push("spendthrift");
+ if(f.includes("minors")||f.includes("adults"))prov.push("staggered");
+ if(f.includes("spender"))prov.push("discretion");
+ if(f.includes("disabled")&&primary!=="snt")prov.push("sntSub");
+ if(f.includes("pets"))prov.push("pet");
+ if(a.married==="married"&&(stateTax||big))prov.push("ab");
+ if([primary,...also].some(k=>!T[k].rev))prov.push("protector");
+ const notes=[];
+ if(ESTATE_TAX_STATES.includes(st))notes.push(STATES[st]+" has a state estate tax with a lower threshold than the federal one. Check its current exemption amount.");
+ if(INHERIT_TAX_STATES.includes(st))notes.push(STATES[st]+" has an inheritance tax, paid by some heirs depending on how they're related to you.");
+ if(COMMUNITY_STATES.includes(st)&&a.married==="married")notes.push(STATES[st]+" is a community property state. Keep track of which assets are community vs. separate property in your trust.");
+ if(a.married==="married")notes.push("Married couples usually create one joint trust together.");
+ if(has("ltc")&&a.care==="soon")notes.push("Because care may be needed soon, see an elder-law attorney right away.");
+ return {primary,also,prov,why,notes,scores:sc};
+}
+
+/* ---------------------------------------------------------------
+   Rendering
+---------------------------------------------------------------- */
+const TABS=[["find","Find my trust"],["learn","Learn"],["details","My details"],["docs","Documents"],["setup","Set up & file"]];
+function renderTabs(){
+ $("#tabs").innerHTML=TABS.map(([id,l],i)=>`<button data-tab="${id}" class="${S.tab===id?"on":""}"><span class="num">${i+1}</span>${l}</button>`).join("");
+}
+function go(tab){S.tab=tab;save();render();window.scrollTo({top:0});const on=document.querySelector("nav.tabs .on");if(on)on.scrollIntoView({inline:"center",block:"nearest"})}
+function render(){renderTabs();const m=$("#main");
+ m.innerHTML={find:viewFind,learn:viewLearn,details:viewDetails,docs:viewDocs,setup:viewSetup}[S.tab]();
+ if(S.tab==="details")bindDetails();
+}
+
+/* ---- Find ---- */
+function viewFind(){
+ if(S.done)return viewResults();
+ const i=S.quizStep,q=QUIZ[i],a=S.quiz[q.id];
+ let body="";
+ if(q.type==="state"){
+  body=`<select class="inp" id="stateSel" style="max-width:340px;margin:14px 0 18px"><option value="">Choose a state…</option>${Object.entries(STATES).map(([k,v])=>`<option value="${k}" ${a===k?"selected":""}>${v}</option>`).join("")}</select>`;
+ }else{
+  body=`<div class="opts">${q.opts.map(([v,l,s])=>{const on=q.multi?(a||[]).includes(v):a===v;return `<button class="opt ${q.multi?"multi":""} ${on?"on":""}" data-opt="${v}"><span class="box"></span><span>${esc(l)}${s?`<small>${esc(s)}</small>`:""}</span></button>`}).join("")}</div>`;
+ }
+ const ok=q.multi?true:!!a;
+ return `${i===0&&!Object.keys(S.quiz).length?`<div class="card"><h2>Let's find the right trust</h2><p class="muted" style="margin:0">Answer ${QUIZ.length} short questions. You'll get a recommendation, plain-English explanations of how it protects your assets and what it means for taxes, then draft documents and a setup checklist.</p></div>`:""}
+ <div class="card">
+  <div class="spread small muted"><span>Question ${i+1} of ${QUIZ.length}</span>${i>0?`<button class="btn sm ghost" data-q="back">Back</button>`:""}</div>
+  <div class="progress"><i style="width:${(i/QUIZ.length)*100}%"></i></div>
+  <h2 class="qtext">${esc(q.q)}</h2>${q.help?`<p class="muted small" style="margin:0">${esc(q.help)}</p>`:""}
+  ${body}
+  <div class="row"><button class="btn" data-q="next" ${ok?"":"disabled"}>${i===QUIZ.length-1?"See my recommendation":"Next"}</button>${q.multi&&!(a||[]).length?`<span class="small muted">Or skip if none apply</span>`:""}</div>
+ </div>`;
+}
+function viewResults(){
+ const r=recommend(S.quiz),p=T[r.primary];
+ const pillFor=k=>T[k].rev?`<span class="pill rev">Revocable</span>`:`<span class="pill irr">Irrevocable</span>`;
+ return `<div class="card">
+  <div class="spread"><h2>Your recommendation</h2><button class="btn sm ghost" data-act="retake">Retake quiz</button></div>
+  <div class="rec"><span class="tag">Best fit</span><h3>${p.name}</h3><div style="margin:4px 0 6px">${pillFor(r.primary)}</div>
+   <p style="margin:6px 0">${esc(p.what)}</p>
+   <b class="small">Why this fits you</b><ul class="reasons small">${r.why[r.primary].map(x=>`<li>${esc(x)}</li>`).join("")||"<li>It's the most flexible foundation for most families.</li>"}</ul>
+   <div class="row" style="margin-top:12px"><button class="btn sm" data-use="${r.primary}">Use this trust</button><button class="btn sm ghost" data-learn="${r.primary}">How it protects assets & taxes</button></div>
+  </div>
+  ${r.also.length?`<h3 style="margin-top:16px">Also worth considering</h3><div class="also">${r.also.map(k=>`<div class="card"><h4 style="font-size:15.5px">${T[k].name}</h4><div style="margin:4px 0">${pillFor(k)}</div><ul class="reasons small">${(r.why[k].length?r.why[k]:["Often paired with your main trust."]).slice(0,2).map(x=>`<li>${esc(x)}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm ghost" data-learn="${k}">Learn more</button><button class="btn sm ghost" data-use="${k}">Use this instead</button></div></div>`).join("")}</div>`:""}
+  ${r.prov.length?`<h3 style="margin-top:16px">Provisions to include</h3><p class="small muted" style="margin:0 0 6px">These are clauses added to your trust, not separate trusts.</p><ul class="reasons">${r.prov.map(k=>`<li><b>${PROVISIONS[k].name}.</b> ${esc(PROVISIONS[k].text)}</li>`).join("")}</ul>`:""}
+  ${r.notes.length?`<h3 style="margin-top:16px">Things to know for you</h3><ul class="reasons">${r.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+ </div>
+ <div class="notice warn"><b>This is a starting point, not legal advice.</b> A short meeting with an estate-planning attorney in your state can confirm the right type. Many offer a free first consultation. The Documents tab includes a list of questions to bring.</div>`;
+}
+
+/* ---- Learn ---- */
+const FAQ=[
+ ["Will or trust: what's the difference?","A will says who gets what, but it has to go through probate court, which is public and can take months or years and cost a few percent of the estate. A living trust does the same job privately, without court, and also covers you if you become incapacitated. Most people with a trust still have a short \"pour-over\" will to catch anything left outside the trust and to name guardians for minor children."],
+ ["Do I need a lawyer?","You can legally create a trust yourself in every state, and the drafts in this app help you understand and organize everything. But mistakes are common, especially with irrevocable, special-needs, Medicaid, asset-protection and charitable trusts, where small wording errors can cost benefits or tax savings. Having an attorney review or draft the final version is strongly recommended."],
+ ["What does \"funding\" a trust mean?","A trust only controls what is titled in its name. Funding means retitling assets: recording a new deed for your home, changing bank and brokerage accounts to the trust's name, and assigning personal property. An unfunded trust is the most common mistake, and those assets still go through probate."],
+ ["Who should be the trustee?","For a revocable trust, usually you (and your spouse). For successors, pick someone organized, honest and willing, plus a backup. For irrevocable or asset-protection trusts you usually need an independent trustee, such as a trusted friend, a professional fiduciary or a trust company. Co-trustees are possible but can slow decisions."],
+ ["Will my mortgage or property tax change if I put my home in a trust?","Federal law (the Garn-St Germain Act) generally stops lenders from calling a loan due when you move your home into your own revocable trust. Most states don't reassess property tax for transfers to your own revocable trust, and you keep homestead exemptions, but some require a form with the deed (for example California's Preliminary Change of Ownership Report). Tell your homeowner's insurance company and ask them to add the trust as an additional insured."],
+ ["Should my retirement accounts go into the trust?","Usually no. You can't retitle an IRA or 401(k) into a trust without cashing it out and paying tax. Instead you update the beneficiary designation. Naming a trust as beneficiary is sometimes smart (minors, special needs, spendthrift concerns) but the 10-year payout rules for inherited retirement accounts make the wording important. Ask an attorney."],
+ ["Does a trust have to file tax returns?","A revocable trust doesn't while you're alive; everything goes on your normal return. Irrevocable non-grantor trusts file Form 1041 every year they have income over $600. Charitable remainder trusts file Form 5227. After you die, your revocable trust becomes irrevocable and gets its own EIN."],
+ ["Is a trust filed with the court or government?","Usually not. Trusts are private documents. What does get filed or recorded: deeds to your home (county recorder), an EIN application with the IRS for irrevocable trusts, gift tax returns (Form 709) when you fund an irrevocable trust, and in a few states an optional trust registration. The Set up & file tab walks through each one."],
+ ["What happens if I move to another state?","A trust valid where it was signed is generally valid elsewhere, but have it reviewed after a move. Community property rules, estate taxes, notary requirements and Medicaid rules may differ."],
+ ["How often should I update it?","Review every 3 to 5 years, and after a marriage, divorce, birth, death, large inheritance, move to a new state, or major change in tax law."],
+ ["Can creditors reach my living trust?","Yes. While you're alive a revocable trust gives no protection from your own creditors, because you can take the assets back at any time. Protection from your own creditors requires giving up control through an irrevocable trust (and timing matters). Every type of trust can protect your beneficiaries' inheritance from their creditors with a spendthrift clause."],
+ ["How much does it cost?","Revocable trust packages run about $1,500 to $5,000 with an attorney ($300 to $800 online). Irrevocable, special-needs, Medicaid, asset-protection and charitable trusts usually cost $2,500 to $15,000+. Compare that with probate, which often costs 3% to 7% of an estate."],
+ ["What is a pour-over will?","A short will that says anything you forgot to put in your trust \"pours over\" into it when you die. Those assets may still need probate (many states have a simplified process for small amounts), but they end up following your trust's instructions. It's also where you name a guardian for minor children."],
+ ["What other documents go with a trust?","A complete plan usually has: the trust, a pour-over will, a durable financial power of attorney, an advance health care directive (health care power of attorney and living will), a HIPAA release, and updated beneficiary designations on retirement accounts and life insurance."]
+];
+function sec(t,b){return `<div class="sec"><h4>${t}</h4>${b}</div>`}
+function ul(a){return `<ul>${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`}
+function typeBody(k){const t=T[k];
+ return `<p style="margin:0">${esc(t.what)}</p>
+ ${sec("Good for",ul(t.goodFor))}
+ ${sec("How it protects your assets",ul(t.protects))}
+ ${sec("What it does <u>not</u> protect",ul(t.notProtect))}
+ ${sec("Tax consequences",`<div class="taxgrid"><div><b>Income tax</b>${esc(t.tax.income)}</div><div><b>Gift tax</b>${esc(t.tax.gift)}</div><div><b>Estate tax</b>${esc(t.tax.estate)}</div><div><b>Capital gains / basis</b>${esc(t.tax.basis)}</div><div><b>Tax ID</b>${esc(t.tax.after)}</div></div>`)}
+ ${sec("How to set it up",`<ol style="margin:4px 0;padding-left:20px">${t.steps.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`)}
+ <div class="taxgrid" style="margin-top:12px"><div><b>Typical cost</b>${esc(t.cost)}</div><div><b>Can I change it?</b>${esc(t.change)}</div></div>
+ <div class="row" style="margin-top:12px"><button class="btn sm" data-use="${k}">Use this trust</button></div>`;
+}
+function viewLearn(){
+ const sub=S.learnSub;
+ let body="";
+ if(sub==="types"){
+  body=`<p class="muted small" style="margin:0 0 10px">Tap a trust to see how it protects assets, its tax consequences, and how to set it up.</p>`+
+  Object.keys(T).map(k=>`<div class="acc ${S.openType===k?"open":""}" data-acc="${k}"><button data-toggle="${k}"><div><h3>${T[k].name}</h3><span class="small muted">${T[k].rev?"Revocable":"Irrevocable"} · ${esc(T[k].goodFor[0])}</span></div><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button><div class="body">${S.openType===k?typeBody(k):""}</div></div>`).join("");
+ }else if(sub==="protect"){
+  body=`<div class="card"><h3>How trusts protect assets</h3>
+  <p>Protection depends on one question: <b>who controls the assets?</b> The more control you keep, the less protection from your own creditors.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:13.5px">
+  ${[["Protection from…","Revocable trust","Irrevocable trust"],["Probate court","Yes","Yes"],["Court conservatorship if you're incapacitated","Yes","Yes"],["Your own creditors and lawsuits","No","Generally yes, if funded before any claim"],["Nursing-home / Medicaid spend-down","No","Yes, with a Medicaid trust after the look-back"],["Beneficiaries' creditors and divorces","Yes, after your death, with a spendthrift clause","Yes, with a spendthrift clause"],["Beneficiary losing SSI / Medicaid","Yes, with a special-needs sub-trust","Yes, with a special needs trust"],["Federal estate tax","No (married couples can add sub-trusts)","Yes, for assets given away"]].map((r,i)=>`<tr>${r.map(c=>i?`<td style="border-top:1px solid var(--line);padding:8px 6px">${c}</td>`:`<th style="text-align:left;padding:6px;color:var(--muted);font-size:12px;text-transform:uppercase">${c}</th>`).join("")}</tr>`).join("")}
+  </table></div>
+  <div class="card"><h3>The rules that make protection hold up</h3>${ul(["Fund it early. Transfers made after a claim, lawsuit or debt arises can be undone as \"fraudulent transfers.\" Most states let creditors challenge transfers for 4 years.","Don't keep strings attached. If you can take assets back, direct the trustee, or treat trust accounts like your own, a court may ignore the trust.","Use an independent trustee for irrevocable trusts that need to protect you.","Include a spendthrift clause so beneficiaries can't pledge their inheritance and their creditors can't seize it.","Keep separate records, separate accounts and its own EIN for irrevocable trusts.","Insurance and LLCs work alongside trusts. Umbrella liability insurance is often the cheapest first line of protection."])}</div>`;
+ }else if(sub==="tax"){
+  body=`<div class="card"><h3>2026 federal tax numbers</h3>
+  <div class="facts"><div class="fact"><div class="v">$15M</div><div class="l">Estate & gift exemption per person ($30M per married couple)</div></div><div class="fact"><div class="v">$19,000</div><div class="l">Annual gift exclusion per recipient</div></div><div class="fact"><div class="v">40%</div><div class="l">Top federal estate & gift tax rate</div></div><div class="fact"><div class="v">~$16,000</div><div class="l">Trust income where the 37% bracket starts (vs. $600K+ for individuals)</div></div></div>
+  <p class="small muted" style="margin-top:10px">Numbers change yearly. Confirm with the IRS or a tax professional. The estate exemption was made permanent and is now indexed for inflation.</p></div>
+  <div class="card"><h3>The four taxes to think about</h3>
+  ${sec("Income tax",`<p style="margin:0">A <b>grantor trust</b> (every revocable trust, and many irrevocable ones) is ignored for income tax; you report everything on your own return. A <b>non-grantor trust</b> is its own taxpayer filing Form 1041. Income it keeps is taxed at very compressed rates, so trustees often distribute income to beneficiaries, who usually pay less.</p>`)}
+  ${sec("Gift tax",`<p style="margin:0">Moving assets to an <b>irrevocable</b> trust is usually a gift. You only owe tax once lifetime gifts exceed the $15 million exemption, but you must file <b>Form 709</b> for gifts over the $19,000 annual exclusion. Putting assets in a revocable trust is not a gift.</p>`)}
+  ${sec("Estate tax",`<p style="margin:0">Anything you own or control at death, <i>including</i> your revocable trust and life insurance you own, counts toward your estate. Irrevocable trusts, ILITs and charitable trusts can move assets out. Also check your state: ${ESTATE_TAX_STATES.map(s=>STATES[s]).join(", ")} have estate taxes, and ${INHERIT_TAX_STATES.map(s=>STATES[s]).join(", ")} have inheritance taxes.</p>`)}
+  ${sec("Capital gains and \"step-up\" in basis",`<p style="margin:0">Assets included in your estate at death get a new tax basis equal to their value on that date, which can wipe out capital gains tax for heirs. Assets given away during life to an irrevocable trust keep your old basis. This trade-off (estate tax savings vs. losing the step-up) is a key reason most families under the exemption use revocable trusts.</p>`)}
+  </div>`;
+ }else{
+  body=FAQ.map(([q,a],i)=>`<div class="acc ${S.openFaq===i?"open":""}"><button data-faq="${i}"><h3>${esc(q)}</h3><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button><div class="body"><p style="margin:0">${esc(a)}</p></div></div>`).join("");
+ }
+ return `<div class="subtabs">${[["types","Trust types"],["protect","Asset protection"],["tax","Taxes"],["faq","Common questions"]].map(([k,l])=>`<button data-sub="${k}" class="${sub===k?"on":""}">${l}</button>`).join("")}</div>${body}`;
+}
+
+/* ---- Details ---- */
+function f(id,label,ph,type){const v=S.d[id];return `<label class="f">${label}<input data-f="${id}" type="${type||"text"}" value="${esc(v)}" placeholder="${esc(ph||"")}"></label>`}
+function viewDetails(){
+ const d=S.d,t=d.type,rec=S.done?recommend(S.quiz):null;
+ const joint=S.quiz.married==="married";
+ const tot=d.bens.reduce((s,b)=>s+(parseFloat(b.share)||0),0);
+ return `<div class="card"><h2>Your trust details</h2><p class="muted small" style="margin:0">Fill in what you know. Blanks show up as highlighted lines on the documents so you can fill them in by hand or with your attorney. Everything saves automatically on this device.</p></div>
+ <div class="card">
+  <div class="section-title" style="margin-top:0">Trust</div>
+  <div class="grid2">
+   <label class="f">Type of trust<select data-f="type"><option value="">Choose…</option>${Object.keys(T).map(k=>`<option value="${k}" ${t===k?"selected":""}>${T[k].name}${rec&&rec.primary===k?" (recommended)":""}</option>`).join("")}</select></label>
+   ${f("trustName","Trust name",suggestName())}
+   <label class="f">State whose law applies<select data-f="state"><option value="">Choose…</option>${Object.entries(STATES).map(([k,v])=>`<option value="${k}" ${(d.state||S.quiz.state)===k?"selected":""}>${v}</option>`).join("")}</select></label>
+   ${f("county","County where you live","e.g. Fresno County")}
+  </div>
+  <div class="section-title">You (the grantor${joint?"s":""})</div>
+  <div class="grid2">
+   ${f("g1","Your full legal name","First Middle Last")}
+   ${joint?f("g2","Spouse's full legal name","Leave blank for an individual trust"):f("g2","Co-grantor (optional)","Usually only for married couples")}
+   <div style="grid-column:1/-1">${f("address","Home address","Street, City, State ZIP")}</div>
+  </div>
+  <div class="section-title">Trustees</div>
+  <div class="grid2">
+   ${f("trustee1","Initial trustee",T[t]&&!T[t].rev?"An independent person or trust company":"Usually you")}
+   ${f("trustee2","Co-trustee (optional)",T[t]&&T[t].rev?"Often your spouse":"")}
+   ${f("succ1","First successor trustee","Takes over if trustee can't serve")}
+   ${f("succ2","Second successor trustee","Backup")}
+   ${t&&!T[t].rev?f("protector","Trust protector (optional)","Can fix problems later"):""}
+  </div>
+ </div>
+ <div class="card">
+  <div class="spread"><div class="section-title" style="margin:0">Beneficiaries</div><button class="btn sm ghost" data-act="addBen">+ Add person</button></div>
+  <p class="small muted">Who receives the trust assets after ${t==="crt"?"the income term ends (charity) or receives income":"your death"}. Shares should add up to 100%.</p>
+  ${d.bens.map((b,i)=>`<div class="listrow ben"><label class="f wide">Name<input data-ben="${i}" data-k="name" value="${esc(b.name)}"></label><label class="f">Relationship<input data-ben="${i}" data-k="rel" value="${esc(b.rel)}" placeholder="Daughter"></label><label class="f">Share %<input data-ben="${i}" data-k="share" inputmode="decimal" value="${esc(b.share)}"></label><button class="del" data-delben="${i}" aria-label="Remove">Remove</button></div>`).join("")}
+  <div class="total ${Math.abs(tot-100)>0.01&&d.bens.length?"bad":"muted"}" id="benTotal">Total: ${tot}%${Math.abs(tot-100)>0.01?" (should be 100%)":""}</div>
+  <div class="section-title">When children receive their share</div>
+  <div class="grid2">
+   <label class="f">Payout schedule<select data-f="distAge"><option value="outright" ${d.distAge==="outright"?"selected":""}>All at one age</option><option value="staggered" ${d.distAge==="staggered"?"selected":""}>In thirds at three ages</option><option value="discretion" ${d.distAge==="discretion"?"selected":""}>Held for life at trustee's discretion</option></select></label>
+   ${d.distAge==="outright"?f("outrightAge","Age","21"):d.distAge==="staggered"?`<div class="grid2" style="grid-template-columns:1fr 1fr 1fr">${f("ageA","1st third","25")}${f("ageB","2nd third","30")}${f("ageC","Rest","35")}</div>`:"<div></div>"}
+  </div>
+  <label class="chk"><input type="checkbox" data-fc="spendthrift" ${d.spendthrift?"checked":""}> Include a spendthrift clause (recommended) to protect inheritances from beneficiaries' creditors and divorces</label>
+  <div class="grid2" style="margin-top:6px">
+   ${f("snBen","Beneficiary with special needs (if any)","Their share goes into a special-needs sub-trust")}
+   ${f("petCare","Pet caregiver (if any)","")}
+   ${t==="crt"?f("charity","Charity receiving remainder","Name and EIN if known"):""}
+   ${t==="crt"?f("payout","Annual payout % (5–50)","5"):""}
+  </div>
+ </div>
+ <div class="card">
+  <div class="spread"><div class="section-title" style="margin:0">Assets going into the trust</div><button class="btn sm ghost" data-act="addAsset">+ Add asset</button></div>
+  <p class="small muted">These become Schedule A and your funding checklist. Use the last 4 digits for account numbers only.</p>
+  ${d.assets.length?"":`<p class="small muted"><i>No assets yet.</i></p>`}
+  ${d.assets.map((x,i)=>`<div class="listrow asset"><label class="f wide">Description<input data-as="${i}" data-k="desc" value="${esc(x.desc)}" placeholder="123 Main St / Chase checking …1234"></label><label class="f">Type<select data-as="${i}" data-k="kind">${Object.entries(ASSET_TYPES).map(([k,v])=>`<option value="${k}" ${x.kind===k?"selected":""}>${v}</option>`).join("")}</select></label><label class="f">Approx. value<input data-as="${i}" data-k="value" inputmode="decimal" value="${esc(x.value)}" placeholder="$"></label><label class="f">Held at / county<input data-as="${i}" data-k="where" value="${esc(x.where)}" placeholder="Bank or county"></label><button class="del" data-delas="${i}" aria-label="Remove">Remove</button></div>`).join("")}
+ </div>
+ <div class="card">
+  <div class="section-title" style="margin-top:0">Will & signing</div>
+  <div class="grid2">
+   ${f("executor","Executor of your pour-over will","Often same as successor trustee")}
+   ${f("guardian","Guardian for minor children","If you have children under 18")}
+   ${f("signDate","Planned signing date","","date")}
+  </div>
+ </div>
+ <div class="row"><button class="btn" data-go="docs">Make my documents →</button></div>`;
+}
+function suggestName(){const n=(S.d.g1||"").trim().split(/\s+/).pop();return n?`The ${n} Family Trust`:"The Smith Family Trust"}
+function bindDetails(){
+ const m=$("#main");
+ m.oninput=e=>{const el=e.target;
+  if(el.dataset.f){S.d[el.dataset.f]=el.value;save();if(el.tagName==="SELECT"){render()}}
+  else if(el.dataset.ben){S.d.bens[+el.dataset.ben][el.dataset.k]=el.value;save();if(el.dataset.k==="share"){const tot=S.d.bens.reduce((s,b)=>s+(parseFloat(b.share)||0),0);const t=$("#benTotal");t.textContent=`Total: ${tot}%${Math.abs(tot-100)>0.01?" (should be 100%)":""}`;t.className="total "+(Math.abs(tot-100)>0.01?"bad":"muted")}}
+  else if(el.dataset.as){S.d.assets[+el.dataset.as][el.dataset.k]=el.value;save()}
+ };
+ m.onchange=e=>{const el=e.target;if(el.dataset.fc){S.d[el.dataset.fc]=el.checked;save()}};
+}
+
+/* ---- Documents ---- */
+const fill=(v,ph)=>v&&String(v).trim()?esc(v):`<span class="fill">${esc(ph||"____________________")}</span>`;
+function ctx(){const d=S.d,t=d.type||(S.done?recommend(S.quiz).primary:"rlt");
+ const st=d.state||S.quiz.state||"";
+ const grantors=[d.g1,d.g2].filter(x=>x&&x.trim());
+ const gNames=grantors.length?grantors.map(esc).join(" and "):fill("","Grantor name(s)");
+ const plural=grantors.length>1;
+ return {d,t,T:T[t],st,stateName:STATES[st]||"",gNames,plural,tName:fill(d.trustName,suggestName()),
+  trustees:[d.trustee1,d.trustee2].filter(x=>x&&x.trim()).map(esc).join(" and ")||(T[t].rev?gNames:fill("","Trustee name")),
+  date:d.signDate?new Date(d.signDate+"T12:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}):fill("","Date")};
+}
+function draftBanner(){return `<div class="draft"><b>DRAFT FOR REVIEW. NOT LEGAL ADVICE.</b> Created with the Trust Setup Guide to organize your wishes. Have a licensed attorney in your state review and finalize it before signing. Highlighted blanks still need to be filled in.</div>`}
+function notary(c){return `<div class="box"><b>ACKNOWLEDGMENT</b><br>State of ${c.stateName?esc(c.stateName):fill("","State")} )<br>County of ${fill(c.d.county,"County")} )<br><br>On ${fill("","date")}, before me, ${fill("","notary name")}, Notary Public, personally appeared ${c.gNames}, who proved to me on the basis of satisfactory evidence to be the person(s) whose name(s) is/are subscribed to this instrument and acknowledged that he/she/they executed the same.<br><br>Signature of Notary ____________________________ (Seal)<br><span style="font-size:11.5px;color:#555">Some states, including California, require their own exact notary wording. Your notary will attach the correct form.</span></div>`}
+function sigs(c,extra){const g=[c.d.g1,c.d.g2].filter(x=>x&&x.trim());const names=g.length?g:["Grantor"];
+ const ts=[c.d.trustee1,c.d.trustee2].filter(x=>x&&x.trim()&&!g.includes(x));
+ return `<div class="sig">${names.map(n=>`<div>${esc(n)}, Grantor${c.T.rev?" and Trustee":""}</div>`).join("")}${(!c.T.rev?(ts.length?ts:["Trustee"]):ts).map(n=>`<div>${esc(n)}, Trustee</div>`).join("")}${extra||""}</div>`}
+function distText(c){const d=c.d;
+ if(d.distAge==="outright")return `When a beneficiary reaches age ${fill(d.outrightAge,"21")}, the Trustee shall distribute that beneficiary's share outright. Until then, the Trustee shall hold the share in a separate trust and may use income and principal for the beneficiary's health, education, maintenance and support.`;
+ if(d.distAge==="staggered")return `The Trustee shall hold each beneficiary's share in a separate trust and use income and principal as needed for the beneficiary's health, education, maintenance and support. The Trustee shall distribute one-third of the share when the beneficiary reaches age ${fill(d.ageA,"25")}, one-half of the balance at age ${fill(d.ageB,"30")}, and the remainder at age ${fill(d.ageC,"35")}.`;
+ return `The Trustee shall hold each beneficiary's share in a separate trust for the beneficiary's lifetime, distributing income and principal in the Trustee's sole discretion for the beneficiary's health, education, maintenance and support, considering other resources available to the beneficiary.`;
+}
+function benTable(c){const b=c.d.bens.filter(x=>x.name||x.share);
+ return `<table><tr><th>Beneficiary</th><th>Relationship</th><th>Share</th></tr>${(b.length?b:[{},{}]).map(x=>`<tr><td>${fill(x.name,"Name")}</td><td>${fill(x.rel," ")}</td><td>${x.share?esc(x.share)+"%":fill("","%")}</td></tr>`).join("")}</table>`}
+
+function docTrust(c){const d=c.d,k=c.t,rev=c.T.rev;let n=0;const A=t=>`<h2>Article ${++n}. ${t}</h2>`;
+ let special="";
+ if(k==="ilit")special=A("Life Insurance")+`<p>The Trustee may apply for, purchase and own policies of insurance on the life of ${c.gNames}, and shall be named owner and beneficiary of each policy. The Grantor shall have no incidents of ownership in any policy. The Trustee has no duty to pay premiums beyond the funds contributed.</p><p><b>Withdrawal rights.</b> Each time property is contributed to the trust, each beneficiary may withdraw a pro-rata share of the contribution, up to the federal gift tax annual exclusion amount, by written request within 30 days after receiving written notice from the Trustee. Unexercised rights lapse to the extent permitted without a taxable gift by the beneficiary.</p>`;
+ if(k==="irrev")special=A("Gifts to the Trust")+`<p>The Grantor may add property to this trust by gift. For each gift, each beneficiary shall have a right to withdraw a pro-rata share, up to the federal gift tax annual exclusion amount, by written request within 30 days after notice from the Trustee.</p><p><b>Power of substitution.</b> The Grantor, acting in a non-fiduciary capacity, may reacquire trust property by substituting other property of equal value. This power is intended to make the trust a grantor trust for federal income tax purposes.</p>`;
+ if(k==="snt")special=A("Supplemental Needs Purpose")+`<p>This trust is for the benefit of ${fill(d.snBen||(d.bens[0]&&d.bens[0].name),"Beneficiary")}, who has a disability. The trust is intended to supplement, and not replace, any public benefits for which the beneficiary is or may become eligible, including Supplemental Security Income and Medicaid. The beneficiary has no right to compel distributions. The Trustee may make distributions in the Trustee's sole and absolute discretion for supplemental needs not otherwise provided by public benefits, and shall consider the effect of any distribution on such benefits. No part of the trust shall be used to reimburse any government agency. This is a third-party trust and shall not hold any assets belonging to the beneficiary.</p>`;
+ if(k==="dapt")special=A("Asset Protection Provisions")+`<p>This trust is intended to qualify as a self-settled spendthrift trust under the laws of the State of ${fill(c.stateName,"DAPT State")}. At least one Trustee shall at all times be a qualified trustee residing in or authorized to act as a trust company in that state. The Grantor may receive distributions only in the sole discretion of a Trustee who is not the Grantor. The Grantor has signed an Affidavit of Solvency in connection with each transfer to this trust.</p>`;
+ if(k==="medicaid")special=A("Limitation on Distributions to Grantor")+`<p>The Trustee may distribute net income to the Grantor during the Grantor's lifetime. No part of the trust principal shall be distributed to or for the benefit of the Grantor or the Grantor's spouse under any circumstances. The Grantor reserves the right to live in any residence held by the trust, and reserves a limited testamentary power to change the shares of the Grantor's descendants, so that trust property is included in the Grantor's estate for basis purposes.</p>`;
+ if(k==="crt")special=A("Charitable Remainder Unitrust")+`<p>Each year the Trustee shall pay to ${c.gNames} (the "Recipient") an amount equal to ${fill(d.payout,"5")} percent of the net fair market value of the trust assets, valued on the first business day of each taxable year. Payments continue for the Recipient's life. On the death of the last Recipient, the Trustee shall distribute the trust property to ${fill(d.charity,"Charitable Organization")}, or another organization described in Internal Revenue Code sections 170(c) and 2055(a). This trust is intended to qualify as a charitable remainder unitrust under Code section 664 and shall be interpreted consistently with the IRS sample forms in Rev. Proc. 2005-52 through 2005-59.</p>`;
+ return `<div class="paper">${draftBanner()}<h1>${c.tName}</h1><div class="sub">${c.T.name} Agreement · Dated ${c.date}</div>
+ ${A("Declaration")}<p>This trust agreement is made by ${c.gNames} (the "Grantor${c.plural?"s":""}") ${rev?"as Trustee":"and "+c.trustees+" (the \"Trustee\")"}. The Grantor transfers to the Trustee the property listed on Schedule A, to be held and managed under this agreement. The trust shall be known as ${c.tName}.</p>
+ ${A(rev?"Right to Revoke or Amend":"Irrevocability")}<p>${rev?`While living and competent, the Grantor may amend or revoke this trust in whole or in part by a signed writing delivered to the Trustee.${c.plural?" As to community or jointly owned property, either Grantor may revoke; amendment requires both.":""} This trust becomes irrevocable upon the death of the Grantor${c.plural?"s":""}.`:`This trust is irrevocable. The Grantor retains no right to alter, amend, revoke or terminate it, except as expressly stated in this agreement.${d.protector?` ${esc(d.protector)} is appointed Trust Protector and may amend administrative and tax provisions to carry out the Grantor's intent, but may not add the Grantor as a beneficiary.`:""}`}</p>
+ ${A("Trustees")}<p>The initial Trustee is ${c.trustees}. If a Trustee dies, resigns or becomes incapacitated, ${fill(d.succ1,"First Successor Trustee")} shall serve as successor Trustee, and if that person cannot serve, ${fill(d.succ2,"Second Successor Trustee")}. No bond shall be required. A Trustee is incapacitated if two licensed physicians certify in writing that the Trustee can no longer manage financial affairs prudently.</p>
+ ${rev?A("During the Grantor's Lifetime")+`<p>The Trustee shall pay to or for the Grantor as much of the income and principal as the Grantor directs. If the Grantor becomes incapacitated, the Trustee shall use income and principal as needed for the health, support and comfort of the Grantor${c.plural?"s":""} and any dependents.</p>`:""}
+ ${special}
+ ${k!=="crt"?A(rev?"Distribution After the Grantor's Death":"Beneficiaries and Distribution")+`<p>${rev?`After the death of the ${c.plural?"surviving ":""}Grantor and payment of debts, expenses and taxes, the`:"The"} Trustee shall divide the trust property among the following beneficiaries in the shares shown:</p>${benTable(c)}<p>If a beneficiary does not survive, that beneficiary's share passes to the beneficiary's descendants, by right of representation, or if none, proportionally to the other beneficiaries.</p><p>${distText(c)}</p>`:""}
+ ${d.snBen&&k!=="snt"?A("Special Needs Sub-Trust")+`<p>Any share for ${esc(d.snBen)} shall be held in a separate discretionary supplemental needs trust, intended to supplement and not replace public benefits. The beneficiary may not compel distributions, and the Trustee shall consider the effect of any distribution on eligibility for public benefits.</p>`:""}
+ ${d.petCare?A("Pets")+`<p>The Trustee shall deliver any pet of the Grantor to ${esc(d.petCare)} and may set aside a reasonable amount for the care of each pet for its lifetime.</p>`:""}
+ ${d.spendthrift?A("Spendthrift Provision")+`<p>No beneficiary may sell, assign, pledge or otherwise transfer any interest in the income or principal of this trust before actual distribution. No interest shall be subject to the claims of a beneficiary's creditors, including claims arising from divorce or separation, or to attachment or other legal process, to the fullest extent permitted by law.</p>`:""}
+ ${A("Trustee Powers")}<p>In addition to the powers granted by the laws of ${fill(c.stateName,"State")}, the Trustee may: buy, sell, lease and manage real and personal property; open and manage bank and investment accounts; invest under the prudent investor rule; borrow and lend; pay debts, expenses and taxes; hire attorneys, accountants and advisors; make tax elections; and divide or combine trusts with identical terms. The Trustee shall keep beneficiaries reasonably informed as required by law.</p>
+ ${A("Governing Law and General Provisions")}<p>This agreement is governed by the laws of the State of ${fill(c.stateName,"State")}. If any provision is invalid, the rest remain in effect. A copy or a Certification of Trust may be relied upon by third parties.</p>
+ <p style="margin-top:22px">Signed on ${c.date}, at ${fill(d.county,"County")}, ${fill(c.stateName,"State")}.</p>
+ ${sigs(c)}
+ ${notary(c)}
+ </div>`;
+}
+function assetRows(c){return c.d.assets.length?c.d.assets.map(a=>`<tr><td>${fill(a.desc,"Description")}</td><td>${esc(ASSET_TYPES[a.kind]||"")}</td><td>${fill(a.where," ")}</td><td>${a.value?"$"+esc(Number(String(a.value).replace(/[^0-9.]/g,"")).toLocaleString()):""}</td></tr>`).join(""):[1,2,3,4,5].map(()=>`<tr><td>&nbsp;</td><td></td><td></td><td></td></tr>`).join("")}
+function docScheduleA(c){const total=c.d.assets.reduce((s,a)=>s+(parseFloat(String(a.value).replace(/[^0-9.]/g,""))||0),0);
+ return `<div class="paper">${draftBanner()}<h1>Schedule A</h1><div class="sub">Property of ${c.tName}</div>
+ <p>The Grantor${c.plural?"s":""} transfer${c.plural?"":"s"} and assign${c.plural?"":"s"} the following property to the Trustee of ${c.tName}, dated ${c.date}:</p>
+ <table><tr><th>Description</th><th>Type</th><th>Held at / County</th><th>Approx. value</th></tr>${assetRows(c)}${total?`<tr><th colspan="3" style="text-align:right">Approximate total</th><th>$${total.toLocaleString()}</th></tr>`:""}</table>
+ <p style="font-size:13px">Real estate is transferred by a separately recorded deed. Retirement accounts and life insurance are listed for reference and pass by beneficiary designation. Values are estimates for planning only.</p>
+ ${sigs(c)}</div>`}
+function docCert(c){return `<div class="paper">${draftBanner()}<h1>Certification of Trust</h1><div class="sub">Provide to banks, brokers and title companies instead of the full trust</div>
+ <p>The undersigned Trustee${c.d.trustee2?"s":""} certif${c.d.trustee2?"y":"ies"} as follows:</p>
+ <ol><li>The trust is ${c.tName}, dated ${c.date}, and it is in existence and has not been revoked, modified or amended in any way that would make these statements incorrect.</li>
+ <li>The Grantor${c.plural?"s are":" is"} ${c.gNames}.</li>
+ <li>The currently acting Trustee${c.d.trustee2?"s are":" is"} ${c.trustees}. Successor Trustees: ${fill(c.d.succ1,"Successor 1")}${c.d.succ2?", then "+esc(c.d.succ2):""}.</li>
+ <li>The Trustee has full power to acquire, sell, convey, encumber, lease, invest and otherwise deal with trust property, and to open and manage accounts. ${c.d.trustee2?"Either Trustee may act alone unless the trust requires otherwise.":""}</li>
+ <li>The trust is ${c.T.rev?"revocable by the Grantor"+(c.plural?"s":""):"irrevocable"}.</li>
+ <li>Title to trust property should be taken as: <b>${c.trustees}, Trustee${c.d.trustee2?"s":""} of ${c.tName} dated ${c.date}</b>.</li>
+ <li>Taxpayer ID: ${c.T.rev?"the Grantor's Social Security number while the Grantor is living":fill("","Trust EIN")}.</li>
+ <li>The trust is governed by the laws of ${fill(c.stateName,"State")}.</li></ol>
+ <p>I declare under penalty of perjury under the laws of ${fill(c.stateName,"State")} that the foregoing is true and correct.</p>
+ <div class="sig">${[c.d.trustee1,c.d.trustee2].filter(Boolean).map(n=>`<div>${esc(n)}, Trustee</div>`).join("")||"<div>Trustee</div>"}<div>Date</div></div>${notary(c)}</div>`}
+function docAssign(c){return `<div class="paper">${draftBanner()}<h1>General Assignment of Assets</h1><div class="sub">To ${c.tName}</div>
+ <p>For value received, ${c.gNames} (the "Assignor${c.plural?"s":""}") assign${c.plural?"":"s"} and transfer${c.plural?"":"s"} to ${c.trustees}, as Trustee of ${c.tName} dated ${c.date}, all of the Assignor's right, title and interest in all tangible personal property, including furniture, jewelry, art, collectibles, tools, household goods and vehicles not otherwise registered, wherever located, now owned or later acquired.</p>
+ <p>This assignment also covers any other asset the Assignor intended to transfer to the trust that remains titled in the Assignor's name, to the extent permitted by law. It does not include retirement accounts, annuities, life insurance, or other assets that pass by beneficiary designation, or property whose transfer would cause a tax or penalty.</p>
+ <p>Signed on ${c.date}.</p><div class="sig">${[c.d.g1,c.d.g2].filter(Boolean).map(n=>`<div>${esc(n)}, Assignor</div>`).join("")||"<div>Assignor</div>"}</div>${notary(c)}</div>`}
+function docWill(c){const tst=c.t==="testamentary";return `<div class="paper">${draftBanner()}<h1>${tst?"Last Will and Testament with Testamentary Trust":"Pour-Over Will"}</h1><div class="sub">of ${fill(c.d.g1,"Your name")}</div>
+ <p>I, ${fill(c.d.g1,"Your name")}, of ${fill(c.d.county,"County")}, ${fill(c.stateName,"State")}, declare this to be my will and revoke all prior wills and codicils.</p>
+ <h2>1. Family</h2><p>${c.d.g2?`I am married to ${esc(c.d.g2)}.`:"I am not married."} My beneficiaries are listed below.</p>
+ <h2>2. Gift of Estate</h2><p>${tst?`I give my entire estate to my Trustee, ${fill(c.d.succ1,"Trustee")}, to be held as the ${c.tName} under the terms below.`:`I give my entire estate, after payment of debts and expenses, to the Trustee then serving of ${c.tName}, dated ${c.date}, to be added to and administered under that trust as amended. If that trust is not in effect, I give my estate to the person named as its successor trustee to hold under the terms of that trust, which I incorporate by reference.`}</p>
+ ${tst?`<h2>3. Trust Terms</h2><p>The Trustee shall divide the estate as follows:</p>${benTable(c)}<p>${distText(c)}</p>${c.d.spendthrift?`<p><b>Spendthrift.</b> No beneficiary may assign or pledge an interest before distribution, and no interest shall be subject to the claims of creditors, to the fullest extent permitted by law.</p>`:""}`:""}
+ <h2>${tst?4:3}. Executor</h2><p>I appoint ${fill(c.d.executor||c.d.succ1,"Executor")} as Executor${c.d.succ2?`, and if that person cannot serve, ${esc(c.d.succ2)}`:""}. No bond shall be required. My Executor may use any simplified or independent administration procedure allowed by law.</p>
+ <h2>${tst?5:4}. Guardian</h2><p>If a guardian is needed for any minor child of mine, I appoint ${fill(c.d.guardian,"Guardian")}.</p>
+ <p style="margin-top:20px">Signed on ${c.date}, at ${fill(c.d.county,"County")}, ${fill(c.stateName,"State")}.</p>
+ <div class="sig"><div>${fill(c.d.g1,"Testator")}, Testator</div><div></div></div>
+ <h2>Witnesses</h2><p style="font-size:13.5px">On the date above, the Testator declared this instrument to be their will and signed it in our presence. We, at the Testator's request and in the Testator's presence and each other's presence, sign as witnesses. Each of us is over 18 and is not a beneficiary under this will.</p>
+ <div class="sig"><div>Witness 1 signature / printed name / address</div><div>Witness 2 signature / printed name / address</div></div>
+ <div class="box" style="font-size:12.5px">Most states require two adult witnesses who are not beneficiaries. Adding a notarized "self-proving affidavit" lets the will be accepted by the court without calling witnesses. Your attorney or notary can add the form your state uses.</div>
+ ${c.d.g2&&!tst?`<p style="font-size:12.5px;color:#555">Your spouse needs a separate pour-over will. Print another copy with their name.</p>`:""}</div>`}
+function fundingFor(a,c){const title=`${c.trustees}, Trustee${c.d.trustee2?"s":""} of ${c.tName}`;
+ return {home:`Sign and notarize a new deed (often a grant, quitclaim or trust transfer deed) from you to "${title}". Record it with the ${esc(a.where||"county")} recorder. Ask about a transfer/reassessment exclusion form. Notify your homeowner's insurer.`,
+ bank:`Ask the bank to retitle the account to the trust, or add a payable-on-death (POD) designation to the trust. Bring the Certification of Trust.`,
+ brokerage:`Complete the firm's trust account form to retitle the account, or add a transfer-on-death (TOD) designation to the trust.`,
+ retirement:`Do NOT retitle. Update the beneficiary form (usually spouse first, then the trust or individuals). Ask an attorney before naming the trust.`,
+ insurance:c.t==="ilit"?`Have the trust become owner and beneficiary (insurer's change-of-ownership form), or have the trustee buy a new policy.`:`Update the beneficiary designation to the trust if it should hold the payout (for example for minors), or to individuals.`,
+ business:`Sign an assignment of your LLC or partnership interest (check the operating agreement for consent requirements) or re-issue stock certificates to the trust.`,
+ vehicle:`Many states let vehicles pass by small-estate affidavit or transfer-on-death registration. Retitling at the DMV is optional; check your insurer first.`,
+ personal:`Covered by the General Assignment of Assets.`,other:`Ask how to transfer title to the trust, or cover it with the General Assignment.`}[a.kind]||"";}
+function docFunding(c){return `<div class="paper">${draftBanner()}<h1>Trust Funding Checklist</h1><div class="sub">${c.tName}</div>
+ <p>A trust only controls what is titled in its name. Use this list to move each asset into the trust.</p>
+ <p><b>Title assets as:</b> ${c.trustees}, Trustee${c.d.trustee2?"s":""} of ${c.tName} dated ${c.date}</p>
+ <table><tr><th style="width:24px"></th><th>Asset</th><th>How to transfer it</th><th>Done</th></tr>
+ ${(c.d.assets.length?c.d.assets:Object.keys(ASSET_TYPES).slice(0,7).map(k=>({kind:k,desc:ASSET_TYPES[k]}))).map(a=>`<tr><td><span class="cb"></span></td><td>${esc(a.desc||ASSET_TYPES[a.kind])}<br><span style="font-size:12px;color:#555">${esc(ASSET_TYPES[a.kind]||"")}</span></td><td style="font-size:13px">${fundingFor(a,c)}</td><td style="width:80px"></td></tr>`).join("")}</table></div>`}
+function docCrummey(c){return `<div class="paper">${draftBanner()}<h1>Notice of Withdrawal Right</h1><div class="sub">("Crummey Notice") · ${c.tName}</div>
+ <p>Date: ${fill("","Date")}</p><p>To: ${fill("","Beneficiary name")}</p>
+ <p>On ${fill("","date of gift")}, ${c.gNames} contributed ${fill("","$ amount")} to ${c.tName}. Under the trust agreement, you have the right to withdraw up to ${fill("","$ your share")} of this contribution. To exercise this right, deliver a written request to the Trustee within 30 days of receiving this notice. If you do not, your right to withdraw this contribution will lapse.</p>
+ <p>You are not required to do anything. Please sign below to confirm you received this notice.</p>
+ <div class="sig"><div>${c.trustees}, Trustee</div><div>Beneficiary acknowledgment and date</div></div>
+ <div class="box" style="font-size:12.5px">The trustee should send one notice to each beneficiary every time money is added (for example each premium payment) and keep signed copies with the trust records.</div></div>`}
+function docSolvency(c){return `<div class="paper">${draftBanner()}<h1>Affidavit of Solvency</h1><div class="sub">For transfers to ${c.tName}</div>
+ <p>I, ${c.gNames}, being duly sworn, state:</p><ol>
+ <li>I am transferring the property described on the attached Schedule A to ${c.trustees}, as Trustee of ${c.tName}.</li>
+ <li>After this transfer, the fair value of my remaining assets will exceed my known debts and liabilities, and I will be able to pay my debts as they come due.</li>
+ <li>I do not intend to hinder, delay or defraud any creditor by this transfer.</li>
+ <li>There are no pending or threatened lawsuits, claims, administrative proceedings or investigations against me, except: ${fill("","None")}.</li>
+ <li>I am not in default of any child support obligation, and I do not contemplate filing for bankruptcy.</li>
+ <li>The property transferred is not derived from unlawful activity.</li></ol>
+ <div class="sig"><div>${c.gNames}, Affiant</div><div>Date</div></div>${notary(c)}</div>`}
+function docAttorney(c){const r=S.done?recommend(S.quiz):null;return `<div class="paper"><h1>Attorney Meeting Worksheet</h1><div class="sub">Bring this to your consultation</div>
+ <h2>Summary</h2><table><tr><th>Trust type</th><td>${esc(c.T.name)}</td></tr><tr><th>Name</th><td>${c.tName}</td></tr><tr><th>State</th><td>${fill(c.stateName,"State")}</td></tr><tr><th>Grantor(s)</th><td>${c.gNames}</td></tr><tr><th>Trustee / successors</th><td>${c.trustees}; ${fill(c.d.succ1,"Successor")}${c.d.succ2?", "+esc(c.d.succ2):""}</td></tr>${r?`<tr><th>Goals from quiz</th><td>${(S.quiz.goals||[]).map(g=>esc(QUIZ[3].opts.find(o=>o[0]===g)[1])).join("; ")||"Not answered"}</td></tr>`:""}</table>
+ <h2>Beneficiaries</h2>${benTable(c)}
+ <h2>Assets</h2><table><tr><th>Description</th><th>Type</th><th>Held at</th><th>Value</th></tr>${assetRows(c)}</table>
+ <h2>Questions to ask</h2><ol>
+ <li>Is a ${esc(c.T.name)} the right fit for my goals, or would something else work better in ${esc(c.stateName||"my state")}?</li>
+ <li>What will the total cost be, including funding the trust and recording deeds?</li>
+ <li>Will you handle retitling my home and accounts, or will I?</li>
+ <li>How should I set up beneficiary designations on retirement accounts and life insurance?</li>
+ <li>Does my state have an estate or inheritance tax that affects me? What about a married couple's planning (portability, disclaimer trusts)?</li>
+ ${!c.T.rev?"<li>Who should be the independent trustee, and what will they charge each year?</li><li>What ongoing tax filings (EIN, Form 1041, Form 709) will this trust need, and who prepares them?</li><li>Should we name a trust protector?</li>":""}
+ ${c.t==="medicaid"?"<li>How long is the Medicaid look-back here, and how should I keep enough assets outside the trust?</li>":""}
+ ${c.t==="dapt"?"<li>Will a DAPT hold up if I don't live in a DAPT state? Which state and trustee do you recommend?</li>":""}
+ ${c.t==="snt"||c.d.snBen?"<li>How do we make sure distributions don't reduce SSI or Medicaid? Should I also consider an ABLE account?</li>":""}
+ <li>What other documents should I sign at the same time (powers of attorney, health care directive, HIPAA release)?</li>
+ <li>How often should I review this plan?</li></ol></div>`}
+function docFamily(c){return `<div class="paper"><h1>Letter to My Family</h1><div class="sub">Where things are and who to call</div>
+ <p>Dear family,</p><p>I have created ${c.tName}${c.d.signDate?`, signed on ${c.date}`:""}. This letter is not a legal document. It's here to help you find what you need.</p>
+ <table><tr><th>Successor trustee</th><td>${fill(c.d.succ1,"Name")}${c.d.succ2?`, then ${esc(c.d.succ2)}`:""}</td></tr>
+ <tr><th>Executor</th><td>${fill(c.d.executor||c.d.succ1,"Name")}</td></tr>
+ <tr><th>Original documents are kept at</th><td>${fill("","Location (fireproof safe, attorney's office…)")}</td></tr>
+ <tr><th>Attorney</th><td>${fill("","Name and phone")}</td></tr>
+ <tr><th>Accountant / tax preparer</th><td>${fill("","Name and phone")}</td></tr>
+ <tr><th>Financial advisor</th><td>${fill("","Name and phone")}</td></tr>
+ <tr><th>Insurance agent</th><td>${fill("","Name and phone")}</td></tr></table>
+ <h2>If I become ill or pass away</h2><ol><li>Contact the successor trustee and the attorney above.</li><li>Locate the original trust, will, and the Certification of Trust.</li><li>Order 10 or more certified death certificates.</li><li>The successor trustee gets a new EIN for the trust and opens a trust account.</li><li>Notify banks, insurers and the Social Security Administration.</li><li>Don't distribute anything until debts, final bills and taxes are handled.</li></ol>
+ <h2>Personal wishes</h2><p>${fill("","Funeral wishes, special items to go to specific people, notes for the trustee")}</p><p style="min-height:80px"></p>
+ <div class="sig"><div>${c.gNames}</div><div>Date</div></div></div>`}
+
+function docList(){const c=ctx(),k=c.t;
+ const L=[];
+ if(k!=="testamentary")L.push(["trust","Trust Agreement",`The main document creating your ${T[k].short.toLowerCase()}.`,docTrust]);
+ if(k!=="testamentary")L.push(["schedA","Schedule A (Assets)","The list of property going into the trust.",docScheduleA]);
+ if(k!=="testamentary")L.push(["cert","Certification of Trust","A short summary to give banks so they don't need the whole trust.",docCert]);
+ if(T[k].rev&&k!=="testamentary")L.push(["assign","General Assignment of Assets","Moves personal belongings and stragglers into the trust.",docAssign]);
+ if(T[k].rev)L.push(["will",k==="testamentary"?"Will with Testamentary Trust":"Pour-Over Will","Catches anything left outside the trust and names a guardian for minors.",docWill]);
+ if(k==="ilit"||k==="irrev")L.push(["crummey","Crummey Notice","Notice to beneficiaries each time money is added, for gift tax savings.",docCrummey]);
+ if(k==="dapt"||k==="irrev"||k==="medicaid")L.push(["solv","Affidavit of Solvency","Shows transfers weren't made to avoid creditors.",docSolvency]);
+ L.push(["fund","Funding Checklist","Step-by-step on moving each asset into the trust.",docFunding]);
+ L.push(["atty","Attorney Meeting Worksheet","A summary of your plan plus questions to ask.",docAttorney]);
+ L.push(["family","Letter to My Family","Where documents are and who to call. Good to share with family.",docFamily]);
+ return {c,L};
+}
+function viewDocs(){
+ if(!S.d.type&&!S.done)return `<div class="card"><h2>Documents</h2><p class="muted">First take the quiz or pick a trust type in My details. Your documents are built from those answers.</p><div class="row"><button class="btn" data-go="find">Take the quiz</button><button class="btn ghost" data-go="details">Fill in details</button></div></div>`;
+ const {c,L}=docList();
+ const missing=[!S.d.g1&&"your name",!S.d.succ1&&"a successor trustee",!S.d.bens.some(b=>b.name)&&"beneficiaries",!S.d.state&&!S.quiz.state&&"state"].filter(Boolean);
+ const open=L.find(x=>x[0]===S.docOpen);
+ return `<div class="card"><div class="spread"><div><h2>Your documents</h2><p class="small muted" style="margin:0">${esc(c.T.name)}${S.d.type?"":" (from your quiz)"} · <a href="#" data-go="details">change details</a></p></div><button class="btn sm" data-print="all">Print all</button></div></div>
+ <div class="notice warn"><b>Drafts for review.</b> These help you organize your wishes and speed up an attorney meeting. Laws vary by state; have an attorney in your state review them before you sign. Wills need witnesses, and most trust documents need a notary.</div>
+ ${missing.length?`<div class="notice info">Still missing: ${missing.join(", ")}. Blanks will print as lines to fill in by hand. <a href="#" data-go="details">Add them</a></div>`:""}
+ <div class="doclist">${L.map(([id,t,desc])=>`<div class="docitem"><div><h3>${t}</h3><p>${desc}</p></div><div class="row"><button class="btn sm ghost" data-view="${id}">${S.docOpen===id?"Hide":"Preview"}</button><button class="btn sm ghost" data-print="${id}">Print</button><button class="btn sm ghost" data-dl="${id}">Download .doc</button></div></div>${S.docOpen===id?`<div>${open[3](c)}</div>`:""}`).join("")}</div>
+ <div class="card" style="margin-top:12px"><h3>Printing tips</h3>${ul(["Print opens your device's print screen. To keep a PDF, pick \"Save as PDF\" as the printer. On iPhone, pinch out on the print preview, then tap Share to save it.","Download .doc opens in Microsoft Word, Google Docs or Pages so you or your attorney can edit the wording.","Don't sign anything until it's final. Sign originals in blue ink in front of a notary (and two witnesses for wills)."])}</div>`;
+}
+function printDocs(ids){const {c,L}=docList();const sel=ids==="all"?L:L.filter(x=>x[0]===ids);
+ $("#printArea").innerHTML=sel.map(x=>x[3](c)).join("");setTimeout(()=>window.print(),50)}
+function downloadDoc(id){const {c,L}=docList();const x=L.find(y=>y[0]===id);if(!x)return;
+ const css=`body{font-family:Georgia,serif;font-size:12pt;line-height:1.5}h1{text-align:center;font-size:18pt}h2{font-size:12pt;text-transform:uppercase;margin-top:18pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:4pt 6pt;text-align:left;vertical-align:top}.sub{text-align:center;color:#555}.draft{border:1px dashed #b06a00;padding:6pt;font-family:Arial;font-size:9pt;color:#7a4a00}.sig div{border-top:1px solid #000;margin-top:30pt;padding-top:3pt;width:45%;display:inline-block;margin-right:4%}.box{border:1px solid #000;padding:8pt;margin-top:14pt}.fill{background:#fff3b0}`;
+ const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(x[1])}</title><style>${css}</style></head><body>${x[3](c)}</body></html>`;
+ const blob=new Blob(["﻿",html],{type:"application/msword"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=x[1].replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"")+".doc";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast("Downloaded "+x[1])}
+
+/* ---- Setup & file ---- */
+function setupSteps(){const c=ctx(),k=c.t,rev=T[k].rev,st=c.st;
+ const S1=[];
+ const s=(id,title,text,where,link)=>S1.push({id,title,text,where,link});
+ s("consult","Meet with an estate-planning attorney","Bring the Attorney Meeting Worksheet. Ask for a flat fee quote. Your state bar has a lawyer referral service.",["Attorney"],[["Find your state bar referral service","https://www.americanbar.org/groups/legal_services/flh-home/flh-bar-directories-and-lawyer-finders/"]]);
+ if(k==="medicaid")s("elder","Confirm your state's Medicaid look-back and rules","Look-back is 60 months in most states (30 months in California). An elder-law attorney can confirm.",["Elder-law attorney"]);
+ if(k==="dapt")s("daptst","Pick a DAPT state and an independent trustee","Common choices are Nevada, South Dakota, Delaware and Alaska. The trustee must live or do business there.",["Trust company"]);
+ s("final","Finalize the documents","Review the draft wording with your attorney and fill in all blanks.",["Attorney"]);
+ if(k==="dapt"||k==="irrev"||k==="medicaid")s("solv","Sign the Affidavit of Solvency","Sign before transferring assets, in front of a notary.",["Notary"]);
+ s("sign",k==="testamentary"?"Sign your will with two witnesses":"Sign the trust in front of a notary",k==="testamentary"?"Most states require two adult witnesses who aren't beneficiaries. Add a notarized self-proving affidavit if available.":"Bring photo ID. Banks, UPS stores and mobile notaries offer this. Many states also allow remote online notarization.",["Notary"],[["Check if your state allows online notarization","https://www.nationalnotary.org/knowledge-center/remote-online-notary/remote-online-notarization-laws-by-state"]]);
+ if(rev&&k!=="testamentary")s("will","Sign your pour-over will","Two adult witnesses who are not beneficiaries, plus a notary for the self-proving affidavit.",["Witnesses","Notary"]);
+ if(!rev)s("ein","Get an EIN (tax ID) for the trust","Free and instant on the IRS website. Irrevocable trusts need their own number. Never pay a third-party site for this.",["IRS, online"],[["Apply for an EIN at IRS.gov","https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online"]]);
+ if(!rev)s("f56","File Form 56 (Notice of Fiduciary Relationship)","Tells the IRS who the trustee is so notices go to the right person. Often optional for a new trust; ask your accountant.",["IRS, by mail"],[["Form 56","https://www.irs.gov/forms-pubs/about-form-56"]]);
+ if(k!=="testamentary"){
+  s("bank",!rev?"Open a trust bank account":"Retitle bank and investment accounts",!rev?"Use the trust's EIN and the Certification of Trust.":"Bring the Certification of Trust. Or add a payable-on-death / transfer-on-death designation to the trust.",["Your bank","Brokerage"]);
+  s("deed","Record a deed moving your home into the trust","Sign a new deed and record it at the county recorder where the property is. Many counties accept e-recording through services such as Simplifile, or you can mail or walk it in. Expect a small recording fee.",["County recorder"+(c.d.county?" ("+c.d.county+")":""),"e-recording"],st==="CA"?[["CA: Preliminary Change of Ownership Report (file with deed)","https://www.boe.ca.gov/proptaxes/pdf/boe502a.pdf"]]:[]);
+  s("ins","Tell your homeowner's insurer","Ask them to add the trust and trustee as an additional insured.",["Insurance agent"]);
+  s("assign","Sign the General Assignment of Assets","Covers furniture, jewelry and other belongings.",["At home"]);
+ }
+ s("bene","Update beneficiary designations","Retirement accounts, life insurance, annuities, HSAs and transfer-on-death accounts follow these forms, not your trust.",["Employer HR","Insurer","IRA custodian"]);
+ if(k==="ilit")s("policy","Trustee buys or takes ownership of the life insurance policy","New policies avoid the 3-year rule. Then send Crummey notices every time you fund premiums.",["Insurer"]);
+ if(!rev||k==="snt")s("709","File Form 709 gift tax return","Due April 15 of the year after you fund the trust, if any gift to a beneficiary was over $19,000 (2026) or wasn't a present-interest gift. Usually no tax is owed; it tracks your lifetime exemption.",["IRS, by mail or tax software"],[["Form 709","https://www.irs.gov/forms-pubs/about-form-709"]]);
+ if(k==="crt")s("5227","File Form 5227 every year","The annual information return for charitable remainder trusts.",["IRS"],[["Form 5227","https://www.irs.gov/forms-pubs/about-form-5227"]]);
+ if(!rev&&k!=="crt")s("1041","Plan for yearly Form 1041","Non-grantor trusts with income over $600 file Form 1041. Grantor trusts may use an alternate method; ask your tax preparer.",["Tax preparer"],[["Form 1041","https://www.irs.gov/forms-pubs/about-form-1041"]]);
+ s("poa","Sign your other planning documents","Durable financial power of attorney, advance health care directive, and HIPAA release.",["Attorney","Notary"]);
+ s("store","Store originals safely and tell your successor trustee","Keep originals in a fireproof safe or with your attorney. Give family the Letter to My Family. Avoid a safe-deposit box that only you can open.",["Home"]);
+ s("review","Set a reminder to review in 3 to 5 years","Or sooner after a marriage, divorce, birth, death, move, or big change in assets.",["Calendar"]);
+ return S1;
+}
+function viewSetup(){
+ if(!S.d.type&&!S.done)return `<div class="card"><h2>Set up & file</h2><p class="muted">Take the quiz or pick a trust type first, and this tab becomes your personal checklist.</p><button class="btn" data-go="find">Take the quiz</button></div>`;
+ const steps=setupSteps(),done=steps.filter(x=>S.checks[x.id]).length,c=ctx();
+ return `<div class="card"><h2>Set up & file your ${esc(c.T.short)}</h2>
+  <p class="small muted" style="margin:0">Check items off as you go. Progress is saved on this device.</p>
+  <div class="bar"><i style="width:${steps.length?done/steps.length*100:0}%"></i></div><div class="small muted">${done} of ${steps.length} done</div></div>
+ <div class="notice info"><b>What "filing" means for a trust.</b> Most trusts are private and never filed with a court. What you do file: a deed with the county recorder for real estate, and (for irrevocable trusts) an EIN and tax forms with the IRS. This app can't file for you, but it links to the official places to do each step online where possible.</div>
+ ${steps.map(x=>`<label class="step ${S.checks[x.id]?"done":""}"><input type="checkbox" data-chk="${x.id}" ${S.checks[x.id]?"checked":""}><div><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p><div class="where">${x.where.map(w=>`<span>${esc(w)}</span>`).join("")}${(x.link||[]).map(([l,u])=>` <a href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join("")}</div></div></label>`).join("")}`;
+}
+
+/* ---------------------------------------------------------------
+   Events
+---------------------------------------------------------------- */
+document.addEventListener("click",e=>{
+ const b=e.target.closest("button,a[data-go]");if(!b)return;
+ const D=b.dataset;
+ if(D.tab)return go(D.tab);
+ if(D.go){e.preventDefault();return go(D.go)}
+ if(D.opt){const q=QUIZ[S.quizStep];
+  if(q.multi){const a=S.quiz[q.id]||[];S.quiz[q.id]=a.includes(D.opt)?a.filter(x=>x!==D.opt):[...a,D.opt]}
+  else{S.quiz[q.id]=D.opt;save();render();setTimeout(()=>{if(S.quizStep<QUIZ.length-1){S.quizStep++;save();render()}},180);return}
+  save();return render()}
+ if(D.q==="next"){if(S.quizStep<QUIZ.length-1)S.quizStep++;else{S.done=true;const r=recommend(S.quiz);if(!S.d.type)S.d.type=r.primary;if(!S.d.state)S.d.state=S.quiz.state||""}save();render();return window.scrollTo({top:0})}
+ if(D.q==="back"){S.quizStep=Math.max(0,S.quizStep-1);save();return render()}
+ if(D.act==="retake"){S.done=false;S.quizStep=0;save();return render()}
+ if(D.use){S.d.type=D.use;if(!S.d.state)S.d.state=S.quiz.state||"";save();toast(T[D.use].name+" selected");return go("details")}
+ if(D.learn){S.learnSub="types";S.openType=D.learn;save();go("learn");const el=document.querySelector(`[data-acc="${D.learn}"]`);if(el)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);return}
+ if(D.sub){S.learnSub=D.sub;save();return render()}
+ if(D.toggle){S.openType=S.openType===D.toggle?null:D.toggle;save();return render()}
+ if(D.faq!=null){const i=+D.faq;S.openFaq=S.openFaq===i?null:i;return render()}
+ if(D.act==="addBen"){S.d.bens.push({name:"",rel:"",share:""});save();return render()}
+ if(D.delben!=null){S.d.bens.splice(+D.delben,1);save();return render()}
+ if(D.act==="addAsset"){S.d.assets.push({desc:"",kind:"home",value:"",where:""});save();return render()}
+ if(D.delas!=null){S.d.assets.splice(+D.delas,1);save();return render()}
+ if(D.view){S.docOpen=S.docOpen===D.view?null:D.view;save();return render()}
+ if(D.print)return printDocs(D.print);
+ if(D.dl)return downloadDoc(D.dl);
+});
+document.addEventListener("change",e=>{
+ const el=e.target;
+ if(el.id==="stateSel"){S.quiz.state=el.value;save();render()}
+ if(el.dataset.chk){S.checks[el.dataset.chk]=el.checked;save();render()}
+});
+$("#shareBtn").onclick=async()=>{const url=location.href.split("#")[0].split("?")[0];
+ const data={title:"Trust Setup Guide",text:"A guide for figuring out and setting up a family trust. Your answers stay on your own device.",url};
+ try{if(navigator.share){await navigator.share(data);return}}catch(e){if(e.name==="AbortError")return}
+ try{await navigator.clipboard.writeText(url);toast("Link copied. Paste it to share with family.")}catch(e){prompt("Copy this link to share:",url)}};
+const dlg=$("#fileDlg");
+$("#fileBtn").onclick=()=>dlg.showModal();
+$("#closeDlg").onclick=()=>dlg.close();
+$("#exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify({app:"trust-guide",version:1,saved:new Date().toISOString(),data:S},null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);const n=(S.d.trustName||suggestName()).replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"");a.download=n+"-plan.json";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast("Plan file saved")};
+$("#importBtn").onclick=()=>$("#importInput").click();
+$("#importInput").onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();
+ r.onload=()=>{try{const j=JSON.parse(r.result);if(j.app!=="trust-guide"||!j.data)throw 0;
+  if(!confirm("Replace the plan on this device with the one in this file?"))return;
+  S=Object.assign(blank(),j.data);S.d=Object.assign(blank().d,j.data.d||{});save();render();dlg.close();toast("Plan opened")}catch(err){alert("That doesn't look like a Trust Setup Guide plan file.")}};
+ r.readAsText(file);e.target.value=""};
+$("#resetBtn").onclick=()=>{if(confirm("Delete all answers, details and checklist progress on this device?")){S=blank();save();render();dlg.close();toast("Cleared")}};
+window.addEventListener("afterprint",()=>{$("#printArea").innerHTML=""});
+render();
+</script>
+</body>
+</html>
