@@ -165,6 +165,26 @@ dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);c
 dialog::backdrop{background:rgba(0,0,0,.4)}
 dialog h3{font-size:19px;margin-bottom:8px}
 #printArea{display:none}
+.member{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-bottom:6px;background:var(--bg)}
+.member b{font-weight:600}
+.avatar{display:inline-flex;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);margin-right:8px;flex:none}
+.task{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px;background:var(--panel)}
+.task input[type=checkbox]{width:19px;height:19px;accent-color:var(--accent)}
+.task select{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:5px 6px;font-size:13px;max-width:140px}
+.task .meta{font-size:12px;color:var(--muted)}
+.task.done .t{text-decoration:line-through;color:var(--muted)}
+@media (max-width:520px){.task{grid-template-columns:auto 1fr}.task select{grid-column:2;max-width:none}}
+.note{border-left:3px solid var(--accent);background:var(--bg);border-radius:0 9px 9px 0;padding:8px 12px;margin-bottom:8px;font-size:14px}
+.note .meta{font-size:12px;color:var(--muted)}
+.phase{font-family:"Source Serif 4",serif;font-size:17px;font-weight:650;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.phase .dot{width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.remrow{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px;background:var(--bg)}
+.remrow input{width:18px;height:18px;margin-top:2px;accent-color:var(--accent);flex:none}
+.remrow .when{font-size:12.5px;color:var(--accent);font-weight:500}
+.stfact{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;font-size:14px}
+.stfact dt{color:var(--muted);font-weight:500}
+.stfact dd{margin:0 0 6px}
+@media (max-width:520px){.stfact{grid-template-columns:1fr}.stfact dd{margin-bottom:10px}}
 @media print{
   body{background:#fff}
   .app,.toast,dialog{display:none !important}
@@ -211,6 +231,12 @@ dialog h3{font-size:19px;margin-bottom:8px}
     <button class="btn sm ghost" id="resetBtn" style="color:var(--bad);border-color:var(--bad)">Clear everything on this device</button>
     <button class="btn sm" id="closeDlg">Done</button>
   </div>
+</dialog>
+
+<dialog id="syncDlg">
+  <h3>Family update</h3>
+  <p class="small" id="syncMsg"></p>
+  <div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn sm ghost" onclick="this.closest('dialog').close()">Ignore</button><button class="btn sm" id="syncMerge">Merge update</button></div>
 </dialog>
 
 <script>
@@ -300,6 +326,28 @@ const PROVISIONS={
  protector:{name:"Trust protector",text:"Names someone who can fix problems in an irrevocable trust later (for example, tax law changes or a move to another state)."}
 };
 
+const ESTATE_EXEMPT={CT:"$15 million (matches the federal amount)",DC:"about $4.9 million",HI:"$5.49 million",IL:"$4 million",ME:"about $7 million",MD:"$5 million",MA:"$2 million",MN:"$3 million",NY:"about $7.2 million. NY has a \"cliff\": an estate more than 5% over the limit loses the exemption entirely",OR:"$1 million",RI:"about $1.8 million",VT:"$5 million",WA:"$3 million"};
+const INHERIT_INFO={KY:"Spouses, children, grandchildren, parents and siblings pay nothing. Nieces, nephews, in-laws and others pay 4% to 16%.",MD:"Spouses, children, grandchildren, parents and siblings pay nothing. Others pay 10%.",NE:"Close relatives pay 1% on amounts over $100,000. More distant relatives and non-relatives pay more. Spouses pay nothing.",NJ:"Spouses, children and grandchildren pay nothing. Siblings and sons- or daughters-in-law pay 11% to 16% above $25,000. Others pay 15% to 16%.",PA:"Spouses pay nothing. Children and grandchildren pay 4.5%, siblings 12%, others 15%. A parent leaving to a child 21 or younger pays nothing."};
+const STATE_NOTES={
+ CA:["When you record the deed into your trust, file a Preliminary Change of Ownership Report (BOE-502-A) and claim the trust exclusion so your property tax isn't reassessed. Transfers to your own revocable trust are exempt from documentary transfer tax.","California notaries must use the state's exact acknowledgment wording. The documents in this app use it.","Medi-Cal's look-back for nursing-home care is 30 months, shorter than the 60 months in most states.","After a death, the trustee must mail a legal notice to beneficiaries and heirs within 60 days (Probate Code 16061.7)."],
+ FL:["Florida homestead has special rules. If you have a spouse or minor child, you can't freely leave your home to someone else. Use a deed and trust wording that keep the homestead exemption.","A Florida power of attorney must be signed in front of two witnesses and a notary.","Florida doesn't recognize handwritten (holographic) wills; wills need two witnesses."],
+ TX:["Texas lets you keep your homestead exemption when your home is in a revocable trust; send the appraisal district a copy of the deed.","Texas allows a Transfer on Death Deed as a simpler alternative for a home.","Texas has a statutory durable power of attorney form that banks recognize easily."],
+ NY:["Recording a deed needs Forms TP-584 and RP-5217. Transfers to your own revocable trust are generally exempt from transfer tax, but the forms are still required. New York City uses its own ACRIS system.","A New York power of attorney must use the statutory short form and be signed with a notary and two witnesses."],
+ PA:["Transfers into a living trust are exempt from realty transfer tax. The exemption must be stated on the deed.","Retirement accounts and life insurance are exempt from Pennsylvania inheritance tax, but trust assets are not."],
+ MI:["Moving your home into your own revocable trust does not \"uncap\" its taxable value. Later transfers to non-spouse beneficiaries can."],
+ WA:["Record the deed with a real estate excise tax affidavit claiming the exemption for transfers to your own revocable trust.","Washington's estate tax has graduated rates up to 35%, among the highest in the country."],
+ AZ:["Record the deed with the exemption code for trust transfers instead of an Affidavit of Property Value.","Arizona allows Beneficiary Deeds for real estate as a simpler alternative."],
+ LA:["Louisiana uses civil law, not common law. A \"notarial will\" needs a notary and two witnesses.","Forced heirship may require leaving a share to children under 24 or children with a permanent disability.","Trusts are governed by the Louisiana Trust Code. Use a Louisiana attorney."],
+ OR:["Oregon's $1 million estate tax threshold is the lowest in the country and isn't indexed for inflation."],
+ MA:["Massachusetts taxes estates over $2 million, so married couples often use a credit-shelter (bypass) sub-trust to use both spouses' exemptions."]
+};
+const TG=[
+ {id:"wk",phase:"First week",items:[["secure","Secure the home, cars and valuables","Lock up, change codes if needed, and keep insurance in force."],["find","Find the original trust, will and Certification of Trust","Check the safe, the attorney's office and the Letter to My Family."],["dc","Order 10 to 15 certified death certificates","Usually through the funeral home. Banks, insurers and the county recorder each want one."],["atty","Call the estate-planning attorney","Many offer a free first meeting to explain your duties."],["nodist","Don't hand out money or belongings yet","Debts, final bills and taxes come first."],["bills","Keep essential bills paid","Mortgage, insurance, utilities and property taxes."]]},
+ {id:"m1",phase:"First 30 days",items:[["accept","Formally accept the role of trustee","Sign an acceptance or successor-trustee affidavit. Some states record one with the deed."],["ein","Get an EIN for the trust","It became irrevocable at death and needs its own tax ID. Free and instant at IRS.gov."],["acct","Open a trust bank account","Run every trust payment through it and never mix in your own money."],["notify","Notify Social Security, pensions, banks and credit bureaus","Return any payments that arrive after the date of death."],["ins","File life insurance and annuity claims","Payable to whoever is named as beneficiary."],["inv","List every asset with its value on the date of death","Needed for the tax \"step-up\" in basis. Save statements from that date."],["mail","Forward mail, then cancel credit cards and subscriptions",""]]},
+ {id:"m3",phase:"30 to 90 days",items:[["notice","Send the required notice to beneficiaries and heirs","Many states require it within 60 days of the death, along with a copy of the trust when asked."],["appr","Get appraisals for real estate, a business and valuable items","They set the new tax basis and make division fair."],["debts","Find and pay valid debts and final medical bills","Some states have a formal creditor-claim process for trusts."],["probate","Check whether anything needs probate","Assets left outside the trust may need probate or a small-estate affidavit."],["manage","Invest prudently, keep property insured and maintained","You must act as a careful investor would and treat all beneficiaries fairly."]]},
+ {id:"y1",phase:"90 days to 1 year",items:[["1040","File the deceased person's final Form 1040","Due April 15 of the following year."],["1041","File Form 1041 for the trust if income is over $600","Consider a fiscal year and the \"645 election\" to combine with the estate."],["706","File Form 706 if needed","Required within 9 months if the estate is over the federal exemption. A surviving spouse should usually file anyway to keep the unused exemption (\"portability\"). Check your state's estate tax return too."],["account","Give beneficiaries a written accounting","What came in, what went out, and what's left."],["distribute","Distribute assets according to the trust","Get signed receipts. Keep a reserve for final taxes. Set up continuing sub-trusts for minors or special-needs beneficiaries."]]},
+ {id:"on",phase:"Ongoing duties",items:[["loyal","Act only in the beneficiaries' interest","No self-dealing, no borrowing from the trust, no mixing funds."],["records","Keep records of every transaction","Beneficiaries are entitled to reasonable information."],["fee","You can be paid a reasonable fee","And you can hire attorneys, accountants and advisors, paid by the trust."]]}
+];
 const QUIZ=[
  {id:"state",type:"state",q:"Which state do you live in?",help:"Trusts follow state law. Your state also affects estate taxes and which trusts are allowed."},
  {id:"married",q:"Are you married?",opts:[["single","Single, widowed or divorced"],["married","Married"],["partner","Living with an unmarried partner","Partners don't automatically inherit from each other, so a trust matters more."]]},
@@ -321,9 +369,13 @@ const KEY="trustGuide.v1";
 const blank=()=>({tab:"find",quizStep:0,quiz:{},done:false,learnSub:"types",openType:null,docOpen:null,checks:{},
  d:{type:"",trustName:"",state:"",county:"",g1:"",g2:"",address:"",trustee1:"",trustee2:"",succ1:"",succ2:"",executor:"",guardian:"",
    bens:[{name:"",rel:"",share:"100"}],assets:[],distAge:"staggered",ageA:"25",ageB:"30",ageC:"35",outrightAge:"21",
-   spendthrift:true,snBen:"",charity:"",payout:"5",petCare:"",protector:"",signDate:""}});
+   spendthrift:true,snBen:"",charity:"",payout:"5",petCare:"",protector:"",signDate:"",
+   poaAgent:"",poaAlt:"",poaWhen:"now",hcAgent:"",hcAlt:"",eol:"",organ:"",hipaa:""},
+ prog:{},tg:{},family:{members:[],notes:[],me:""},rem:{start:"",crummey:"",off:{}},stateView:""});
 let S=blank();
-try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s){S=Object.assign(blank(),s);S.d=Object.assign(blank().d,s.d||{});}}catch(e){}
+function hydrate(s){const b=blank();const o=Object.assign(b,s);o.d=Object.assign(blank().d,s.d||{});o.family=Object.assign(blank().family,s.family||{});o.rem=Object.assign(blank().rem,s.rem||{});
+ if(s.checks&&!s.prog){o.prog={};Object.keys(s.checks).forEach(k=>{if(s.checks[k])o.prog[k]={done:true,at:Date.now(),by:""}})}delete o.checks;return o}
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s)S=hydrate(s)}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 const $=s=>document.querySelector(s);
@@ -380,24 +432,25 @@ function recommend(a){
  if(a.married==="married"&&(stateTax||big))prov.push("ab");
  if([primary,...also].some(k=>!T[k].rev))prov.push("protector");
  const notes=[];
- if(ESTATE_TAX_STATES.includes(st))notes.push(STATES[st]+" has a state estate tax with a lower threshold than the federal one. Check its current exemption amount.");
- if(INHERIT_TAX_STATES.includes(st))notes.push(STATES[st]+" has an inheritance tax, paid by some heirs depending on how they're related to you.");
+ if(ESTATE_TAX_STATES.includes(st))notes.push(STATES[st]+" has its own estate tax. It applies to estates over "+ESTATE_EXEMPT[st]+", compared with $15 million federally.");
+ if(INHERIT_TAX_STATES.includes(st))notes.push(STATES[st]+" has an inheritance tax. "+INHERIT_INFO[st]);
  if(COMMUNITY_STATES.includes(st)&&a.married==="married")notes.push(STATES[st]+" is a community property state. Keep track of which assets are community vs. separate property in your trust.");
  if(a.married==="married")notes.push("Married couples usually create one joint trust together.");
  if(has("ltc")&&a.care==="soon")notes.push("Because care may be needed soon, see an elder-law attorney right away.");
+ if(STATE_NOTES[st])notes.push("More about "+STATES[st]+" is in Learn → Your state.");
  return {primary,also,prov,why,notes,scores:sc};
 }
 
 /* ---------------------------------------------------------------
    Rendering
 ---------------------------------------------------------------- */
-const TABS=[["find","Find my trust"],["learn","Learn"],["details","My details"],["docs","Documents"],["setup","Set up & file"]];
+const TABS=[["find","Find my trust"],["learn","Learn"],["details","My details"],["docs","Documents"],["setup","Set up & file"],["family","Family"]];
 function renderTabs(){
  $("#tabs").innerHTML=TABS.map(([id,l],i)=>`<button data-tab="${id}" class="${S.tab===id?"on":""}"><span class="num">${i+1}</span>${l}</button>`).join("");
 }
 function go(tab){S.tab=tab;save();render();window.scrollTo({top:0});const on=document.querySelector("nav.tabs .on");if(on)on.scrollIntoView({inline:"center",block:"nearest"})}
 function render(){renderTabs();const m=$("#main");
- m.innerHTML={find:viewFind,learn:viewLearn,details:viewDetails,docs:viewDocs,setup:viewSetup}[S.tab]();
+ m.innerHTML={find:viewFind,learn:viewLearn,details:viewDetails,docs:viewDocs,setup:viewSetup,family:viewFamily}[S.tab]();
  if(S.tab==="details")bindDetails();
 }
 
@@ -490,10 +543,12 @@ function viewLearn(){
   ${sec("Estate tax",`<p style="margin:0">Anything you own or control at death, <i>including</i> your revocable trust and life insurance you own, counts toward your estate. Irrevocable trusts, ILITs and charitable trusts can move assets out. Also check your state: ${ESTATE_TAX_STATES.map(s=>STATES[s]).join(", ")} have estate taxes, and ${INHERIT_TAX_STATES.map(s=>STATES[s]).join(", ")} have inheritance taxes.</p>`)}
   ${sec("Capital gains and \"step-up\" in basis",`<p style="margin:0">Assets included in your estate at death get a new tax basis equal to their value on that date, which can wipe out capital gains tax for heirs. Assets given away during life to an irrevocable trust keep your old basis. This trade-off (estate tax savings vs. losing the step-up) is a key reason most families under the exemption use revocable trusts.</p>`)}
   </div>`;
+ }else if(sub==="state"){body=viewState();
+ }else if(sub==="trustee"){body=viewTrusteeGuide();
  }else{
   body=FAQ.map(([q,a],i)=>`<div class="acc ${S.openFaq===i?"open":""}"><button data-faq="${i}"><h3>${esc(q)}</h3><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button><div class="body"><p style="margin:0">${esc(a)}</p></div></div>`).join("");
  }
- return `<div class="subtabs">${[["types","Trust types"],["protect","Asset protection"],["tax","Taxes"],["faq","Common questions"]].map(([k,l])=>`<button data-sub="${k}" class="${sub===k?"on":""}">${l}</button>`).join("")}</div>${body}`;
+ return `<div class="subtabs">${[["types","Trust types"],["protect","Asset protection"],["tax","Taxes"],["state","Your state"],["trustee","Trustee guide"],["faq","Common questions"]].map(([k,l])=>`<button data-sub="${k}" class="${sub===k?"on":""}">${l}</button>`).join("")}</div>${body}`;
 }
 
 /* ---- Details ---- */
@@ -558,6 +613,20 @@ function viewDetails(){
    ${f("signDate","Planned signing date","","date")}
   </div>
  </div>
+ <div class="card">
+  <div class="section-title" style="margin-top:0">Other planning documents</div>
+  <p class="small muted" style="margin-top:0">A trust only covers what's in it. These let someone you trust handle money outside the trust and make medical decisions if you can't.${joint?" Each spouse signs their own copies; print a second set with your spouse's name in the first field.":""}</p>
+  <div class="grid2">
+   ${f("poaAgent","Financial power of attorney agent","Handles accounts outside the trust")}
+   ${f("poaAlt","Alternate agent","")}
+   <label class="f">When it takes effect<select data-f="poaWhen"><option value="now" ${d.poaWhen==="now"?"selected":""}>Right away (most common)</option><option value="springing" ${d.poaWhen==="springing"?"selected":""}>Only if a doctor says I can't manage</option></select></label><div></div>
+   ${f("hcAgent","Health care agent","Makes medical decisions if you can't")}
+   ${f("hcAlt","Alternate health care agent","")}
+   <label class="f">If I'm terminally ill or permanently unconscious<select data-f="eol"><option value="">Choose later</option><option value="comfort" ${d.eol==="comfort"?"selected":""}>Focus on comfort; don't prolong life</option><option value="prolong" ${d.eol==="prolong"?"selected":""}>Prolong life as long as possible</option><option value="agent" ${d.eol==="agent"?"selected":""}>Let my agent decide</option></select></label>
+   <label class="f">Organ donation<select data-f="organ"><option value="">Choose later</option><option value="yes" ${d.organ==="yes"?"selected":""}>Yes, any needed organs or tissue</option><option value="no" ${d.organ==="no"?"selected":""}>No</option><option value="agent" ${d.organ==="agent"?"selected":""}>Let my agent decide</option></select></label>
+   <div style="grid-column:1/-1">${f("hipaa","People who may get my medical information (HIPAA)","Names, separated by commas")}</div>
+  </div>
+ </div>
  <div class="row"><button class="btn" data-go="docs">Make my documents →</button></div>`;
 }
 function suggestName(){const n=(S.d.g1||"").trim().split(/\s+/).pop();return n?`The ${n} Family Trust`:"The Smith Family Trust"}
@@ -571,6 +640,172 @@ function bindDetails(){
  m.onchange=e=>{const el=e.target;if(el.dataset.fc){S.d[el.dataset.fc]=el.checked;save()}};
 }
 
+
+/* ---- Your state ---- */
+function viewState(){
+ const st=S.stateView||S.d.state||S.quiz.state||"";
+ const sel=`<select class="inp" data-statev="1" style="max-width:320px;margin-bottom:12px"><option value="">Choose a state…</option>${Object.entries(STATES).map(([k,v])=>`<option value="${k}" ${st===k?"selected":""}>${v}</option>`).join("")}</select>`;
+ if(!st)return `<div class="card"><h3>Rules in your state</h3><p class="muted small">Pick a state to see its estate and inheritance taxes, property rules, signing requirements and other details.</p>${sel}</div>`;
+ const n=STATES[st];
+ const rows=[
+  ["State estate tax",ESTATE_TAX_STATES.includes(st)?`Yes, on estates over ${ESTATE_EXEMPT[st]}. Rates top out between 12% and 35% depending on the state.`:"None. Only the federal estate tax applies (over $15 million per person in 2026)."],
+  ["Inheritance tax",INHERIT_TAX_STATES.includes(st)?INHERIT_INFO[st]:"None."],
+  ["Marital property",COMMUNITY_STATES.includes(st)?"Community property state. Most things earned during marriage belong half to each spouse. Couples should label community vs. separate property in their trust. Community property gets a full step-up in basis at the first death, which is a valuable tax benefit.":"Common-law (separate property) state. Each spouse owns what's in their name. A surviving spouse has a right to an \"elective share\" in most of these states."],
+  ["Asset protection trusts (DAPT)",DAPT_STATES.includes(st)?`Allowed. ${n} lets you set up a self-settled asset protection trust, with a waiting period and exceptions set by state law.`:`Not allowed for ${n} residents under state law. You could use a trust in a DAPT state such as Nevada or South Dakota, but ${n} courts may not respect it.`],
+  ["Medicaid look-back",st==="CA"?"30 months for Medi-Cal nursing-home coverage.":"60 months (5 years) for nursing-home Medicaid."],
+  ["Signing a will",st==="LA"?"A notarial will needs a notary and two witnesses.":"Two adult witnesses, ideally not beneficiaries. Add a notarized self-proving affidavit so witnesses don't have to testify later."],
+  ["Signing a trust","Sign in front of a notary. It isn't always legally required, but banks and title companies expect it, and you need it to record deeds."],
+  ["Notary wording",st==="CA"?"California requires its own exact acknowledgment wording. The documents in this app use it.":"Your notary will use your state's standard acknowledgment form."]
+ ];
+ return `<div class="card"><h3>Rules in your state</h3>${sel}
+ <dl class="stfact">${rows.map(([a,b])=>`<dt>${a}</dt><dd>${esc(b)}</dd>`).join("")}</dl></div>
+ <div class="card"><h3>${n}: things to know</h3>${STATE_NOTES[st]?ul(STATE_NOTES[st]):`<p class="small muted" style="margin:0">No special notes for ${n} in this guide yet.</p>`}
+ <p class="small muted" style="margin-bottom:0">Deed forms, transfer-tax exemptions and recording fees vary by county. Call the county recorder's office or ask your attorney. Exemption amounts are approximate for 2025 and 2026 and change often, so confirm current figures.</p></div>`;
+}
+
+/* ---- Trustee guide ---- */
+function viewTrusteeGuide(){
+ const all=TG.flatMap(p=>p.items.map(i=>p.id+"."+i[0])),done=all.filter(id=>S.tg[id]&&S.tg[id].done).length;
+ return `<div class="card"><div class="spread"><h3>Guide for the successor trustee</h3><button class="btn sm ghost" data-print="tguide">Print</button></div>
+ <p class="small" style="margin:0">For whoever takes over the trust. It's a checklist, and progress is shared with family when you send an update from the Family tab.</p>
+ <div class="bar"><i style="width:${done/all.length*100}%"></i></div><div class="small muted">${done} of ${all.length} done</div></div>
+ <div class="card"><h3>If the person who made the trust is alive but can't manage</h3>${ul(["Get the written confirmation the trust requires (usually letters from one or two doctors) that they can't manage their finances.","Show banks the Certification of Trust and the doctors' letters to take over the accounts.","The trust still uses their Social Security number; no new EIN is needed while they're alive.","Pay their bills, care and household costs from the trust. Work with whoever is agent under their power of attorney for assets outside the trust.","Keep receipts for everything. You don't distribute anything to beneficiaries yet."])}</div>
+ <h3 style="margin:18px 0 0">After a death</h3>
+ ${TG.map(p=>`<div class="phase"><span class="dot"></span>${p.phase}</div>${p.items.map(([id,t,dsc])=>{const k=p.id+"."+id,v=S.tg[k]||{};return `<label class="step ${v.done?"done":""}"><input type="checkbox" data-tg="${k}" ${v.done?"checked":""}><div><h4>${esc(t)}</h4>${dsc?`<p>${esc(dsc)}</p>`:""}${v.done&&v.by?`<p class="small">Checked off by ${esc(v.by)}</p>`:""}</div></label>`}).join("")}`).join("")}`;
+}
+
+/* ---- Family ---- */
+const ROLES=["Grantor","Spouse","Trustee","Successor trustee","Beneficiary","Agent (POA / health care)","Helper"];
+const initials=n=>n.split(/\s+/).filter(Boolean).map(x=>x[0]).slice(0,2).join("").toUpperCase();
+function setP(store,id,patch){store[id]=Object.assign({},store[id],patch,{at:Date.now()})}
+function viewFamily(){
+ const F=S.family,steps=(S.d.type||S.done)?setupSteps():[];
+ const opts=sel=>`<option value="">Unassigned</option>${F.members.map(m=>`<option ${sel===m.name?"selected":""}>${esc(m.name)}</option>`).join("")}`;
+ const notes=[...F.notes].sort((a,b)=>b.at-a.at);
+ return `<div class="card"><h2>Family</h2><p class="small muted" style="margin:0">Work on the plan together: assign tasks, check them off, and leave notes. Everyone opens the same app link on their own phone. Tap <b>Send update to family</b> to share your progress; when they open the link it's merged with theirs, and they can send theirs back the same way.</p></div>
+ <div class="card"><div class="spread"><h3>People</h3><button class="btn sm ghost" data-act="fromDetails">Add people from My details</button></div>
+  ${F.members.length?F.members.map((m,i)=>`<div class="member"><div style="display:flex;align-items:center"><span class="avatar">${esc(initials(m.name))}</span><div><b>${esc(m.name)}</b>${F.me===m.name?' <span class="pill">This device</span>':""}<div class="small muted">${esc(m.role)}</div></div></div><button class="del" data-delmember="${i}">Remove</button></div>`).join(""):`<p class="small muted">No one added yet.</p>`}
+  <div class="row" style="margin-top:8px"><input class="inp" id="mName" placeholder="Name" style="flex:2;min-width:140px;margin:0"><select class="inp" id="mRole" style="flex:1;min-width:140px;margin:0">${ROLES.map(r=>`<option>${r}</option>`).join("")}</select><button class="btn sm" data-act="addMember">Add</button></div>
+  <label class="f" style="margin-top:12px">Who is using this device?<select id="meSel"><option value="">Choose your name…</option>${F.members.map(m=>`<option ${F.me===m.name?"selected":""}>${esc(m.name)}</option>`).join("")}</select></label>
+ </div>
+ <div class="card"><h3>Shared to-do list</h3>
+  ${steps.length?steps.map(x=>{const v=S.prog[x.id]||{};return `<div class="task ${v.done?"done":""}"><input type="checkbox" data-chk="${x.id}" ${v.done?"checked":""} aria-label="Done"><div><div class="t">${esc(x.title)}</div>${v.done&&v.by?`<div class="meta">Done by ${esc(v.by)}${v.at?" · "+new Date(v.at).toLocaleDateString():""}</div>`:""}</div><select data-who="${x.id}" aria-label="Assigned to">${opts(v.who)}</select></div>`}).join(""):`<p class="small muted">Take the quiz or choose a trust type first.</p>`}
+ </div>
+ <div class="card"><h3>Notes</h3>
+  <textarea class="inp" id="noteText" rows="3" placeholder="Questions for the attorney, where something is kept, decisions made…"></textarea>
+  <div class="spread" style="margin-top:8px"><span class="small muted">Don't put account numbers or passwords in notes.</span><button class="btn sm" data-act="postNote">Post note</button></div>
+  <div style="margin-top:12px">${notes.map(n=>`<div class="note"><div>${esc(n.text)}</div><div class="spread"><span class="meta">${esc(n.who||"Someone")} · ${new Date(n.at).toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})}</span><button class="btn sm ghost" style="padding:2px 8px;font-size:12px" data-delnote="${esc(n.id)}">Delete</button></div></div>`).join("")}</div>
+ </div>
+ <div class="card"><h3>Keep everyone in sync</h3>
+  <p class="small" style="margin-top:0">The update link includes names, roles, the to-do list, trustee-guide progress and notes. It does <b>not</b> include assets, values, addresses or document details; send a plan file (top right) for those.</p>
+  <div class="row"><button class="btn" data-act="syncSend">Send update to family</button></div>
+  ${F.lastSync?`<p class="small muted">Last update received ${new Date(F.lastSync).toLocaleString()}${F.lastFrom?" from "+esc(F.lastFrom):""}.</p>`:""}
+ </div>`;
+}
+const b64e=str=>btoa(unescape(encodeURIComponent(str))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const b64d=str=>decodeURIComponent(escape(atob(str.replace(/-/g,"+").replace(/_/g,"/"))));
+function syncPayload(){const F=S.family;return {v:1,from:F.me,tn:S.d.trustName,type:S.d.type,state:S.d.state,members:F.members,prog:S.prog,tg:S.tg,notes:F.notes.slice(-40).map(n=>Object.assign({},n,{text:String(n.text).slice(0,600)}))}}
+function mergeStore(mine,theirs){Object.keys(theirs||{}).forEach(k=>{const t=theirs[k];if(t&&(!mine[k]||(t.at||0)>(mine[k].at||0)))mine[k]=t})}
+function mergeSync(p){const F=S.family;
+ (p.members||[]).forEach(m=>{if(m&&m.name&&!F.members.some(x=>x.name.toLowerCase()===m.name.toLowerCase()))F.members.push({name:String(m.name),role:String(m.role||"Helper")})});
+ mergeStore(S.prog,p.prog);mergeStore(S.tg,p.tg);
+ (p.notes||[]).forEach(n=>{if(n&&n.id&&!F.notes.some(x=>x.id===n.id))F.notes.push({id:String(n.id),who:String(n.who||""),text:String(n.text||""),at:+n.at||Date.now()})});
+ if(!S.d.type&&T[p.type])S.d.type=p.type;if(!S.d.trustName&&p.tn)S.d.trustName=String(p.tn);if(!S.d.state&&STATES[p.state])S.d.state=p.state;
+ F.lastSync=Date.now();F.lastFrom=p.from||"";save()}
+async function sendSync(){if(!S.family.me&&S.family.members.length){toast("Choose who is using this device first");return}
+ const url=location.href.split("#")[0].split("?")[0]+"#sync="+b64e(JSON.stringify(syncPayload()));
+ const text=`${S.family.me||"Family"} shared an update on ${S.d.trustName||"our family trust plan"}. Open to merge it with yours:`;
+ try{if(navigator.share){await navigator.share({title:"Trust plan update",text,url});return}}catch(e){if(e.name==="AbortError")return}
+ try{await navigator.clipboard.writeText(text+" "+url);toast("Update link copied. Paste it in a text or email.")}catch(e){prompt("Copy this update link:",url)}}
+function checkSyncHash(){if(!location.hash.startsWith("#sync="))return;let p;
+ try{p=JSON.parse(b64d(location.hash.slice(6)));if(p.v!==1)throw 0}catch(e){toast("That update link couldn't be read");history.replaceState(null,"",location.pathname);return}
+ history.replaceState(null,"",location.pathname+location.search);
+ const d=$("#syncDlg"),nd=Object.values(p.prog||{}).filter(x=>x.done).length;
+ $("#syncMsg").textContent=`${p.from||"A family member"} sent an update${p.tn?" for "+p.tn:""}: ${(p.members||[]).length} people, ${nd} tasks done, ${(p.notes||[]).length} notes. Merging keeps everything you have and adds their newer changes.`;
+ d.showModal();$("#syncMerge").onclick=()=>{mergeSync(p);d.close();S.tab="family";render();toast("Update merged")};}
+
+/* ---- Reminders ---- */
+const ymd=d=>d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+function parseD(v){return v?new Date(v+"T12:00"):null}
+function nextYearly(d,iv){iv=iv||1;const t=new Date();t.setHours(0,0,0,0);const n=new Date(d);while(n<t)n.setFullYear(n.getFullYear()+iv);return n}
+function nextMD(m,day){const t=new Date();t.setHours(0,0,0,0);const n=new Date(t.getFullYear(),m,day,12);if(n<t)n.setFullYear(n.getFullYear()+1);return n}
+function reminders(){const c=ctx(),k=c.t,rev=T[k].rev;const start=parseD(S.rem.start)||parseD(S.d.signDate)||new Date();const L=[];
+ const r=(id,title,desc,date,rrule,when)=>L.push({id,title,desc,date,rrule,when});
+ const tn=S.d.trustName||suggestName();
+ r("annual","Yearly trust check-up",`${tn}: make sure new assets (home, accounts) are titled in the trust, check beneficiary designations on retirement accounts and life insurance, and confirm trustees, agents and guardians are still the right people. Update the Letter to My Family.`,nextYearly(start),"FREQ=YEARLY","Every year on your signing anniversary");
+ const s3=new Date(start);s3.setFullYear(s3.getFullYear()+3);
+ r("review3","Full trust review with attorney",`${tn}: review with an estate-planning attorney for law changes, moves, births, deaths, marriages or divorces.`,nextYearly(s3,3),"FREQ=YEARLY;INTERVAL=3","Every 3 years");
+ if(k==="ilit"||k==="irrev"){const cd=parseD(S.rem.crummey)||start;const nd=nextYearly(cd);const w=new Date(nd);w.setDate(w.getDate()+30);
+  r("crummey","Send Crummey notices",`${tn}: when money is added to the trust (e.g. for the premium), the trustee mails a withdrawal-right notice to each beneficiary and keeps signed copies. Print the Crummey Notice from the app.`,nd,"FREQ=YEARLY","Every year on your gift / premium date");
+  r("crummeyEnd","Crummey withdrawal window closes",`${tn}: 30 days after notices went out. The trustee can now use the gift (for example to pay the premium).`,w,"FREQ=YEARLY","30 days after notices");}
+ if(!rev||k==="snt")r("f709","Form 709 gift tax return",`${tn}: if you added more than the annual exclusion ($19,000 per person in 2026) to the trust last year, or made gifts without Crummey rights, Form 709 is due April 15.`,nextMD(3,1),"FREQ=YEARLY","Every April 1 (due April 15)");
+ if(!rev&&k!=="crt")r("f1041","Trust tax return (Form 1041)",`${tn}: Form 1041 is due April 15 for a non-grantor trust with income over $600, or grantor trusts using the 1041 reporting method. Send beneficiaries their K-1s.`,nextMD(3,1),"FREQ=YEARLY","Every April 1 (due April 15)");
+ if(k==="crt"){r("value","Value trust assets for the unitrust payment",`${tn}: value the trust on the first business day of the year to set this year's payout.`,nextMD(0,2),"FREQ=YEARLY","Every January 2");
+  r("f5227","Form 5227 for the charitable trust",`${tn}: Form 5227 is due April 15.`,nextMD(3,1),"FREQ=YEARLY","Every April 1 (due April 15)");}
+ if(k==="medicaid"){const lb=new Date(start);lb.setMonth(lb.getMonth()+(c.st==="CA"?30:60));
+  r("lookback","Medicaid look-back period ends",`${tn}: assets moved into the trust on ${start.toLocaleDateString()} are now past the ${c.st==="CA"?"30":"60"}-month look-back for nursing-home Medicaid. Assets added later have their own clock.`,lb,"","One time");}
+ return L}
+function icsText(list){const esc2=t=>String(t).replace(/\\/g,"\\\\").replace(/;/g,"\;").replace(/,/g,"\\,").replace(/\n/g,"\\n");
+ const fold=l=>{const out=[];while(l.length>73){out.push(l.slice(0,73));l=" "+l.slice(73)}out.push(l);return out.join("\r\n")};
+ const now=new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+ const ev=list.map(e=>{const end=new Date(e.date);end.setDate(end.getDate()+1);return ["BEGIN:VEVENT",`UID:${e.id}-${ymd(e.date)}@trust-guide`,`DTSTAMP:${now}`,`DTSTART;VALUE=DATE:${ymd(e.date)}`,`DTEND;VALUE=DATE:${ymd(end)}`,`SUMMARY:${esc2(e.title)}`,`DESCRIPTION:${esc2(e.desc)}`,e.rrule?`RRULE:${e.rrule}`:"","BEGIN:VALARM","TRIGGER:-P7D","ACTION:DISPLAY",`DESCRIPTION:${esc2(e.title)}`,"END:VALARM","END:VEVENT"].filter(Boolean).map(fold).join("\r\n")}).join("\r\n");
+ return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Trust Setup Guide//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",ev,"END:VCALENDAR"].join("\r\n")}
+function gcalLink(e){const end=new Date(e.date);end.setDate(end.getDate()+1);const q=new URLSearchParams({action:"TEMPLATE",text:e.title,dates:ymd(e.date)+"/"+ymd(end),details:e.desc});if(e.rrule)q.set("recur","RRULE:"+e.rrule);return "https://calendar.google.com/calendar/render?"+q}
+function downloadIcs(){const list=reminders().filter(e=>!S.rem.off[e.id]);if(!list.length){toast("Pick at least one reminder");return}
+ const blob=new Blob([icsText(list)],{type:"text/calendar"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="trust-reminders.ics";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast("Calendar file downloaded. Open it to add the reminders.")}
+function viewReminders(){const list=reminders(),k=ctx().t;
+ return `<div class="card" id="reminders"><h3>Reminders</h3><p class="small muted" style="margin-top:0">Add yearly reminders to your phone's calendar so reviews, notices and tax deadlines don't slip. Each one alerts you a week ahead.</p>
+ <div class="grid2" style="margin-bottom:10px"><label class="f">Trust signed or start date<input type="date" data-rem="start" value="${esc(S.rem.start||S.d.signDate)}"></label>${k==="ilit"||k==="irrev"?`<label class="f">Yearly gift or premium date<input type="date" data-rem="crummey" value="${esc(S.rem.crummey)}"></label>`:""}</div>
+ ${list.map(e=>`<label class="remrow"><input type="checkbox" data-remoff="${e.id}" ${S.rem.off[e.id]?"":"checked"}><div style="flex:1"><b>${esc(e.title)}</b><div class="when">Next: ${e.date.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})} · ${esc(e.when)}</div><div class="small muted">${esc(e.desc)}</div><a class="small" href="${gcalLink(e)}" target="_blank" rel="noopener">Add just this one to Google Calendar ↗</a></div></label>`).join("")}
+ <div class="row" style="margin-top:10px"><button class="btn" data-act="ics">Add selected to my calendar</button></div>
+ <p class="small muted" style="margin-bottom:0">On iPhone, open the downloaded file and tap <b>Add All</b>. On Android or a computer, open it with Google Calendar or Outlook. Share the file with family so they get the same reminders.</p></div>`}
+
+/* ---- Companion documents ---- */
+const chk=on=>`<span class="cb" style="${on?"background:#111":""}"></span>`;
+function docPOA(c){const d=c.d,nm=fill(d.g1,"Your name");const pw=["Real estate","Banking and other financial institutions","Investments, stocks and bonds","Retirement plans","Taxes (including signing IRS Form 2848 and returns)","Insurance and annuities","Government benefits, Social Security, Medicare and military benefits","Operating a business","Digital assets and online accounts","Claims and lawsuits","Personal and family maintenance",`Transferring my assets to the trustee of ${c.tName}`];
+ return `<div class="paper">${draftBanner()}<h1>Durable Financial Power of Attorney</h1><div class="sub">of ${nm}</div>
+ <p>I, ${nm}, of ${fill(d.county,"County")}, ${fill(c.stateName,"State")}, appoint <b>${fill(d.poaAgent,"Agent name")}</b> as my agent (attorney-in-fact) to act for me. If my agent dies, resigns or cannot serve, I appoint <b>${fill(d.poaAlt,"Alternate agent")}</b> as successor agent.</p>
+ <h2>When this takes effect</h2><p>${d.poaWhen==="springing"?`This power of attorney becomes effective only when a licensed physician certifies in writing that I am unable to manage my financial affairs.`:`This power of attorney is effective immediately.`}</p>
+ <h2>Durability</h2><p>This power of attorney shall not be affected by my later disability or incapacity, or by lapse of time.</p>
+ <h2>Powers granted</h2><p>I grant my agent general authority over the following subjects. <i>Initial each one you want to grant; cross out any you don't.</i></p>
+ <table>${pw.map(x=>`<tr><td style="width:70px">______</td><td>${x}</td></tr>`).join("")}</table>
+ <h2>Special powers (only if initialed)</h2><table>
+ <tr><td style="width:70px">______</td><td>Make gifts, but not more than the federal gift tax annual exclusion per person per year</td></tr>
+ <tr><td>______</td><td>Create, amend or revoke a trust, or change beneficiary designations</td></tr></table>
+ <h2>Other terms</h2><p>My agent shall act in good faith, in my best interest, and keep my property separate and records of all transactions. My agent is entitled to reimbursement of reasonable expenses and ${"reasonable compensation"}. Any third party may rely on a copy of this document. I revoke all prior general financial powers of attorney.</p>
+ <p style="margin-top:20px">Signed on ${fill("","Date")}.</p>
+ <div class="sig"><div>${nm}, Principal</div><div></div><div>Witness (if required by your state)</div><div>Witness (if required by your state)</div></div>
+ ${notary(Object.assign({},c,{gNames:nm}))}
+ <div class="box" style="font-size:12.5px">Many states have an official statutory form, and banks accept it more readily. ${c.st==="NY"?"New York requires its statutory short form, signed with a notary and two witnesses. ":c.st==="FL"?"Florida requires two witnesses and a notary. ":""}Each spouse signs their own power of attorney.</div></div>`}
+function docAHCD(c){const d=c.d,nm=fill(d.g1,"Your name");
+ return `<div class="paper">${draftBanner()}<h1>Advance Health Care Directive</h1><div class="sub">Health care power of attorney and living will of ${nm}</div>
+ <h2>Part 1. Health care agent</h2><p>I, ${nm}, appoint <b>${fill(d.hcAgent,"Health care agent")}</b> as my agent to make health care decisions for me if I am unable to make them myself. If that person is unwilling or unable to act, I appoint <b>${fill(d.hcAlt,"Alternate agent")}</b>.</p>
+ <p>My agent may consent to, refuse or withdraw any care, treatment or procedure; choose doctors and facilities; see my medical records; and make decisions about autopsy and disposition of my remains, following my instructions below and my known wishes.</p>
+ <h2>Part 2. End-of-life instructions</h2><p>If I have an incurable and irreversible condition that will result in death in a relatively short time, or I am permanently unconscious:</p>
+ <p>${chk(d.eol==="comfort")} I do <b>not</b> want my life prolonged. I want care that keeps me comfortable.<br>${chk(d.eol==="prolong")} I want my life prolonged as long as possible within accepted medical standards.<br>${chk(d.eol==="agent")} I want my agent to decide based on what they know of my wishes.</p>
+ <p><b>Pain relief.</b> I want treatment to relieve pain and discomfort even if it may hasten my death.</p>
+ <p><b>Other wishes:</b> ____________________________________________________________</p>
+ <h2>Part 3. Organ and tissue donation</h2><p>${chk(d.organ==="yes")} I give any needed organs, tissues or parts. &nbsp; ${chk(d.organ==="no")} I do not wish to donate. &nbsp; ${chk(d.organ==="agent")} My agent may decide.</p>
+ <h2>Part 4. Primary physician</h2><p>Name and phone: ${fill("","Physician")}</p>
+ <h2>Part 5. Signature</h2><p>Signed on ${fill("","Date")}, at ${fill(d.county,"County")}, ${fill(c.stateName,"State")}.</p>
+ <div class="sig"><div>${nm}</div><div></div></div>
+ <h2>Witnesses</h2><p style="font-size:13px">Each witness declares that the person signing is personally known to them or proved their identity, signed in their presence, appears to be of sound mind and under no duress, and that the witness is not the named agent or the person's health care provider. At least one witness is not related by blood, marriage or adoption and is not entitled to any part of the estate.</p>
+ <div class="sig"><div>Witness 1 signature, name, date</div><div>Witness 2 signature, name, date</div></div>
+ <p style="font-size:12.5px">Some states accept a notary instead of witnesses, or require both.</p>
+ <div class="box" style="font-size:12.5px">Most states publish an official advance directive form that hospitals recognize. If yours does, complete it with the same choices. Give copies to your agent and your doctor.</div></div>`}
+function docHIPAA(c){const d=c.d,nm=fill(d.g1,"Your name");const people=[d.hcAgent,d.hcAlt,...String(d.hipaa||"").split(",")].map(x=>x&&x.trim()).filter((x,i,a)=>x&&a.indexOf(x)===i);
+ return `<div class="paper">${draftBanner()}<h1>HIPAA Authorization</h1><div class="sub">Authorization to release protected health information</div>
+ <p>I, ${nm}, date of birth ${fill("","DOB")}, authorize any doctor, hospital, clinic, laboratory, pharmacy, insurer or other covered health care provider to give my individually identifiable health information, including records about mental health, substance use, HIV/AIDS and genetic testing, to the following people:</p>
+ <table><tr><th>Name</th><th>Relationship</th></tr>${(people.length?people:["",""]).map(n=>`<tr><td>${fill(n,"Name")}</td><td>&nbsp;</td></tr>`).join("")}</table>
+ <p><b>Purpose:</b> at my request, so these people can talk with my providers, help with my care, and carry out my health care directive and the trust's incapacity provisions.</p>
+ <p><b>Expiration:</b> two years after my death, unless I revoke it sooner.</p>
+ <p><b>My rights:</b> I may revoke this authorization in writing at any time, except to the extent action has already been taken. My treatment, payment or eligibility for benefits will not depend on whether I sign. Information released may be redisclosed by the recipient and no longer protected by federal privacy rules.</p>
+ <div class="sig"><div>${nm}</div><div>Date</div></div></div>`}
+function docTGuide(c){return `<div class="paper"><h1>Successor Trustee Guide</h1><div class="sub">${c.tName}</div>
+ <p>Successor trustee: <b>${fill(c.d.succ1,"Name")}</b>${c.d.succ2?`, then <b>${esc(c.d.succ2)}</b>`:""}. This is a general checklist. Work with an attorney and keep receipts for everything.</p>
+ <h2>If the grantor is alive but incapacitated</h2><ol><li>Get the doctors' letters the trust requires.</li><li>Use the Certification of Trust to take over trust accounts.</li><li>Pay bills and care costs; keep records; make no distributions to beneficiaries.</li></ol>
+ ${TG.map(p=>`<h2>${p.phase}</h2><table>${p.items.map(([,t,dsc])=>`<tr><td style="width:24px"><span class="cb"></span></td><td><b>${esc(t)}</b>${dsc?`<br><span style="font-size:13px">${esc(dsc)}</span>`:""}</td></tr>`).join("")}</table>`).join("")}</div>`}
+
 /* ---- Documents ---- */
 const fill=(v,ph)=>v&&String(v).trim()?esc(v):`<span class="fill">${esc(ph||"____________________")}</span>`;
 function ctx(){const d=S.d,t=d.type||(S.done?recommend(S.quiz).primary:"rlt");
@@ -583,7 +818,8 @@ function ctx(){const d=S.d,t=d.type||(S.done?recommend(S.quiz).primary:"rlt");
   date:d.signDate?new Date(d.signDate+"T12:00").toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}):fill("","Date")};
 }
 function draftBanner(){return `<div class="draft"><b>DRAFT FOR REVIEW. NOT LEGAL ADVICE.</b> Created with the Trust Setup Guide to organize your wishes. Have a licensed attorney in your state review and finalize it before signing. Highlighted blanks still need to be filled in.</div>`}
-function notary(c){return `<div class="box"><b>ACKNOWLEDGMENT</b><br>State of ${c.stateName?esc(c.stateName):fill("","State")} )<br>County of ${fill(c.d.county,"County")} )<br><br>On ${fill("","date")}, before me, ${fill("","notary name")}, Notary Public, personally appeared ${c.gNames}, who proved to me on the basis of satisfactory evidence to be the person(s) whose name(s) is/are subscribed to this instrument and acknowledged that he/she/they executed the same.<br><br>Signature of Notary ____________________________ (Seal)<br><span style="font-size:11.5px;color:#555">Some states, including California, require their own exact notary wording. Your notary will attach the correct form.</span></div>`}
+function notary(c){if(c.st==="CA")return `<div class="box"><div style="border:1px solid #111;padding:6px 8px;font-size:12px;margin-bottom:10px">A notary public or other officer completing this certificate verifies only the identity of the individual who signed the document to which this certificate is attached, and not the truthfulness, accuracy, or validity of that document.</div><b>ACKNOWLEDGMENT</b><br>State of California<br>County of ${fill(c.d.county,"County")}<br><br>On ${fill("","date")} before me, ${fill("","notary name and title")}, personally appeared ${c.gNames}, who proved to me on the basis of satisfactory evidence to be the person(s) whose name(s) is/are subscribed to the within instrument and acknowledged to me that he/she/they executed the same in his/her/their authorized capacity(ies), and that by his/her/their signature(s) on the instrument the person(s), or the entity upon behalf of which the person(s) acted, executed the instrument.<br><br>I certify under PENALTY OF PERJURY under the laws of the State of California that the foregoing paragraph is true and correct.<br><br>WITNESS my hand and official seal.<br><br>Signature ____________________________ (Seal)</div>`;
+ return `<div class="box"><b>ACKNOWLEDGMENT</b><br>State of ${c.stateName?esc(c.stateName):fill("","State")} )<br>County of ${fill(c.d.county,"County")} )<br><br>On ${fill("","date")}, before me, ${fill("","notary name")}, Notary Public, personally appeared ${c.gNames}, who proved to me on the basis of satisfactory evidence to be the person(s) whose name(s) is/are subscribed to this instrument and acknowledged that he/she/they executed the same.<br><br>Signature of Notary ____________________________ (Seal)<br><span style="font-size:11.5px;color:#555">Some states, including California, require their own exact notary wording. Your notary will attach the correct form.</span></div>`}
 function sigs(c,extra){const g=[c.d.g1,c.d.g2].filter(x=>x&&x.trim());const names=g.length?g:["Grantor"];
  const ts=[c.d.trustee1,c.d.trustee2].filter(x=>x&&x.trim()&&!g.includes(x));
  return `<div class="sig">${names.map(n=>`<div>${esc(n)}, Grantor${c.T.rev?" and Trustee":""}</div>`).join("")}${(!c.T.rev?(ts.length?ts:["Trustee"]):ts).map(n=>`<div>${esc(n)}, Trustee</div>`).join("")}${extra||""}</div>`}
@@ -721,11 +957,15 @@ function docList(){const c=ctx(),k=c.t;
  if(k!=="testamentary")L.push(["cert","Certification of Trust","A short summary to give banks so they don't need the whole trust.",docCert]);
  if(T[k].rev&&k!=="testamentary")L.push(["assign","General Assignment of Assets","Moves personal belongings and stragglers into the trust.",docAssign]);
  if(T[k].rev)L.push(["will",k==="testamentary"?"Will with Testamentary Trust":"Pour-Over Will","Catches anything left outside the trust and names a guardian for minors.",docWill]);
+ L.push(["poa","Durable Financial Power of Attorney","Lets your agent handle money and accounts outside the trust.",docPOA]);
+ L.push(["ahcd","Advance Health Care Directive","Names who makes medical decisions and records your end-of-life wishes.",docAHCD]);
+ L.push(["hipaa","HIPAA Authorization","Lets family and agents talk to your doctors.",docHIPAA]);
  if(k==="ilit"||k==="irrev")L.push(["crummey","Crummey Notice","Notice to beneficiaries each time money is added, for gift tax savings.",docCrummey]);
  if(k==="dapt"||k==="irrev"||k==="medicaid")L.push(["solv","Affidavit of Solvency","Shows transfers weren't made to avoid creditors.",docSolvency]);
  L.push(["fund","Funding Checklist","Step-by-step on moving each asset into the trust.",docFunding]);
  L.push(["atty","Attorney Meeting Worksheet","A summary of your plan plus questions to ask.",docAttorney]);
  L.push(["family","Letter to My Family","Where documents are and who to call. Good to share with family.",docFamily]);
+ L.push(["tguide","Successor Trustee Guide","Step-by-step checklist for whoever takes over the trust.",docTGuide]);
  return {c,L};
 }
 function viewDocs(){
@@ -777,12 +1017,14 @@ function setupSteps(){const c=ctx(),k=c.t,rev=T[k].rev,st=c.st;
 }
 function viewSetup(){
  if(!S.d.type&&!S.done)return `<div class="card"><h2>Set up & file</h2><p class="muted">Take the quiz or pick a trust type first, and this tab becomes your personal checklist.</p><button class="btn" data-go="find">Take the quiz</button></div>`;
- const steps=setupSteps(),done=steps.filter(x=>S.checks[x.id]).length,c=ctx();
+ const steps=setupSteps(),isD=id=>S.prog[id]&&S.prog[id].done,done=steps.filter(x=>isD(x.id)).length,c=ctx();
  return `<div class="card"><h2>Set up & file your ${esc(c.T.short)}</h2>
   <p class="small muted" style="margin:0">Check items off as you go. Progress is saved on this device.</p>
   <div class="bar"><i style="width:${steps.length?done/steps.length*100:0}%"></i></div><div class="small muted">${done} of ${steps.length} done</div></div>
  <div class="notice info"><b>What "filing" means for a trust.</b> Most trusts are private and never filed with a court. What you do file: a deed with the county recorder for real estate, and (for irrevocable trusts) an EIN and tax forms with the IRS. This app can't file for you, but it links to the official places to do each step online where possible.</div>
- ${steps.map(x=>`<label class="step ${S.checks[x.id]?"done":""}"><input type="checkbox" data-chk="${x.id}" ${S.checks[x.id]?"checked":""}><div><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p><div class="where">${x.where.map(w=>`<span>${esc(w)}</span>`).join("")}${(x.link||[]).map(([l,u])=>` <a href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join("")}</div></div></label>`).join("")}`;
+ ${steps.map(x=>`<label class="step ${isD(x.id)?"done":""}"><input type="checkbox" data-chk="${x.id}" ${isD(x.id)?"checked":""}><div><h4>${esc(x.title)}</h4><p>${esc(x.text)}</p>${S.prog[x.id]&&(S.prog[x.id].who||S.prog[x.id].by)?`<p class="small">${S.prog[x.id].who?"Assigned to "+esc(S.prog[x.id].who):""}${S.prog[x.id].done&&S.prog[x.id].by?(S.prog[x.id].who?" · ":"")+"Done by "+esc(S.prog[x.id].by):""}</p>`:""}<div class="where">${x.where.map(w=>`<span>${esc(w)}</span>`).join("")}${(x.link||[]).map(([l,u])=>` <a href="${u}" target="_blank" rel="noopener">${esc(l)} ↗</a>`).join("")}</div></div></label>`).join("")}
+ <div class="row" style="margin:6px 0 14px"><button class="btn sm ghost" data-go="family">Assign tasks to family →</button></div>
+ ${viewReminders()}`;
 }
 
 /* ---------------------------------------------------------------
@@ -811,12 +1053,27 @@ document.addEventListener("click",e=>{
  if(D.delas!=null){S.d.assets.splice(+D.delas,1);save();return render()}
  if(D.view){S.docOpen=S.docOpen===D.view?null:D.view;save();return render()}
  if(D.print)return printDocs(D.print);
+ if(D.act==="addMember"){const n=$("#mName").value.trim();if(!n)return toast("Type a name first");if(S.family.members.some(m=>m.name.toLowerCase()===n.toLowerCase()))return toast("Already added");S.family.members.push({name:n,role:$("#mRole").value});if(!S.family.me&&S.family.members.length===1)S.family.me=n;save();return render()}
+ if(D.act==="fromDetails"){const d=S.d,add=(n,r)=>{n=(n||"").trim();if(n&&!S.family.members.some(m=>m.name.toLowerCase()===n.toLowerCase()))S.family.members.push({name:n,role:r})};
+  add(d.g1,"Grantor");add(d.g2,"Spouse");add(d.trustee1,"Trustee");add(d.trustee2,"Trustee");add(d.succ1,"Successor trustee");add(d.succ2,"Successor trustee");d.bens.forEach(b=>add(b.name,"Beneficiary"));add(d.poaAgent,"Agent (POA / health care)");add(d.hcAgent,"Agent (POA / health care)");
+  save();toast(S.family.members.length?"People added":"Fill in names in My details first");return render()}
+ if(D.delmember!=null){const m=S.family.members[+D.delmember];if(m&&S.family.me===m.name)S.family.me="";S.family.members.splice(+D.delmember,1);save();return render()}
+ if(D.act==="postNote"){const t=$("#noteText").value.trim();if(!t)return;S.family.notes.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),who:S.family.me,text:t,at:Date.now()});save();return render()}
+ if(D.delnote){S.family.notes=S.family.notes.filter(n=>n.id!==D.delnote);save();return render()}
+ if(D.act==="syncSend")return sendSync();
+ if(D.act==="ics")return downloadIcs();
  if(D.dl)return downloadDoc(D.dl);
 });
 document.addEventListener("change",e=>{
  const el=e.target;
  if(el.id==="stateSel"){S.quiz.state=el.value;save();render()}
- if(el.dataset.chk){S.checks[el.dataset.chk]=el.checked;save();render()}
+ if(el.dataset.chk){setP(S.prog,el.dataset.chk,{done:el.checked,by:el.checked?S.family.me:""});save();render()}
+ if(el.dataset.tg){setP(S.tg,el.dataset.tg,{done:el.checked,by:el.checked?S.family.me:""});save();render()}
+ if(el.dataset.who){setP(S.prog,el.dataset.who,{who:el.value});save();render()}
+ if(el.id==="meSel"){S.family.me=el.value;save();render()}
+ if(el.dataset.rem){S.rem[el.dataset.rem]=el.value;save();render()}
+ if(el.dataset.remoff){S.rem.off[el.dataset.remoff]=!el.checked;save()}
+ if(el.dataset.statev){S.stateView=el.value;save();render()}
 });
 $("#shareBtn").onclick=async()=>{const url=location.href.split("#")[0].split("?")[0];
  const data={title:"Trust Setup Guide",text:"A guide for figuring out and setting up a family trust. Your answers stay on your own device.",url};
@@ -835,7 +1092,7 @@ $("#importInput").onchange=e=>{const file=e.target.files[0];if(!file)return;cons
  r.readAsText(file);e.target.value=""};
 $("#resetBtn").onclick=()=>{if(confirm("Delete all answers, details and checklist progress on this device?")){S=blank();save();render();dlg.close();toast("Cleared")}};
 window.addEventListener("afterprint",()=>{$("#printArea").innerHTML=""});
-render();
+render();checkSyncHash();window.addEventListener("hashchange",checkSyncHash);
 </script>
 </body>
 </html>
