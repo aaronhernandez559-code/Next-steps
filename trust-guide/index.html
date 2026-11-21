@@ -165,6 +165,19 @@ dialog{border:1px solid var(--line);border-radius:14px;background:var(--panel);c
 dialog::backdrop{background:rgba(0,0,0,.4)}
 dialog h3{font-size:19px;margin-bottom:8px}
 #printArea{display:none}
+.sr{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+table.cmp{width:100%;border-collapse:collapse;font-size:13.5px}
+table.cmp th,table.cmp td{position:relative;border-top:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
+table.cmp thead th{border-top:0;font-size:12px;color:var(--muted);font-weight:600;vertical-align:bottom}
+table.cmp tbody th{font-weight:600;color:var(--ink);font-size:13px}
+table.cmp:not(.grid) tbody th{width:32%;color:var(--muted);font-weight:500}
+table.cmp.grid{min-width:720px}
+table.cmp.grid thead th{text-align:center}
+table.cmp.grid thead th:first-child{text-align:left;min-width:150px}
+table.cmp.grid td{font-size:17px}
+table.cmp.grid td.small{font-size:12.5px;min-width:110px}
+table.cmp a{text-decoration:none}
 .member{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;margin-bottom:6px;background:var(--bg)}
 .member b{font-weight:600}
 .avatar{display:inline-flex;width:28px;height:28px;border-radius:50%;align-items:center;justify-content:center;font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);margin-right:8px;flex:none}
@@ -257,7 +270,7 @@ rlt:{name:"Revocable Living Trust",short:"Living trust",rev:true,
  notProtect:["It does NOT protect your assets from your own creditors or lawsuits while you're alive. Because you can take everything back, the law treats it as yours.","It does NOT protect against nursing-home or Medicaid costs.","It does not by itself cut estate taxes (married couples can add tax-planning sub-trusts)."],
  tax:{income:"No change. It is a \"grantor trust\": you keep using your Social Security number and report all income on your own Form 1040. No separate trust tax return while you're alive.",gift:"Putting assets in is not a gift because you can take them back.",estate:"Everything in it still counts in your taxable estate. In 2026 the federal exemption is $15 million per person ($30 million for a married couple), so most families owe no federal estate tax. Some states tax much smaller estates.",basis:"Assets get a \"step-up\" in tax basis when you die, so heirs can usually sell appreciated property with little or no capital gains tax.",after:"After your death it becomes irrevocable, needs its own EIN, and may file Form 1041."},
  steps:["Choose your successor trustee(s) and beneficiaries","Have the trust agreement drafted and reviewed","Sign it (usually in front of a notary)","\"Fund\" it: retitle your home, accounts and other assets into the trust","Sign a pour-over will to catch anything left out","Review every few years or after big life changes"],
- cost:"About $1,500 to $5,000 with an attorney; $300 to $800 with online services.",change:"Yes. You can amend or revoke it any time while you have capacity."},
+ cost:"About $1,500 to $5,000 with an attorney; $300 to $800 with online services.",vs:"Compared with an irrevocable trust, you keep full control and can change or cancel it at any time. In exchange it gives no protection from your own creditors or nursing-home costs, and it doesn't lower estate tax. An irrevocable trust gives up control to get those protections.",change:"Yes. You can amend or revoke it any time while you have capacity."},
 testamentary:{name:"Testamentary Trust (in a Will)",short:"Will-based trust",rev:true,
  what:"The trust is written inside your will and only comes into existence after you die. It's often used to hold money for minor children.",
  goodFor:["Smaller estates where probate is simple or cheap in your state","Naming who manages a child's inheritance","Lowest up-front cost"],
@@ -265,15 +278,15 @@ testamentary:{name:"Testamentary Trust (in a Will)",short:"Will-based trust",rev
  notProtect:["It does NOT avoid probate. The will has to go through court before the trust exists.","No protection from your creditors during your life, and no help if you become incapacitated.","The will becomes a public court record."],
  tax:{income:"Nothing changes while you are alive. After death the trust is a separate taxpayer filing Form 1041. Income it keeps is taxed at compressed trust rates (the 37% bracket starts around $16,000).",gift:"No gift. Nothing is transferred until death.",estate:"Everything is in your taxable estate.",basis:"Heirs get a step-up in basis at death.",after:"The trust needs an EIN after death."},
  steps:["Write a will that includes trust terms","Sign it with two witnesses (and a notary for a self-proving affidavit)","At death, the executor probates the will and funds the trust"],
- cost:"Usually included with a will: about $300 to $1,500.",change:"Yes, by updating your will any time before death."},
-irrev:{name:"Irrevocable Gifting Trust",short:"Irrevocable trust",rev:false,
- what:"You permanently give assets to a trust run by someone else for your beneficiaries. Married couples often use a version called a SLAT (Spousal Lifetime Access Trust), where your spouse can still benefit.",
+ cost:"Usually included with a will: about $300 to $1,500.",vs:"Compared with a revocable living trust, it costs less up front, but it still goes through probate, becomes public, and does nothing if you become incapacitated.",change:"Yes, by updating your will any time before death."},
+irrev:{name:"Irrevocable Trust",short:"Irrevocable trust",rev:false,
+ what:"You permanently move assets into a trust that you generally can't change or take back, managed by an independent trustee for your beneficiaries. Because you no longer own the assets, they can be protected from your future creditors and removed from your taxable estate. Common versions: a gifting trust for children, a SLAT (Spousal Lifetime Access Trust) that your spouse can still benefit from, and a \"dynasty\" trust that lasts for generations. Life insurance, special needs, asset protection, Medicaid and charitable trusts are specialized kinds of irrevocable trusts.",
  goodFor:["Removing growth on assets from a large taxable estate","Protecting assets from future creditors once they've been in the trust a while","Locking in long-term plans for children and grandchildren (a \"dynasty\" trust)"],
  protects:["Because you no longer own the assets, your future creditors generally can't reach them (unless the transfer was a fraudulent transfer made to dodge existing creditors).","Beneficiaries' shares are protected by a spendthrift clause from their creditors, lawsuits and divorces.","An independent trustee can hold back distributions if a beneficiary has problems with addiction or money."],
  notProtect:["Gifts made when you already owe a debt or face a lawsuit can be undone by a court.","You give up control and can't easily get the assets back.","A SLAT can be lost to you in a divorce, because your spouse is the beneficiary."],
  tax:{income:"Usually set up as a grantor trust for income tax: you keep paying its income tax, which is effectively an extra tax-free gift to the family. If it's set up as a non-grantor trust it files Form 1041 and pays tax at compressed trust rates.",gift:"Funding it is a taxable gift. You file Form 709. Gifts use up part of your $15 million lifetime exemption (2026), but no tax is due until you go over it. Gifts can qualify for the $19,000 per-person annual exclusion if beneficiaries get \"Crummey\" withdrawal rights.",estate:"Assets and all their future growth are out of your taxable estate.",basis:"No step-up at death. Heirs keep your original basis, so they may owe more capital gains tax when they sell. Good to fund with cash or assets that won't appreciate much, or plan for a swap power.",after:"Needs its own EIN when you create it."},
  steps:["Decide what to give and confirm you stay solvent afterward","Pick an independent trustee","Draft and sign the trust","Get an EIN for the trust","Transfer the assets and keep records of their value","File Form 709 by April 15 of the next year"],
- cost:"About $3,000 to $10,000+ with an attorney, plus yearly accounting.",change:"Very limited. Some states allow \"decanting\" or a trust protector can make certain changes."},
+ cost:"About $3,000 to $10,000+ with an attorney, plus yearly accounting.",vs:"Compared with a revocable living trust, you give up control and usually the step-up in basis for heirs. In exchange you get protection from your future creditors, and the assets plus all their future growth leave your taxable estate. Many families have both: a revocable trust for the home and everyday accounts, and an irrevocable trust for specific assets they're ready to give away.",change:"Very limited. Some states allow \"decanting\" or a trust protector can make certain changes."},
 ilit:{name:"Irrevocable Life Insurance Trust (ILIT)",short:"Life insurance trust",rev:false,
  what:"A trust that owns and is the beneficiary of your life insurance policy. When you die, the payout goes to the trust and isn't counted in your estate.",
  goodFor:["Large policies that would push your estate over the estate-tax limit","Providing cash to pay estate taxes or equalize an inheritance","Controlling how a large payout is used for children"],
@@ -281,7 +294,7 @@ ilit:{name:"Irrevocable Life Insurance Trust (ILIT)",short:"Life insurance trust
  notProtect:["If you transfer an existing policy and die within 3 years, it's pulled back into your estate. Having the trust buy a new policy avoids this.","You can't change the beneficiaries or borrow against the policy."],
  tax:{income:"Usually a grantor trust with little or no income. Death benefits are generally income-tax free.",gift:"Money you give the trust to pay premiums is a gift. With Crummey notices, it usually qualifies for the $19,000 per-beneficiary annual exclusion (2026).",estate:"Done correctly, the entire payout is outside your estate. That can save up to 40% federal estate tax on large estates.",basis:"Not usually relevant; insurance proceeds are cash.",after:"Needs its own EIN and a bank account to pay premiums."},
  steps:["Draft and sign the ILIT before buying the policy (or transfer an existing one)","Get an EIN and open a trust bank account","The trustee applies for the policy as owner and beneficiary","Each year, give the trust money for premiums","The trustee sends Crummey notices to beneficiaries","Trustee pays the premium from the trust account"],
- cost:"About $2,500 to $6,000, plus a small yearly admin cost.",change:"No, but you can stop paying premiums or a trust protector may have limited powers."},
+ cost:"About $2,500 to $6,000, plus a small yearly admin cost.",vs:"Compared with simply naming your living trust or your family as beneficiary, an ILIT keeps the payout out of your taxable estate. That can save up to 40% on large estates. The trade-off is that you can't change beneficiaries, borrow against the policy or cancel it yourself.",change:"No, but you can stop paying premiums or a trust protector may have limited powers."},
 snt:{name:"Special (Supplemental) Needs Trust",short:"Special needs trust",rev:false,
  what:"A trust for someone with a disability that pays for extras (therapy, education, travel, equipment, phone, recreation) without disqualifying them from SSI, Medicaid or other needs-based benefits. This is a \"third-party\" trust funded with your money, not theirs.",
  goodFor:["A child or relative who receives SSI or Medicaid, or might in the future","Leaving an inheritance without it counting as their asset","Naming a trustee who knows their needs"],
@@ -289,7 +302,7 @@ snt:{name:"Special (Supplemental) Needs Trust",short:"Special needs trust",rev:f
  notProtect:["If the trustee pays for food or shelter directly, SSI can be reduced.","A trust funded with the beneficiary's own money (a \"first-party\" trust) has different rules and requires Medicaid payback."],
  tax:{income:"Usually a separate taxpayer after funding (Form 1041). It can elect to be a \"Qualified Disability Trust\" for a larger exemption. Income paid out for the beneficiary is generally taxed to them, often at low rates.",gift:"Gifts into it are taxable gifts (but usually under the annual exclusion or covered by your lifetime exemption). Many families leave it empty until death, funded by their living trust or life insurance.",estate:"If funded at your death, the assets are in your estate. Most families are well under the $15 million exemption.",basis:"Assets inherited at death get a step-up in basis.",after:"Needs its own EIN once it holds money."},
  steps:["Choose a trustee and backup who understand benefit rules","Draft as a standalone trust or as a sub-trust inside your living trust","Write a \"letter of intent\" describing the person's needs, routines and preferences","Tell relatives to leave gifts to the trust, NOT directly to the person","Name the trust as beneficiary of life insurance or accounts where appropriate"],
- cost:"About $2,000 to $5,000. Often added to a living trust plan.",change:"A standalone trust is usually irrevocable; a sub-trust inside your living trust can be changed while you're alive."},
+ cost:"About $2,000 to $5,000. Often added to a living trust plan.",vs:"Compared with leaving money outright or in an ordinary trust, which could cost the person SSI and Medicaid, a special needs trust gives the trustee sole discretion, so the money doesn't count as the beneficiary's.",change:"A standalone trust is usually irrevocable; a sub-trust inside your living trust can be changed while you're alive."},
 dapt:{name:"Domestic Asset Protection Trust (DAPT)",short:"Asset protection trust",rev:false,
  what:"A special irrevocable trust, allowed in about 20 states, where you can still be a possible beneficiary but your future creditors generally can't reach the assets after a waiting period.",
  goodFor:["Doctors, business owners, landlords and others with lawsuit risk","Protecting a nest egg from future, unknown creditors","Keeping some access to the money (through an independent trustee)"],
@@ -297,7 +310,7 @@ dapt:{name:"Domestic Asset Protection Trust (DAPT)",short:"Asset protection trus
  notProtect:["It won't protect against debts or lawsuits that already exist or are expected; that's a fraudulent transfer.","If you live in a non-DAPT state, courts there may not respect it. This is an unsettled area of law.","Child support, alimony and some tort claims can be exceptions in certain states.","Bankruptcy law can reach transfers made within 10 years."],
  tax:{income:"Usually a grantor trust: you keep paying the income tax on your own return.",gift:"Usually designed as an \"incomplete gift\" so no gift tax is due and nothing uses up your exemption. It can be designed as a completed gift if estate tax reduction is also a goal.",estate:"With incomplete-gift design, it stays in your estate (with a step-up in basis at death).",basis:"Step-up at death if it's included in your estate.",after:"Usually needs its own EIN and an account held with a trustee in the DAPT state."},
  steps:["Make sure you have no pending claims and stay solvent (sign a solvency affidavit)","Choose an independent trustee or trust company in a DAPT state","Draft the trust under that state's law","Get an EIN, open accounts in that state, and transfer assets","Keep good records and never treat trust assets as your own"],
- cost:"About $5,000 to $15,000+, plus yearly trustee fees.",change:"Generally not, though a trust protector may have limited powers."},
+ cost:"About $5,000 to $15,000+, plus yearly trustee fees.",vs:"Compared with an ordinary irrevocable trust, you can still be a possible beneficiary. Compared with a revocable trust, it gives real protection from creditors, but only after a waiting period, only in certain states, and only against future claims.",change:"Generally not, though a trust protector may have limited powers."},
 medicaid:{name:"Medicaid Asset Protection Trust (MAPT)",short:"Medicaid trust",rev:false,
  what:"An irrevocable trust that holds your home or savings so they don't count against you if you later need Medicaid to pay for nursing-home care. You may still receive income from the trust, but not principal.",
  goodFor:["Protecting the family home from Medicaid estate recovery","Planning at least 5 years before long-term care may be needed","Leaving an inheritance despite high care costs"],
@@ -305,7 +318,7 @@ medicaid:{name:"Medicaid Asset Protection Trust (MAPT)",short:"Medicaid trust",r
  notProtect:["Transfers made within the look-back period can cause a penalty period of ineligibility.","You can't get the principal back for yourself.","Medicaid rules vary a lot by state and change often."],
  tax:{income:"Usually a grantor trust: you report the income and can keep tax breaks such as the home-sale exclusion.",gift:"Usually designed as an incomplete gift (by keeping certain powers), so there's no gift tax.",estate:"Designed to stay in your estate so heirs get a step-up in basis at death.",basis:"Step-up at death when designed correctly. This is a key benefit.",after:"Usually needs its own EIN."},
  steps:["Talk to an elder-law attorney about your state's Medicaid rules","Sign the trust and deed the home into it","Move savings you won't need into the trust","Keep enough outside the trust for your own needs","Wait out the look-back period"],
- cost:"About $3,000 to $8,000 with an elder-law attorney.",change:"No. You can't take back principal, though limited changes may be possible."},
+ cost:"About $3,000 to $8,000 with an elder-law attorney.",vs:"Compared with a revocable trust, these assets don't count when you apply for Medicaid. Compared with an ordinary irrevocable trust, it's designed to let you keep the income and your home, and to keep the step-up in basis for heirs.",change:"No. You can't take back principal, though limited changes may be possible."},
 crt:{name:"Charitable Remainder Trust (CRT)",short:"Charitable trust",rev:false,
  what:"You give an asset (often appreciated stock or real estate) to the trust. The trust sells it without capital gains tax, pays you or your family income for life or a set number of years, and what's left goes to charity.",
  goodFor:["Selling a highly appreciated asset without paying capital gains tax up front","Creating lifetime income","Leaving a gift to charity and getting an income-tax deduction now"],
@@ -313,7 +326,7 @@ crt:{name:"Charitable Remainder Trust (CRT)",short:"Charitable trust",rev:false,
  notProtect:["The principal goes to charity, not your children. Families often pair it with life insurance in an ILIT to replace that value.","The trust must follow strict IRS rules (payout of 5% to 50%, at least 10% must be projected to go to charity)."],
  tax:{income:"The trust itself is tax-exempt, so it can sell appreciated assets tax-free. You pay income tax on the payments you receive, in a tiered order. The trust files Form 5227 each year.",gift:"You get an immediate charitable income-tax deduction for the present value of what charity will receive.",estate:"The charity's share is out of your estate.",basis:"The trust keeps your original basis, but it doesn't matter because the trust doesn't pay tax on the sale.",after:"Needs its own EIN at creation."},
  steps:["Get the asset valued (a qualified appraisal for real estate)","Choose payout type (fixed annuity or percentage unitrust) and rate","Draft using IRS sample language","Transfer the asset to the trust BEFORE any sale is agreed","Trustee sells, invests and pays you","File Form 5227 every year"],
- cost:"About $3,000 to $10,000, plus yearly administration.",change:"No, though you can often keep the right to change which charity receives the remainder."}
+ cost:"About $3,000 to $10,000, plus yearly administration.",vs:"Compared with selling the asset yourself, there's no capital gains tax up front, you get lifetime income, and you get a charitable deduction now. The catch: what's left goes to charity, not your children.",change:"No, though you can often keep the right to change which charity receives the remainder."}
 };
 
 const PROVISIONS={
@@ -465,7 +478,7 @@ function viewFind(){
   body=`<div class="opts">${q.opts.map(([v,l,s])=>{const on=q.multi?(a||[]).includes(v):a===v;return `<button class="opt ${q.multi?"multi":""} ${on?"on":""}" data-opt="${v}"><span class="box"></span><span>${esc(l)}${s?`<small>${esc(s)}</small>`:""}</span></button>`}).join("")}</div>`;
  }
  const ok=q.multi?true:!!a;
- return `${i===0&&!Object.keys(S.quiz).length?`<div class="card"><h2>Let's find the right trust</h2><p class="muted" style="margin:0">Answer ${QUIZ.length} short questions. You'll get a recommendation, plain-English explanations of how it protects your assets and what it means for taxes, then draft documents and a setup checklist.</p></div>`:""}
+ return `${i===0&&!Object.keys(S.quiz).length?`<div class="card"><h2>Let's find the right trust</h2><p class="muted" style="margin:0">Answer ${QUIZ.length} short questions. You'll get a recommendation, plain-English explanations of how it protects your assets and what it means for taxes, then draft documents and a setup checklist.</p><p class="small" style="margin:10px 0 0">Already know what you want, such as an irrevocable trust? <a href="#" data-act="pick">Pick a trust directly</a> or <a href="#" data-sub="compare">compare them all</a>.</p></div>`:""}
  <div class="card">
   <div class="spread small muted"><span>Question ${i+1} of ${QUIZ.length}</span>${i>0?`<button class="btn sm ghost" data-q="back">Back</button>`:""}</div>
   <div class="progress"><i style="width:${(i/QUIZ.length)*100}%"></i></div>
@@ -484,6 +497,7 @@ function viewResults(){
    <b class="small">Why this fits you</b><ul class="reasons small">${r.why[r.primary].map(x=>`<li>${esc(x)}</li>`).join("")||"<li>It's the most flexible foundation for most families.</li>"}</ul>
    <div class="row" style="margin-top:12px"><button class="btn sm" data-use="${r.primary}">Use this trust</button><button class="btn sm ghost" data-learn="${r.primary}">How it protects assets & taxes</button></div>
   </div>
+  ${(()=>{const alt=T[r.primary].rev?"irrev":"rlt",a=T[alt];return `<div class="card" style="margin:12px 0 0;padding:14px"><h4 style="font-size:15.5px">${T[r.primary].rev?"What about an irrevocable trust?":"What about a revocable living trust?"}</h4><p class="small" style="margin:6px 0">${esc(T[r.primary].rev?T.irrev.vs:T.rlt.vs)}</p><div class="row"><button class="btn sm ghost" data-sub="compare">Compare side by side</button><button class="btn sm ghost" data-use="${alt}">Use ${a.rev?"a revocable":"an irrevocable"} trust instead</button></div></div>`})()}
   ${r.also.length?`<h3 style="margin-top:16px">Also worth considering</h3><div class="also">${r.also.map(k=>`<div class="card"><h4 style="font-size:15.5px">${T[k].name}</h4><div style="margin:4px 0">${pillFor(k)}</div><ul class="reasons small">${(r.why[k].length?r.why[k]:["Often paired with your main trust."]).slice(0,2).map(x=>`<li>${esc(x)}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm ghost" data-learn="${k}">Learn more</button><button class="btn sm ghost" data-use="${k}">Use this instead</button></div></div>`).join("")}</div>`:""}
   ${r.prov.length?`<h3 style="margin-top:16px">Provisions to include</h3><p class="small muted" style="margin:0 0 6px">These are clauses added to your trust, not separate trusts.</p><ul class="reasons">${r.prov.map(k=>`<li><b>${PROVISIONS[k].name}.</b> ${esc(PROVISIONS[k].text)}</li>`).join("")}</ul>`:""}
   ${r.notes.length?`<h3 style="margin-top:16px">Things to know for you</h3><ul class="reasons">${r.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
@@ -512,6 +526,7 @@ function sec(t,b){return `<div class="sec"><h4>${t}</h4>${b}</div>`}
 function ul(a){return `<ul>${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`}
 function typeBody(k){const t=T[k];
  return `<p style="margin:0">${esc(t.what)}</p>
+ ${t.vs?`<div class="notice info" style="margin:12px 0 0"><b>${k==="rlt"?"Revocable vs. irrevocable":"How it compares"}.</b> ${esc(t.vs)} <a href="#" data-sub="compare">Compare all trusts</a></div>`:""}
  ${sec("Good for",ul(t.goodFor))}
  ${sec("How it protects your assets",ul(t.protects))}
  ${sec("What it does <u>not</u> protect",ul(t.notProtect))}
@@ -525,7 +540,8 @@ function viewLearn(){
  let body="";
  if(sub==="types"){
   body=`<p class="muted small" style="margin:0 0 10px">Tap a trust to see how it protects assets, its tax consequences, and how to set it up.</p>`+
-  Object.keys(T).map(k=>`<div class="acc ${S.openType===k?"open":""}" data-acc="${k}"><button data-toggle="${k}"><div><h3>${T[k].name}</h3><span class="small muted">${T[k].rev?"Revocable":"Irrevocable"} · ${esc(T[k].goodFor[0])}</span></div><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button><div class="body">${S.openType===k?typeBody(k):""}</div></div>`).join("");
+  [["Revocable: you keep control",Object.keys(T).filter(k=>T[k].rev)],["Irrevocable: you give up control for protection or tax savings",Object.keys(T).filter(k=>!T[k].rev)]].map(([h,ks])=>`<div class="section-title">${h}</div>`+ks.map(k=>`<div class="acc ${S.openType===k?"open":""}" data-acc="${k}"><button data-toggle="${k}"><div><h3>${T[k].name}</h3><span class="small muted">${T[k].rev?"Revocable":"Irrevocable"} · ${esc(T[k].goodFor[0])}</span></div><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button><div class="body">${S.openType===k?typeBody(k):""}</div></div>`).join("")).join("")+`<div class="row" style="margin-top:10px"><button class="btn sm ghost" data-sub="compare">Compare them side by side →</button></div>`;
+ }else if(sub==="compare"){body=viewCompare();
  }else if(sub==="protect"){
   body=`<div class="card"><h3>How trusts protect assets</h3>
   <p>Protection depends on one question: <b>who controls the assets?</b> The more control you keep, the less protection from your own creditors.</p>
@@ -548,7 +564,28 @@ function viewLearn(){
  }else{
   body=FAQ.map(([q,a],i)=>`<div class="acc ${S.openFaq===i?"open":""}"><button data-faq="${i}"><h3>${esc(q)}</h3><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button><div class="body"><p style="margin:0">${esc(a)}</p></div></div>`).join("");
  }
- return `<div class="subtabs">${[["types","Trust types"],["protect","Asset protection"],["tax","Taxes"],["state","Your state"],["trustee","Trustee guide"],["faq","Common questions"]].map(([k,l])=>`<button data-sub="${k}" class="${sub===k?"on":""}">${l}</button>`).join("")}</div>${body}`;
+ return `<div class="subtabs">${[["types","Trust types"],["compare","Compare"],["protect","Asset protection"],["tax","Taxes"],["state","Your state"],["trustee","Trustee guide"],["faq","Common questions"]].map(([k,l])=>`<button data-sub="${k}" class="${sub===k?"on":""}">${l}</button>`).join("")}</div>${body}`;
+}
+
+
+/* ---- Compare ---- */
+const CMP_COLS=[["probate","Avoids probate"],["cred","Shields from your creditors"],["etax","Cuts estate tax"],["ltc","Protects from nursing-home costs"],["step","Heirs get step-up in basis"],["ctrl","You keep control"]];
+const CMP={rlt:{probate:"Y",cred:"N",etax:"P",ltc:"N",step:"Y",ctrl:"Y"},testamentary:{probate:"N",cred:"N",etax:"N",ltc:"N",step:"Y",ctrl:"Y"},irrev:{probate:"Y",cred:"Y",etax:"Y",ltc:"P",step:"N",ctrl:"N"},ilit:{probate:"Y",cred:"Y",etax:"Y",ltc:"N",step:"-",ctrl:"N"},snt:{probate:"Y",cred:"N",etax:"N",ltc:"N",step:"Y",ctrl:"P"},dapt:{probate:"Y",cred:"Y",etax:"P",ltc:"N",step:"Y",ctrl:"P"},medicaid:{probate:"Y",cred:"Y",etax:"N",ltc:"Y",step:"Y",ctrl:"P"},crt:{probate:"Y",cred:"P",etax:"Y",ltc:"N",step:"N",ctrl:"P"}};
+const MARK={Y:["✓","Yes","var(--good)"],N:["✕","No","var(--bad)"],P:["◐","Partly / depends","var(--warn)"],"-":["–","Not applicable","var(--muted)"]};
+const RVI=[["Who controls the assets","You, as your own trustee","An independent trustee, usually"],["Can you change or cancel it?","Yes, any time","Generally no. Limited fixes through a trust protector or \"decanting\""],["Can you take assets back?","Yes","No"],["Avoids probate","Yes","Yes"],["Protects from your own creditors and lawsuits","No","Yes, if funded before any claim arises"],["Protects from nursing-home costs","No","Yes, with a Medicaid trust after the 5-year look-back"],["Protects heirs' inheritance from their creditors or divorce","Yes, after your death, with a spendthrift clause","Yes, with a spendthrift clause"],["Estate tax","Assets count in your estate","Gifted assets and their growth usually leave your estate"],["Income tax","On your own return, under your SSN","Your return (grantor trust) or its own Form 1041 at higher trust rates"],["Gift tax","None. Not a gift","Funding is a gift; file Form 709"],["Capital gains for heirs","Step-up in basis at death","Usually no step-up, unless designed to stay in your estate"],["Tax ID","Your Social Security number","Its own EIN"],["Typical cost","$1,500 to $5,000","$3,000 to $15,000+, plus yearly admin"],["Best for","Most families: avoiding probate, planning for illness, privacy","Large estates, lawsuit risk, Medicaid planning, life insurance, charity"]];
+function viewCompare(){
+ const cell=v=>{const m=MARK[v];return `<td style="text-align:center;color:${m[2]};font-weight:600" title="${m[1]}"><span aria-hidden="true">${m[0]}</span><span class="sr">${m[1]}</span></td>`};
+ return `<div class="card"><h3>Revocable vs. irrevocable</h3>
+ <p class="small muted" style="margin-top:0">The big trade-off: <b>control vs. protection</b>. A revocable trust keeps you fully in charge. An irrevocable trust gives up control to get creditor protection, Medicaid planning and estate-tax savings.</p>
+ <div class="tblwrap"><table class="cmp"><thead><tr><th></th><th><span class="pill rev">Revocable</span><br>Living trust</th><th><span class="pill irr">Irrevocable</span><br>Trust</th></tr></thead><tbody>${RVI.map(r=>`<tr><th scope="row">${esc(r[0])}</th><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody></table></div>
+ <div class="row" style="margin-top:12px"><button class="btn sm" data-use="rlt">Use a revocable trust</button><button class="btn sm" data-use="irrev">Use an irrevocable trust</button></div>
+ <p class="small muted" style="margin-bottom:0">You don't have to choose just one. Many families use a revocable trust for the home and everyday accounts, plus an irrevocable trust for specific assets.</p></div>
+ <div class="card"><h3>All trusts at a glance</h3>
+ <p class="small muted" style="margin-top:0"><span style="color:var(--good);font-weight:600">✓</span> yes &nbsp; <span style="color:var(--warn);font-weight:600">◐</span> partly or depends on design &nbsp; <span style="color:var(--bad);font-weight:600">✕</span> no &nbsp; – not applicable. Scroll sideways on a phone.</p>
+ <div class="tblwrap"><table class="cmp grid"><thead><tr><th>Trust</th>${CMP_COLS.map(c=>`<th>${c[1]}</th>`).join("")}<th>Typical cost</th></tr></thead><tbody>
+ ${["rlt","testamentary","irrev","ilit","snt","dapt","medicaid","crt"].map(k=>`<tr><th scope="row"><a href="#" data-learn="${k}">${esc(T[k].name)}</a><br><span class="pill ${T[k].rev?"rev":"irr"}">${T[k].rev?"Revocable":"Irrevocable"}</span></th>${CMP_COLS.map(c=>cell(CMP[k][c[0]])).join("")}<td class="small">${esc(T[k].cost.split(/[;,.] /)[0].replace(/\.$/,""))}</td></tr>`).join("")}
+ </tbody></table></div></div>
+ <div class="card"><h3>Quick guide</h3>${ul(["Want to avoid probate and stay in control? Revocable living trust.","Worried about lawsuits or creditors? Irrevocable trust, or an asset protection trust (DAPT) if you want to stay a possible beneficiary.","Large estate (over $15 million per person, or over your state's limit)? Irrevocable trust or SLAT, plus an ILIT for life insurance.","Worried about nursing-home costs? Medicaid asset protection trust, at least 5 years ahead.","Family member on SSI or Medicaid? Special needs trust (often a sub-trust in your living trust).","Highly appreciated asset and charitable goals? Charitable remainder trust.","Small estate, tight budget, young kids? A will with a testamentary trust, upgraded later."])}</div>`;
 }
 
 /* ---- Details ---- */
@@ -561,7 +598,7 @@ function viewDetails(){
  <div class="card">
   <div class="section-title" style="margin-top:0">Trust</div>
   <div class="grid2">
-   <label class="f">Type of trust<select data-f="type"><option value="">Choose…</option>${Object.keys(T).map(k=>`<option value="${k}" ${t===k?"selected":""}>${T[k].name}${rec&&rec.primary===k?" (recommended)":""}</option>`).join("")}</select></label>
+   <label class="f">Type of trust<select data-f="type"><option value="">Choose…</option>${[["Revocable",true],["Irrevocable",false]].map(([g,rv])=>`<optgroup label="${g}">${Object.keys(T).filter(k=>T[k].rev===rv).map(k=>`<option value="${k}" ${t===k?"selected":""}>${T[k].name}${rec&&rec.primary===k?" (recommended)":""}</option>`).join("")}</optgroup>`).join("")}</select></label>
    ${f("trustName","Trust name",suggestName())}
    <label class="f">State whose law applies<select data-f="state"><option value="">Choose…</option>${Object.entries(STATES).map(([k,v])=>`<option value="${k}" ${(d.state||S.quiz.state)===k?"selected":""}>${v}</option>`).join("")}</select></label>
    ${f("county","County where you live","e.g. Fresno County")}
@@ -1031,7 +1068,7 @@ function viewSetup(){
    Events
 ---------------------------------------------------------------- */
 document.addEventListener("click",e=>{
- const b=e.target.closest("button,a[data-go]");if(!b)return;
+ const b=e.target.closest("button,a[data-go],a[data-sub],a[data-act],a[data-learn]");if(!b)return;if(b.tagName==="A")e.preventDefault();
  const D=b.dataset;
  if(D.tab)return go(D.tab);
  if(D.go){e.preventDefault();return go(D.go)}
@@ -1044,7 +1081,8 @@ document.addEventListener("click",e=>{
  if(D.act==="retake"){S.done=false;S.quizStep=0;save();return render()}
  if(D.use){S.d.type=D.use;if(!S.d.state)S.d.state=S.quiz.state||"";save();toast(T[D.use].name+" selected");return go("details")}
  if(D.learn){S.learnSub="types";S.openType=D.learn;save();go("learn");const el=document.querySelector(`[data-acc="${D.learn}"]`);if(el)setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),30);return}
- if(D.sub){S.learnSub=D.sub;save();return render()}
+ if(D.sub){S.learnSub=D.sub;if(S.tab!=="learn")return go("learn");save();return render()}
+ if(D.act==="pick"){S.learnSub="types";return go("learn")}
  if(D.toggle){S.openType=S.openType===D.toggle?null:D.toggle;save();return render()}
  if(D.faq!=null){const i=+D.faq;S.openFaq=S.openFaq===i?null:i;return render()}
  if(D.act==="addBen"){S.d.bens.push({name:"",rel:"",share:""});save();return render()}
